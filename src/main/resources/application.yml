@@ -1,0 +1,51 @@
+
+spring:
+  profiles:
+    active: dev
+  messages:
+    basename: static/i18n/messages
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    #监控统计拦截的filters
+    filters: stat,wall,slf4j
+    #druid配置
+    #配置初始化大小/最小/最大
+    initialSize: 10
+    minIdle: 5
+    maxActive: 100
+    #获取连接等待超时时间
+    maxWait: 60000
+    #间隔多久进行一次检测，检测需要关闭的空闲连接
+    timeBetweenEvictionRunsMillis: 60000
+    #一个连接在池中最小生存的时间
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: true
+    testOnReturn: false
+    #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+    poolPreparedStatements: false
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties:
+      druid:
+        stat:
+          mergeSql: true
+          slowSqlMillis: 5000
+  ##thymelef配置
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+  ##文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 200MB
+
+##自定义配置
+login:
+  password: 1234
+  username: admin

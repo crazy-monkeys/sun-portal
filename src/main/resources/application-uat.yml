@@ -1,0 +1,80 @@
+logging:
+  config: classpath:logback-uat.xml
+
+##web容器配置
+server:
+  port: 8080
+  servlet:
+    context-path: /portal-api
+
+app:
+  ad-domain: SPREADTRUM.COM
+  service-principal: HTTP/DMSDEV.unisoc.com@SPREADTRUM.COM
+  keytab-location: /home/crmpor/svc.crm.keytab
+  krb5-config: /home/crmpor/krb5.ini
+
+spring:
+  mail:
+    host: smtp.unisoc.com
+    port: 587
+    username: CRM.Admin@UniSoC.com
+    password: caCA$617
+    protocol: smtp
+    default-encoding: UTF-8
+
+  datasource:
+    username: crmportalqa
+    password: Crm$20%My99
+    url: jdbc:mysql://10.29.60.170:3306/crmportalqa?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+
+file:
+  path:
+    root: /home/crmpor #公用基础路径
+    root-local: ${file.path.root}/portal_file/local #portal系统内文件地址入口
+    root-thrid-push: ${file.path.root}/bitest/upload #portal对接第三方文件出口地址
+    root-thrid-pull: ${file.path.root}/bitest/download #第三方传输文件至portal入口地址
+    root-template: ${file.path.root}/portal_file/template #portal功能模版文件地址
+    customer: ${file.path.root-local}/customer/
+    reader-customer: ${portal.file-url}/portal_file/local/customer/
+    reader-dir: ${portal.file-url}/portal_file/local/business/
+    announcement: #公告管理模块
+      local: ${file.path.root-local}/announcement/
+    deliver: #出货管理模块
+      template: ${file.path.root-template}/deliver/
+      push: ${file.path.root-thrid-push}/deliver/
+      pull: ${file.path.root-thrid-pull}/deliver/
+      local: ${file.path.root-local}/deliver/
+    receive: #收货管理模块
+      template: ${file.path.root-template}/receive/
+      push: ${file.path.root-thrid-push}/receive/
+      pull: ${file.path.root-thrid-pull}/receive/
+      local: ${file.path.root-local}/receive/
+    forecast:
+      push: ${file.path.root-thrid-push}/forecast/
+      pull: ${file.path.root-thrid-pull}/forecast/
+
+portal:
+  view-url: https://dmsdev.unisoc.com/portal/#/pwd
+  file-url: https://dmsdev.unisoc.com/portal-api/file
+  mock-bi-server: off
+
+ecc:
+  api:
+    url: https://e600180-hcioem.hcisbt.cn1.hana.ondemand.com
+  auth:
+    username: S0020469033
+    password: CRM@Unisoc
+
+ftp:
+  host: 10.29.24.20
+  port: 21
+  username: crmftp
+  password: '123@qwe'
+  path:
+    handover:
+      push: /home/crmftp/bitest/upload/
+      pull: /home/crmftp/bitest/download/
+    forecast:
+      push: /bitest/upload/
+      pull: /bitest/download/
