@@ -33,7 +33,7 @@ import java.util.Objects;
  * @Date: created in 00:02 2019/4/20
  * @Modified by:
  */
-@Component
+//@Component
 @Slf4j
 public class JwtUserService implements UserDetailsService {
 

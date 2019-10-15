@@ -46,10 +46,6 @@ public class UserService {
     @Resource
     private RetrievePasswordMapper retrievePasswordMapper;
 
-    @Value("${portal.view-url}")
-    private String portalViewUrl;
-
-
     private PasswordEncoder passwordEncoder =
             PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
@@ -197,7 +193,7 @@ public class UserService {
         mailBean.setTos(user.getEmail());
         String randomCode = UUID.randomUUID().toString();
         Map<String,Object> map = new HashMap<>();
-        map.put("url",String.format("%s?sid=%s&loginName=%s",portalViewUrl,randomCode,loginName));
+        map.put("url",String.format("%s?sid=%s&loginName=%s",null,randomCode,loginName));
         map.put("loginName",loginName);
         mailBean.setParams(map);
 

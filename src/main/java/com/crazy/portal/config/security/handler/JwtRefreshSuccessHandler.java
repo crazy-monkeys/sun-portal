@@ -22,7 +22,7 @@ import java.util.Date;
  * @Date: created in 20:09 2019/4/20
  * @Modified by:
  */
-@Component
+//@Component
 public class JwtRefreshSuccessHandler implements AuthenticationSuccessHandler{
 
     @Resource

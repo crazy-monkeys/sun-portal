@@ -37,8 +37,8 @@ import org.springframework.web.filter.CorsFilter;
 import javax.annotation.Resource;
 import java.util.Arrays;
 
-@EnableWebSecurity
-@Configuration
+//@EnableWebSecurity
+//@Configuration
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 

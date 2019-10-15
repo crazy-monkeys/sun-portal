@@ -26,7 +26,7 @@ import java.io.IOException;
  * @Modified by:
  */
 @Slf4j
-@Component
+//@Component
 public class AuthenticationFailHandler implements AuthenticationFailureHandler{
 
 

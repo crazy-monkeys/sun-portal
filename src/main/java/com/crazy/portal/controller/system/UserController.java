@@ -22,7 +22,7 @@ import java.util.Map;
  * @Date:
  */
 @Slf4j
-@RestController
+//@RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
 

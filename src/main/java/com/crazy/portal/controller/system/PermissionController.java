@@ -29,7 +29,7 @@ import java.util.Map;
  * @Date: created in 23:37 2019/6/10
  * @Modified by:
  */
-@RestController
+//@RestController
 @Slf4j
 @RequestMapping("/permission")
 public class PermissionController extends BaseController{

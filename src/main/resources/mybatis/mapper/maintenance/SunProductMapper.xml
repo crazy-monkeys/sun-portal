@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazy.portal.dao.maintenance.SunProductMapper">
+  <resultMap id="BaseResultMap" type="com.crazy.portal.entity.maintenance.SunProduct">
+    <id column="pro_id" jdbcType="INTEGER" property="proId" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="product_number" jdbcType="VARCHAR" property="productNumber" />
+    <result column="product_model" jdbcType="VARCHAR" property="productModel" />
+    <result column="warranty_type" jdbcType="VARCHAR" property="warrantyType" />
+    <result column="purchase_order" jdbcType="VARCHAR" property="purchaseOrder" />
+    <result column="product_accessory" jdbcType="VARCHAR" property="productAccessory" />
+    <result column="install_date" jdbcType="TIMESTAMP" property="installDate" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pro_id, product_id, product_number, product_model, warranty_type, purchase_order, 
+    product_accessory, install_date, amount, insert_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sun_product
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sun_product
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.crazy.portal.entity.maintenance.SunProduct">
+    insert into t_sun_product (pro_id, product_id, product_number, 
+      product_model, warranty_type, purchase_order, 
+      product_accessory, install_date, amount, 
+      insert_time)
+    values (#{proId,jdbcType=INTEGER}, #{productId,jdbcType=VARCHAR}, #{productNumber,jdbcType=VARCHAR}, 
+      #{productModel,jdbcType=VARCHAR}, #{warrantyType,jdbcType=VARCHAR}, #{purchaseOrder,jdbcType=VARCHAR}, 
+      #{productAccessory,jdbcType=VARCHAR}, #{installDate,jdbcType=TIMESTAMP}, #{amount,jdbcType=DECIMAL}, 
+      #{insertTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.crazy.portal.entity.maintenance.SunProduct">
+    insert into t_sun_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="proId != null">
+        pro_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productNumber != null">
+        product_number,
+      </if>
+      <if test="productModel != null">
+        product_model,
+      </if>
+      <if test="warrantyType != null">
+        warranty_type,
+      </if>
+      <if test="purchaseOrder != null">
+        purchase_order,
+      </if>
+      <if test="productAccessory != null">
+        product_accessory,
+      </if>
+      <if test="installDate != null">
+        install_date,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="insertTime != null">
+        insert_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="proId != null">
+        #{proId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="productNumber != null">
+        #{productNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="productModel != null">
+        #{productModel,jdbcType=VARCHAR},
+      </if>
+      <if test="warrantyType != null">
+        #{warrantyType,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseOrder != null">
+        #{purchaseOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="productAccessory != null">
+        #{productAccessory,jdbcType=VARCHAR},
+      </if>
+      <if test="installDate != null">
+        #{installDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.crazy.portal.entity.maintenance.SunProduct">
+    update t_sun_product
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="productNumber != null">
+        product_number = #{productNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="productModel != null">
+        product_model = #{productModel,jdbcType=VARCHAR},
+      </if>
+      <if test="warrantyType != null">
+        warranty_type = #{warrantyType,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseOrder != null">
+        purchase_order = #{purchaseOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="productAccessory != null">
+        product_accessory = #{productAccessory,jdbcType=VARCHAR},
+      </if>
+      <if test="installDate != null">
+        install_date = #{installDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="insertTime != null">
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.crazy.portal.entity.maintenance.SunProduct">
+    update t_sun_product
+    set product_id = #{productId,jdbcType=VARCHAR},
+      product_number = #{productNumber,jdbcType=VARCHAR},
+      product_model = #{productModel,jdbcType=VARCHAR},
+      warranty_type = #{warrantyType,jdbcType=VARCHAR},
+      purchase_order = #{purchaseOrder,jdbcType=VARCHAR},
+      product_accessory = #{productAccessory,jdbcType=VARCHAR},
+      install_date = #{installDate,jdbcType=TIMESTAMP},
+      amount = #{amount,jdbcType=DECIMAL},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP}
+    where pro_id = #{proId,jdbcType=INTEGER}
+  </update>
+</mapper>

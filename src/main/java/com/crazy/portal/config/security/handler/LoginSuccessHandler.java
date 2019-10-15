@@ -31,7 +31,7 @@ import java.util.Map;
  * @Modified by:
  */
 @Slf4j
-@Component
+//@Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     public static final String PERMISSIONS = "permissions";

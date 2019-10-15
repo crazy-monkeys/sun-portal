@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazy.portal.dao.maintenance.SunContactMapper">
+  <resultMap id="BaseResultMap" type="com.crazy.portal.entity.maintenance.SunContact">
+    <id column="contact_id" jdbcType="INTEGER" property="contactId" />
+    <result column="maintenance_id" jdbcType="INTEGER" property="maintenanceId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="contact_type" jdbcType="INTEGER" property="contactType" />
+    <result column="contact_business_name" jdbcType="VARCHAR" property="contactBusinessName" />
+    <result column="contact_person" jdbcType="VARCHAR" property="contactPerson" />
+    <result column="contact_first_name" jdbcType="VARCHAR" property="contactFirstName" />
+    <result column="contact_last_name" jdbcType="VARCHAR" property="contactLastName" />
+    <result column="contact_emial" jdbcType="VARCHAR" property="contactEmial" />
+    <result column="contact_number" jdbcType="VARCHAR" property="contactNumber" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    contact_id, maintenance_id, type, contact_type, contact_business_name, contact_person, 
+    contact_first_name, contact_last_name, contact_emial, contact_number, insert_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sun_contact
+    where contact_id = #{contactId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sun_contact
+    where contact_id = #{contactId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.crazy.portal.entity.maintenance.SunContact">
+    insert into t_sun_contact (contact_id, maintenance_id, type, 
+      contact_type, contact_business_name, contact_person, 
+      contact_first_name, contact_last_name, contact_emial, 
+      contact_number, insert_time)
+    values (#{contactId,jdbcType=INTEGER}, #{maintenanceId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, 
+      #{contactType,jdbcType=INTEGER}, #{contactBusinessName,jdbcType=VARCHAR}, #{contactPerson,jdbcType=VARCHAR}, 
+      #{contactFirstName,jdbcType=VARCHAR}, #{contactLastName,jdbcType=VARCHAR}, #{contactEmial,jdbcType=VARCHAR}, 
+      #{contactNumber,jdbcType=VARCHAR}, #{insertTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.crazy.portal.entity.maintenance.SunContact">
+    insert into t_sun_contact
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="contactId != null">
+        contact_id,
+      </if>
+      <if test="maintenanceId != null">
+        maintenance_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="contactType != null">
+        contact_type,
+      </if>
+      <if test="contactBusinessName != null">
+        contact_business_name,
+      </if>
+      <if test="contactPerson != null">
+        contact_person,
+      </if>
+      <if test="contactFirstName != null">
+        contact_first_name,
+      </if>
+      <if test="contactLastName != null">
+        contact_last_name,
+      </if>
+      <if test="contactEmial != null">
+        contact_emial,
+      </if>
+      <if test="contactNumber != null">
+        contact_number,
+      </if>
+      <if test="insertTime != null">
+        insert_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="contactId != null">
+        #{contactId,jdbcType=INTEGER},
+      </if>
+      <if test="maintenanceId != null">
+        #{maintenanceId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="contactType != null">
+        #{contactType,jdbcType=INTEGER},
+      </if>
+      <if test="contactBusinessName != null">
+        #{contactBusinessName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPerson != null">
+        #{contactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="contactFirstName != null">
+        #{contactFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactLastName != null">
+        #{contactLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactEmial != null">
+        #{contactEmial,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNumber != null">
+        #{contactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.crazy.portal.entity.maintenance.SunContact">
+    update t_sun_contact
+    <set>
+      <if test="maintenanceId != null">
+        maintenance_id = #{maintenanceId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="contactType != null">
+        contact_type = #{contactType,jdbcType=INTEGER},
+      </if>
+      <if test="contactBusinessName != null">
+        contact_business_name = #{contactBusinessName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPerson != null">
+        contact_person = #{contactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="contactFirstName != null">
+        contact_first_name = #{contactFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactLastName != null">
+        contact_last_name = #{contactLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactEmial != null">
+        contact_emial = #{contactEmial,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNumber != null">
+        contact_number = #{contactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null">
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where contact_id = #{contactId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.crazy.portal.entity.maintenance.SunContact">
+    update t_sun_contact
+    set maintenance_id = #{maintenanceId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      contact_type = #{contactType,jdbcType=INTEGER},
+      contact_business_name = #{contactBusinessName,jdbcType=VARCHAR},
+      contact_person = #{contactPerson,jdbcType=VARCHAR},
+      contact_first_name = #{contactFirstName,jdbcType=VARCHAR},
+      contact_last_name = #{contactLastName,jdbcType=VARCHAR},
+      contact_emial = #{contactEmial,jdbcType=VARCHAR},
+      contact_number = #{contactNumber,jdbcType=VARCHAR},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP}
+    where contact_id = #{contactId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -19,9 +19,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-@RestController
+//@RestController
 @Slf4j
-@RequestMapping("/ad")
+//@RequestMapping("/ad")
 public class ADController extends BaseController {
 
     @Resource

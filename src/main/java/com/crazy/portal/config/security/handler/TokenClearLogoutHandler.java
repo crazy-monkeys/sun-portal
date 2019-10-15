@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Date: created in 20:54 2019/4/20
  * @Modified by:
  */
-@Component
+//@Component
 public class TokenClearLogoutHandler implements LogoutHandler{
 
     @Resource

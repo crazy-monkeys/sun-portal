@@ -21,7 +21,7 @@ import java.util.List;
  * @Date: created in 22:49 2019/6/10
  * @Modified by:
  */
-@RestController
+//@RestController
 @Slf4j
 @RequestMapping("/permission")
 public class RoleController extends BaseController {
