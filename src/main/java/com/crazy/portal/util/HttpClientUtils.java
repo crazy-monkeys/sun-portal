@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.SocketTimeoutException;
 import java.security.GeneralSecurityException;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -54,8 +55,8 @@ public class HttpClientUtils {
         return get(url, CHARSET, authSecret, null, null);
     }
 
-    public static String post(String url, String body, String mimeType, String authSecret) throws IOException{
-        return post(url, body, authSecret, mimeType, CHARSET, CONNECT_TIMEOUT, READ_TIMEOUT);
+    public static String post(String url, String body, String mimeType, Map<String,String> header) throws IOException{
+        return post(url, body, header, mimeType, CHARSET, CONNECT_TIMEOUT, READ_TIMEOUT);
     }
 
     /**
@@ -72,7 +73,7 @@ public class HttpClientUtils {
      * @throws SocketTimeoutException  响应超时
      * @throws Exception
      */
-    public static String post(String url, String body,String header, String mimeType,String charset, Integer connTimeout, Integer readTimeout) throws IOException {
+    public static String post(String url, String body,Map<String,String> header, String mimeType,String charset, Integer connTimeout, Integer readTimeout) throws IOException {
         HttpClient client = null;
         HttpPost post = new HttpPost(url);
         String result = "";
@@ -93,7 +94,7 @@ public class HttpClientUtils {
             post.setConfig(customReqConf.build());
 
             if(header != null) {
-                post.setHeader(Constant.Authorization, header);
+                header.forEach((k,v)->post.setHeader(k,v));
             }
             client = isHttps ? createSSLInsecureClient() : HttpClientUtils.client;
             HttpResponse res = client.execute(post);

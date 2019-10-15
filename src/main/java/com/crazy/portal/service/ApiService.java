@@ -2,10 +2,14 @@ package com.crazy.portal.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.crazy.portal.bean.api.token.TokenBean;
+import com.crazy.portal.bean.common.Constant;
 import com.crazy.portal.util.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName: ApiService
@@ -55,7 +59,9 @@ public class ApiService {
     public TokenBean getToken(){
          try{
              String params = String.format("grant_type=%s&username=%s&password=%s",TYPE,NAME,PWD);
-             String response = HttpClientUtils.post(TOKEN_API_URL, params, MIMETYPE, AUTHORIZATION);
+             Map<String, String> header = new HashMap<>();
+             header.put(Constant.Authorization,AUTHORIZATION);
+             String response = HttpClientUtils.post(TOKEN_API_URL, params, MIMETYPE, header);
              if(null != response){
                  return JSONObject.parseObject(response, TokenBean.class);
              }

@@ -15,4 +15,6 @@ public class Constant {
     public static final String[] ANNOTATION_COMPONENT_SCAN_PACKAGES = {"com.crazy.portal"};
 
     public static final String Authorization = "Authorization";
+
+    public static final String CACHE_CONTROL = "Cache-Control";
 }
