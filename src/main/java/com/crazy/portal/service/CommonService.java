@@ -3,6 +3,7 @@ package com.crazy.portal.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.crazy.portal.bean.api.BaseParamsBean;
+import com.crazy.portal.bean.api.DeviceInfoBean;
 import com.crazy.portal.bean.api.token.TokenBean;
 import com.crazy.portal.bean.common.Constant;
 import com.crazy.portal.util.HttpClientUtils;
@@ -11,7 +12,6 @@ import org.apache.poi.ss.formula.functions.T;
 import org.apache.xmlbeans.impl.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,16 +41,17 @@ public class CommonService {
      * 获取设备信息
      * @param serialNumber 序列号
      */
-    public void getDeviceInfo(String serialNumber){
+    public DeviceInfoBean getDeviceInfo(String serialNumber) throws Exception{
 
         String url = String.format("%s%s%s",rootUrl,"/data/query/v1");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("query"," select eq.udf.Z_Model_excl from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
         String body = JSON.toJSONString(jsonObject);
-//        return this.invokeApi(url,body,Object.class);
+        String response = this.invokeApi(url, body);
+        return JSONObject.parseObject(response, DeviceInfoBean.class);
     }
 
-    public T invokeApi(String url, String body,Class<T> clazz) throws Exception{
+    public String invokeApi(String url, String body) throws Exception{
         TokenBean tokenBean = apiService.getToken();
 
         Map<String,String> header = this.getHeader(tokenBean);
@@ -64,7 +65,7 @@ public class CommonService {
         if(response.isEmpty()){
             throw new RuntimeException("error invoke");
         }
-        return JSONObject.parseObject(response, clazz);
+        return response;
     }
 
     public Map<String,String> getHeader(TokenBean tokenBean){
