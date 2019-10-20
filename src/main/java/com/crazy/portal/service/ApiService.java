@@ -12,12 +12,12 @@ import com.crazy.portal.bean.maintenance.MaintenanceBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.net.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.util.Base64Utils;
+
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -154,14 +154,10 @@ public class ApiService {
 
         Pattern pattern = Pattern.compile("Basic (.*)");
         Matcher m = pattern.matcher(AUTHORIZATION);
-        String secret = "";
         if(m.find()){
-            secret = m.group(1);
+            String secret = new String(Base64Utils.decode(m.group(1).getBytes()));
+            header.put("x-client-id", secret.split(":")[0]);
         }
-        /*if(!secret.isEmpty()){
-            header.put("x-client-id", Base64.decode(secret.getBytes()).toString().split(":")[0]);
-        }*/
-        header.put("x-client-id", "123d01ed-e117-4ade-afc4-7e697aa4594f");
         header.put("x-client-version", "1.0");
         header.put("Content-Type", "application/json");
         return header;
