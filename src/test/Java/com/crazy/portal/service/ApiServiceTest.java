@@ -10,7 +10,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
+import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -29,10 +31,12 @@ public class ApiServiceTest {
     private ApiService apiService;
 
     @Test
-    public void getHeader() {
+    public void getHeader() throws Exception{
         TokenBean tokenBean = apiService.getToken();
-        Map<String, String> header = apiService.getHeader(tokenBean);
+        Method method = apiService.getClass().getDeclaredMethod("getHeader",TokenBean.class);
+        method.setAccessible(true);
 
+        Map<String,String> header = (Map)method.invoke(apiService,tokenBean);
         log.info(header.toString());
         Assert.assertTrue(header.get("x-client-id").equals("123d01ed-e117-4ade-afc4-7e697aa4594f"));
     }

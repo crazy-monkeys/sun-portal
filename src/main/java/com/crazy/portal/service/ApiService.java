@@ -12,7 +12,6 @@ import com.crazy.portal.bean.maintenance.MaintenanceBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.net.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
@@ -29,56 +28,40 @@ import java.util.regex.Pattern;
 @Slf4j
 @Service
 public class ApiService {
-    private static String TOKEN_ROOT_URL;
-    private static String CALL_ROOT_URL;
-    private static String AUTHORIZATION;
-    private static String TYPE;
-    private static String NAME;
-    private static String PWD;
-    private static String MIMETYPE;
 
     @Value("${coresuite.api.token-root-url}")
-    public void setTokenRootUrl(String tokenRootUrl) {
-        TOKEN_ROOT_URL = tokenRootUrl;
-    }
+    private String tokenRootUrl;
 
     @Value("${coresuite.api.call-root-url}")
-    public void setCallRootUrl(String callRootUrl) {
-        CALL_ROOT_URL = callRootUrl;
-    }
+    private String callRootUrl;
 
     @Value("${coresuite.authorization}")
-    public void setAUTHORIZATION(String AUTHORIZATION) {
-        ApiService.AUTHORIZATION = AUTHORIZATION;
-    }
+    private String authorization;
 
     @Value("${coresuite.grant_type}")
-    public void setTYPE(String TYPE) {
-        ApiService.TYPE = TYPE;
-    }
+    private String grantType;
 
     @Value("${coresuite.username}")
-    public void setNAME(String NAME) {
-        ApiService.NAME = NAME;
-    }
+    private String username;
 
     @Value("${coresuite.password}")
-    public void setPWD(String PWD) {
-        ApiService.PWD = PWD;
-    }
+    private String password;
 
     @Value("${coresuite.mimeType}")
-    public void setMIMETYPE(String MIMETYPE) {
-        ApiService.MIMETYPE = MIMETYPE;
-    }
+    private String mimeType;
 
+
+    /**
+     * 获取token
+     * @return
+     */
     public TokenBean getToken(){
          try{
-             String url = String.format("%s%s",TOKEN_ROOT_URL,"/oauth2/v1/token");
-             String params = String.format("grant_type=%s&username=%s&password=%s",TYPE,NAME,PWD);
+             String url = String.format("%s%s", tokenRootUrl,"/oauth2/v1/token");
+             String params = String.format("grant_type=%s&username=%s&password=%s", grantType, username, password);
              Map<String, String> header = new HashMap<>();
-             header.put(Constant.Authorization,AUTHORIZATION);
-             String response = HttpClientUtils.post(url, params, MIMETYPE, header);
+             header.put(Constant.Authorization, authorization);
+             String response = HttpClientUtils.post(url, params, mimeType, header);
              BusinessUtil.notNull(response, ErrorCodes.SystemManagerEnum.TOKEN_IS_NULL);
              return JSONObject.parseObject(response, TokenBean.class);
          }catch (Exception e){
@@ -92,7 +75,7 @@ public class ApiService {
      * @param serialNumber 序列号
      */
     public DeviceInfoBean getDeviceInfo(String serialNumber) throws Exception{
-        String url = String.format("%s%s%s",CALL_ROOT_URL,"/data/query/v1");
+        String url = String.format("%s%s%s", callRootUrl,"/data/query/v1");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("query"," select eq.udf.Z_Model_excl from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
         String body = JSON.toJSONString(jsonObject);
@@ -124,12 +107,14 @@ public class ApiService {
         requestBodyBean.setEquipments(equipments);
         requestBodyBean.setBusinessPartner(businessPartner);
 
-        String url = String.format("%s%s",CALL_ROOT_URL,"/data/v4/ServiceCall?");
+        String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall?");
         String response = this.invokeApi(url, JSON.toJSONString(requestBodyBean), Enums.Api_Header_Dtos.callservice);
         System.out.println(response);
     }
 
-    public String invokeApi(String url, String body, Enums.Api_Header_Dtos dtos) throws Exception{
+
+
+    private String invokeApi(String url, String body, Enums.Api_Header_Dtos dtos) throws Exception{
         TokenBean tokenBean = this.getToken();
 
         Map<String,String> header = this.getHeader(tokenBean);
@@ -146,14 +131,14 @@ public class ApiService {
         return response;
     }
 
-    public Map<String,String> getHeader(TokenBean tokenBean){
+    private Map<String,String> getHeader(TokenBean tokenBean){
         Map<String,String> header = new HashMap<>();
         header.put(Constant.Authorization,String.format("%s %s",tokenBean.getToken_type(),tokenBean.getAccess_token()));
         header.put("Accept","application/json");
         header.put("Cache-Control","no-cache");
 
         Pattern pattern = Pattern.compile("Basic (.*)");
-        Matcher m = pattern.matcher(AUTHORIZATION);
+        Matcher m = pattern.matcher(authorization);
         if(m.find()){
             String secret = new String(Base64Utils.decode(m.group(1).getBytes()));
             header.put("x-client-id", secret.split(":")[0]);
