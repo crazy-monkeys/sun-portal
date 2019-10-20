@@ -113,25 +113,37 @@ public class ApiService {
     }
 
 
-
+    /**
+     * 封装通用调用api
+     * @param url
+     * @param body
+     * @param dtos
+     * @return
+     * @throws Exception
+     */
     private String invokeApi(String url, String body, Enums.Api_Header_Dtos dtos) throws Exception{
         TokenBean tokenBean = this.getToken();
 
-        Map<String,String> header = this.getHeader(tokenBean);
+        Map<String,String> header = this.buildHeader(tokenBean);
         String account = tokenBean.getAccount();
         String company = tokenBean.getCompanies().get(0).getName();
         String user = tokenBean.getUser();
         BaseParamsBean baseParamsBean = new BaseParamsBean(account, company, user, header, dtos.getValue());
-        String buildUrl = String.format("%s%s",url,baseParamsBean.toString());
+        String buildFinalUrl = String.format("%s%s",url,baseParamsBean.toString());
 
-        String response = HttpClientUtils.post(buildUrl, body, "application/json", header);
+        String response = HttpClientUtils.post(buildFinalUrl, body, "application/json", header);
         if(response.isEmpty()){
             throw new RuntimeException("error invoke");
         }
         return response;
     }
 
-    private Map<String,String> getHeader(TokenBean tokenBean){
+    /**
+     * 构建接口调用头信息
+     * @param tokenBean
+     * @return
+     */
+    private Map<String,String> buildHeader(TokenBean tokenBean){
         Map<String,String> header = new HashMap<>();
         header.put(Constant.Authorization,String.format("%s %s",tokenBean.getToken_type(),tokenBean.getAccess_token()));
         header.put("Accept","application/json");
