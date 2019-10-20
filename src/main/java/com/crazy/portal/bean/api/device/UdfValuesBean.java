@@ -1,16 +1,14 @@
-package com.crazy.portal.bean.api;
+package com.crazy.portal.bean.api.device;
 
 import lombok.Data;
 
 /**
- * @Desc:
- * @Author: Bill
- * @Date: created in 00:22 2019-10-16
- * @Modified by:
+ * @ClassName: UdfValuesBean
+ * @Author: God Man Qiu~
+ * @Date: 2019/10/16 01:02
  */
 @Data
-public class DeviceInfoBean {
-
+public class UdfValuesBean {
     /**
      * 设备ID
      */

@@ -1,5 +1,10 @@
 package com.crazy.portal.service;
 
+import com.alibaba.fastjson.JSON;
+import com.crazy.portal.bean.api.device.DeviceData;
+import com.crazy.portal.bean.api.device.DeviceEq;
+import com.crazy.portal.bean.api.device.DeviceInfoBean;
+import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.api.token.TokenBean;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -9,12 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
-
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-
-import static org.junit.Assert.*;
 
 /**
  * @Desc:
@@ -39,5 +42,18 @@ public class ApiServiceTest {
         Map<String,String> header = (Map)method.invoke(apiService,tokenBean);
         log.info(header.toString());
         Assert.assertTrue(header.get("x-client-id").equals("123d01ed-e117-4ade-afc4-7e697aa4594f"));
+    }
+
+    @Test
+    public void getDeviceInfo() throws Exception{
+        String serialNumber = "J1904090450";
+        DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);
+        log.info(deviceInfoBean.toString());
+
+        DeviceData data = deviceInfoBean.getData().get(0);
+        List<DeviceEq> deviceEqs = data.getEq();
+        List<UdfValuesBean> udfValues = deviceEqs.get(0).getUdfValues();
+        UdfValuesBean udfValuesBean = udfValues.get(0);
+        Assert.assertTrue(udfValuesBean.getValue().equals("SG5K-D"));
     }
 }

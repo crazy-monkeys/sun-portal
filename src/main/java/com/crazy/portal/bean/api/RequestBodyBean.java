@@ -1,5 +1,6 @@
 package com.crazy.portal.bean.api;
 
+import com.crazy.portal.bean.api.device.UdfValuesBean;
 import lombok.Data;
 
 import java.util.Date;

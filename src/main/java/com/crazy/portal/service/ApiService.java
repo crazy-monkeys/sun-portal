@@ -3,9 +3,9 @@ package com.crazy.portal.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.crazy.portal.bean.api.BaseParamsBean;
-import com.crazy.portal.bean.api.DeviceInfoBean;
+import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.RequestBodyBean;
-import com.crazy.portal.bean.api.UdfValuesBean;
+import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.api.token.TokenBean;
 import com.crazy.portal.bean.common.Constant;
 import com.crazy.portal.bean.maintenance.MaintenanceBean;
@@ -70,12 +70,16 @@ public class ApiService {
          }
     }
 
+
+    class DeviceInfo{
+
+    }
     /**
      * 获取设备信息
      * @param serialNumber 序列号
      */
     public DeviceInfoBean getDeviceInfo(String serialNumber) throws Exception{
-        String url = String.format("%s%s%s", callRootUrl,"/data/query/v1");
+        String url = String.format("%s%s", callRootUrl,"/data/query/v1");
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("query"," select eq.udf.Z_Model_excl from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
         String body = JSON.toJSONString(jsonObject);
@@ -129,9 +133,10 @@ public class ApiService {
         String company = tokenBean.getCompanies().get(0).getName();
         String user = tokenBean.getUser();
         BaseParamsBean baseParamsBean = new BaseParamsBean(account, company, user, header, dtos.getValue());
-        String buildFinalUrl = String.format("%s%s",url,baseParamsBean.toString());
-
+        String buildFinalUrl = String.format("%s?%s",url,baseParamsBean.toString());
+        log.info(">>>>> API url to access:"+buildFinalUrl);
         String response = HttpClientUtils.post(buildFinalUrl, body, "application/json", header);
+        log.info(">>>>> API return "+response);
         if(response.isEmpty()){
             throw new RuntimeException("error invoke");
         }
