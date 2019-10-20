@@ -31,7 +31,8 @@ spring:
 
 coresuite:
   api:
-    root-url: https://auth.coresuite.com/api
+    token-root-url: https://auth.coresuite.com/api
+    call-root-url: https://cn.coresuite.cn/api
     root-local: ${coresuite.api.root-url}/oauth2/v1/token
   authorization: Basic MTIzZDAxZWQtZTExNy00YWRlLWFmYzQtN2U2OTdhYTQ1OTRmOjZjZmZmZGM1LTdlMjktNGM4YS1iNTRkLTEyZjgyMzI5ZTdmNg==
   grant_type: password

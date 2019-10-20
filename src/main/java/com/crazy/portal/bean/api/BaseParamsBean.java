@@ -17,15 +17,16 @@ public class BaseParamsBean {
 
     private BaseParamsBean(){};
 
-    public BaseParamsBean(String account, String company, String user,Map<String, String> header) {
+    public BaseParamsBean(String account, String company, String user,Map<String, String> header, String dtos) {
         this.header = header;
         this.account = account;
         this.company = company;
         this.user = user;
+        this.dtos = dtos;
     }
 
     private Map<String, String> header;
-    private String dtos = "Equipment.20";
+    private String dtos;
     private String account;
     private String company;
     private String clientIdentifier = "COR_CON_NONE";
@@ -38,7 +39,7 @@ public class BaseParamsBean {
         sb.append("account=").append(account).append('&');
         sb.append("company=").append(company).append('&');
         sb.append("clientIdentifier=").append(clientIdentifier).append('&');
-        sb.append("user=").append(user).append('&');
+        sb.append("user=").append(user);
         return sb.toString();
     }
 }

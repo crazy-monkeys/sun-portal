@@ -42,7 +42,7 @@
       #{isCheck,jdbcType=INTEGER}, #{insertTime,jdbcType=TIMESTAMP}, #{suggestions,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.crazy.portal.entity.maintenance.SunMaintenance">
+  <insert id="insertSelective" parameterType="com.crazy.portal.entity.maintenance.SunMaintenance" keyProperty="id" useGeneratedKeys="true">
     insert into t_sun_maintenance
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

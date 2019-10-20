@@ -67,6 +67,7 @@ public class ErrorCodes {
         RESOURCE_USED(10045,"该资源已经绑定在角色上，不允许删除"),
         RESOURCE_TYPE_NOT_EXIST(10046,"资源类型不存在"),
         RESOURCE_EXIST(10047,"资源名称已经存在"),
+        TOKEN_IS_NULL(10048,"Token 获取失败"),
 
         SYS_PARAM_VALUE(10048,"该选项下Code已存在"),
         SYS_BEAN_ERROR(10049,"对象映射异常"),

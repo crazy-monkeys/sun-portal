@@ -38,7 +38,7 @@
       #{contactFirstName,jdbcType=VARCHAR}, #{contactLastName,jdbcType=VARCHAR}, #{contactEmial,jdbcType=VARCHAR}, 
       #{contactNumber,jdbcType=VARCHAR}, #{insertTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.crazy.portal.entity.maintenance.SunContact">
+  <insert id="insertSelective" parameterType="com.crazy.portal.entity.maintenance.SunContact" useGeneratedKeys="true" keyProperty="contactId">
     insert into t_sun_contact
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="contactId != null">

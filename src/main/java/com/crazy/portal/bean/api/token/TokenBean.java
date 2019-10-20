@@ -2,6 +2,8 @@ package com.crazy.portal.bean.api.token;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @ClassName: TokenBean
  * @Author: God Man Qiu~
@@ -18,7 +20,8 @@ public class TokenBean {
     private String user;
     private String user_email;
     private Integer user_id;
-    private CompaniesBean companies;
+    private List<CompaniesBean> companies;
     private String authorities;
     private String cluster_url;
+    private String dtos="ServiceCall.25";
 }

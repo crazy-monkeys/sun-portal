@@ -1,5 +1,7 @@
 package com.crazy.portal.entity.maintenance;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -8,11 +10,14 @@ import java.util.Date;
  * @author weiying
  * @date   2019-10-15 01:24::58
  */
+@Data
 public class SunProduct {
     /**
      * 
      */
     private Integer proId;
+
+    private Integer maintenanceId;
 
     /**
      * 上游产品id
