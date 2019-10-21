@@ -32,11 +32,13 @@ public class ApiServiceTest {
 
     @Resource
     private ApiService apiService;
+    @Resource
+    private BaseService baseService;
 
     @Test
     public void getHeader() throws Exception{
-        TokenBean tokenBean = apiService.getToken();
-        Method method = apiService.getClass().getDeclaredMethod("getHeader",TokenBean.class);
+        TokenBean tokenBean = baseService.getToken();
+        Method method = baseService.getClass().getDeclaredMethod("buildHeader",TokenBean.class);
         method.setAccessible(true);
 
         Map<String,String> header = (Map)method.invoke(apiService,tokenBean);
@@ -45,7 +47,7 @@ public class ApiServiceTest {
     }
 
     @Test
-    public void getDeviceInfo() throws Exception{
+    public void getDeviceInfo(){
         String serialNumber = "J1904090450";
         DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);
         log.info(deviceInfoBean.toString());
