@@ -63,8 +63,8 @@ public class MaintenanceCreateService {
            sunAddressMapper.insertSelective(address);
 
            //TODO saveFile
-           String response = apiService.maintenaceApi(bean);
-           System.out.println("response"+response);
+            apiService.maintenaceApi(bean);
+           //System.out.println("response"+response);
        }catch (Exception e){
             log.error("",e);
        }

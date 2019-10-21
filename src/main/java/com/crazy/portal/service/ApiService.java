@@ -50,8 +50,7 @@ public class ApiService extends BaseService{
      *
      * @param bean
      */
-    public String maintenaceApi(MaintenanceBean bean)throws Exception{
-    public void maintenaceApi(MaintenanceBean bean, String[] equipments, String businessPartner) throws Exception{
+    public void maintenaceApi(MaintenanceBean bean)throws Exception{
         RequestBodyBean requestBodyBean = new RequestBodyBean();
         List<UdfValuesBean> params = new ArrayList<>();
 
@@ -71,8 +70,6 @@ public class ApiService extends BaseService{
         requestBodyBean.setBusinessPartner(bean.getBusinessPartner());
 
         String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
-        return this.invokeApi(url, JSON.toJSONString(requestBodyBean), Enums.Api_Header_Dtos.callservice);
-        String url = String.format("%s%s", super.callRootUrl,"/data/v4/ServiceCall");
         String response = super.invokeApi(url, JSON.toJSONString(requestBodyBean), Enums.Api_Header_Dtos.SERVICECALL25);
         System.out.println(response);
     }
