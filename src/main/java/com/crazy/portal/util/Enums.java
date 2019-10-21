@@ -125,8 +125,9 @@ public class Enums {
     }
 
     public enum Api_Header_Dtos{
-        product("Equipment.20"),
-        callservice("ServiceCall.25");
+        EQUIPMENT20("Equipment.20"),
+        SERVICECALL25("ServiceCall.25"),
+        ACTIVITY28("Activity.28");
 
         Api_Header_Dtos(String value){
             this.value = value;
