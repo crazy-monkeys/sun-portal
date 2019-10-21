@@ -2,24 +2,20 @@ package com.crazy.portal.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.crazy.portal.bean.api.BaseParamsBean;
-import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.RequestBodyBean;
+import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
-import com.crazy.portal.bean.api.token.TokenBean;
-import com.crazy.portal.bean.common.Constant;
 import com.crazy.portal.bean.maintenance.MaintenanceBean;
 import com.crazy.portal.config.exception.BusinessException;
-import com.crazy.portal.util.*;
+import com.crazy.portal.util.BeanUtils;
+import com.crazy.portal.util.Enums;
+import com.crazy.portal.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.cxf.Bus;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Desc:
@@ -51,9 +47,8 @@ public class ApiService extends BaseService{
     /**
      *
      * @param bean
-     * @param equipments 设备id数组
      */
-    public void maintenaceApi(MaintenanceBean bean, String[] equipments, String businessPartner)throws Exception{
+    public String maintenaceApi(MaintenanceBean bean)throws Exception{
         RequestBodyBean requestBodyBean = new RequestBodyBean();
         List<UdfValuesBean> params = new ArrayList<>();
 
@@ -69,12 +64,11 @@ public class ApiService extends BaseService{
         }
         requestBodyBean.setUdfValues(params);
 
-        requestBodyBean.setEquipments(equipments);
-        requestBodyBean.setBusinessPartner(businessPartner);
+        requestBodyBean.setEquipments(bean.getProductId());
+        requestBodyBean.setBusinessPartner(bean.getBusinessPartner());
 
         String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
-        String response = this.invokeApi(url, JSON.toJSONString(requestBodyBean), Enums.Api_Header_Dtos.callservice);
-        System.out.println(response);
+        return this.invokeApi(url, JSON.toJSONString(requestBodyBean), Enums.Api_Header_Dtos.callservice);
     }
 
 

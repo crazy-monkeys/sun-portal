@@ -26,7 +26,13 @@ public class ProductService {
         return deviceInfoBean.getData();
     }
 
-    public Boolean checkProduct(String productId, String country){
+    /**
+     * 检查水货  选择国家和物料国家不同为水货
+     * @param productId
+     * @param country
+     * @return  水货 true
+     */
+    public Boolean checkProduct(String[] productId, String country){
         return true;
     }
 }

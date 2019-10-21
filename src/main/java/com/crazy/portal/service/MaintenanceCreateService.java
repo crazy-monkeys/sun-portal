@@ -9,6 +9,8 @@ import com.crazy.portal.entity.maintenance.SunMaintenance;
 import com.crazy.portal.entity.maintenance.SunProduct;
 import com.crazy.portal.service.ApiService;
 import com.crazy.portal.util.BeanUtils;
+import com.crazy.portal.util.BusinessUtil;
+import com.crazy.portal.util.ErrorCodes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -39,6 +41,8 @@ public class MaintenanceCreateService {
     public void saveMaintenance(MaintenanceBean bean){
        try{
            Boolean check = productService.checkProduct(bean.getProductId(), bean.getContry());
+           BusinessUtil.assertFlase(check, ErrorCodes.SystemManagerEnum.PRODUCT_IS_PARALLEL_IMPORTS);
+
            SunMaintenance maintenance = new SunMaintenance();
            BeanUtils.copyNotNullFields(bean,maintenance);
            sunMaintenanceMapper.insertSelective(maintenance);
@@ -59,9 +63,10 @@ public class MaintenanceCreateService {
            sunAddressMapper.insertSelective(address);
 
            //TODO saveFile
-          // apiService.maintenaceApi();
+           String response = apiService.maintenaceApi(bean);
+           System.out.println("response"+response);
        }catch (Exception e){
-
+            log.error("",e);
        }
     }
 }

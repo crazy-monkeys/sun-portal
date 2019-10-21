@@ -112,7 +112,6 @@ public class BeanUtils {
             PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
             for (PropertyDescriptor property : propertyDescriptors) {
                 String key = property.getName();
-
                 // 过滤class属性
                 if (!key.equals("class")) {
                     // 得到property对应的getter方法

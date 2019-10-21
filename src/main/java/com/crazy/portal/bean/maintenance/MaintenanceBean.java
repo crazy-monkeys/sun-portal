@@ -28,7 +28,8 @@ public class MaintenanceBean {
     //产品
     private String productNumber;
     private String productModel;
-    private String productId;
+    private String[] productId;
+    private String businessPartner;
 
     //install
     private String installDate;
