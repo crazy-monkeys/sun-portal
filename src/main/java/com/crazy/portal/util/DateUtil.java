@@ -1,10 +1,9 @@
 package com.crazy.portal.util;
 
-import com.crazy.portal.config.exception.BusinessException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -71,7 +70,7 @@ public class DateUtil {
 			throw new ParseException(PARSE_MSG, 0);
 		}
 
-		if (!StringUtil.isNumeric(sDate)) {
+		if (!StringUtils.isNumeric(sDate)) {
 			throw new ParseException("not all digit", 0);
 		}
 
@@ -79,7 +78,7 @@ public class DateUtil {
 	}
 
 	public static Date parseDateNoTime(String sDate, String format) throws ParseException {
-		if (StringUtil.isBlank(format)) {
+		if (StringUtils.isBlank(format)) {
 			throw new ParseException("Null format. ", 0);
 		}
 
@@ -93,7 +92,7 @@ public class DateUtil {
 	}
 
 	public static Date parseDate(String sDate, String format) throws ParseException {
-		if (StringUtil.isBlank(format)) {
+		if (StringUtils.isBlank(format)) {
 			throw new ParseException("Null format. ", 0);
 		}
 		sDate = sDate.replaceAll("\"", "");
@@ -185,7 +184,7 @@ public class DateUtil {
 	 * @return true/false
 	 */
 	public static boolean isValidHour(String hourStr) {
-		if (!StringUtil.isEmpty(hourStr) && StringUtil.isNumeric(hourStr)) {
+		if (!StringUtils.isEmpty(hourStr) && StringUtils.isNumeric(hourStr)) {
 			int hour = Integer.parseInt(hourStr);
 
 			if ((hour >= 0) && (hour <= 23)) {
@@ -203,7 +202,7 @@ public class DateUtil {
 	 * @return true/false
 	 */
 	public static boolean isValidMinuteOrSecond(String str) {
-		if (!StringUtil.isEmpty(str) && StringUtil.isNumeric(str)) {
+		if (!StringUtils.isEmpty(str) && StringUtils.isNumeric(str)) {
 			int hour = Integer.parseInt(str);
 
 			if ((hour >= 0) && (hour <= 59)) {
@@ -472,7 +471,7 @@ public class DateUtil {
 	}
 
 	public static String getShortDateString(String strDate, String delimiter) {
-		if (StringUtil.isBlank(strDate)) {
+		if (StringUtils.isBlank(strDate)) {
 			return null;
 		}
 
@@ -534,7 +533,7 @@ public class DateUtil {
 	}
 
 	public static String convert2WebFormat(String dateString) {
-		dateString = StringUtil.defaultIfNull(dateString);
+		dateString = dateString == null ? "" : dateString;
 		DateFormat df1 = getNewDateFormat(SHORT_FORMAT);
 		DateFormat df2 = getNewDateFormat(WEB_FORMAT);
 
@@ -700,7 +699,7 @@ public class DateUtil {
 			throw new ParseException(PARSE_MSG, 0);
 		}
 
-		if (!StringUtil.isNumeric(sDate)) {
+		if (!StringUtils.isNumeric(sDate)) {
 			throw new ParseException("not all digit", 0);
 		}
 

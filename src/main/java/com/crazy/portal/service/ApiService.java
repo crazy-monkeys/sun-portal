@@ -4,20 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.RequestBodyBean;
-import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.maintenance.MaintenanceBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.BeanUtils;
 import com.crazy.portal.util.Enums;
-import com.crazy.portal.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.*;
 
 /**
  * @Desc:
@@ -58,7 +55,7 @@ public class ApiService extends BaseService{
         for(Map.Entry<String, String> entry : mapStr.entrySet()){
             UdfValuesBean param = new UdfValuesBean();
             String paramId = Enums.API_PARAMS.Customer_Contact.getId(entry.getKey());
-            if(StringUtil.isNotEmpty(paramId)){
+            if(StringUtils.isNotEmpty(paramId)){
                 param.setMeta(paramId);
                 param.setValue(entry.getKey());
                 params.add(param);

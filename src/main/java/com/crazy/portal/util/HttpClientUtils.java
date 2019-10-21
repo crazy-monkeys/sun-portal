@@ -144,7 +144,7 @@ public class HttpClientUtils {
 
             httpGet.setConfig(customReqConf.build());
 
-            if(StringUtil.isNotEmpty(header)){
+            if(StringUtils.isNotEmpty(header)){
                 httpGet.setHeader(Constant.Authorization,header);
             }
 
