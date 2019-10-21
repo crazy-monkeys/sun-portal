@@ -1,4 +1,4 @@
-package com.crazy.portal.service.maintenance;
+package com.crazy.portal.service;
 
 import com.crazy.portal.bean.api.token.TokenBean;
 import com.crazy.portal.bean.maintenance.MaintenanceBean;
@@ -24,6 +24,8 @@ public class MaintenanceCreateService {
     @Resource
     private ApiService apiService;
     @Resource
+    private ProductService productService;
+    @Resource
     private SunMaintenanceMapper sunMaintenanceMapper;
     @Resource
     private SunProductMapper sunProductMapper;
@@ -35,8 +37,8 @@ public class MaintenanceCreateService {
     private SunFilesMapper sunFilesMapper;
 
     public void saveMaintenance(MaintenanceBean bean){
-        //TODO 校验水货
        try{
+           Boolean check = productService.checkProduct(bean.getProductId(), bean.getContry());
            SunMaintenance maintenance = new SunMaintenance();
            BeanUtils.copyNotNullFields(bean,maintenance);
            sunMaintenanceMapper.insertSelective(maintenance);

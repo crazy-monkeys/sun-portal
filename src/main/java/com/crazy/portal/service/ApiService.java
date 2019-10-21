@@ -12,6 +12,7 @@ import com.crazy.portal.bean.maintenance.MaintenanceBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.cxf.Bus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
@@ -78,13 +79,17 @@ public class ApiService {
      * 获取设备信息
      * @param serialNumber 序列号
      */
-    public DeviceInfoBean getDeviceInfo(String serialNumber) throws Exception{
-        String url = String.format("%s%s", callRootUrl,"/data/query/v1");
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("query"," select eq.udf.Z_Model_excl from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
-        String body = JSON.toJSONString(jsonObject);
-        String response = this.invokeApi(url, body, Enums.Api_Header_Dtos.product);
-        return JSONObject.parseObject(response, DeviceInfoBean.class);
+    public DeviceInfoBean getDeviceInfo(String serialNumber){
+        try{
+            String url = String.format("%s%s", callRootUrl,"/data/query/v1");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query"," select eq.udf.Z_Model_excl from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
+            String body = JSON.toJSONString(jsonObject);
+            String response = this.invokeApi(url, body, Enums.Api_Header_Dtos.product);
+            return JSONObject.parseObject(response, DeviceInfoBean.class);
+        }catch (Exception e){
+            throw new BusinessException("",e);
+        }
     }
 
     /**
@@ -111,7 +116,7 @@ public class ApiService {
         requestBodyBean.setEquipments(equipments);
         requestBodyBean.setBusinessPartner(businessPartner);
 
-        String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall?");
+        String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
         String response = this.invokeApi(url, JSON.toJSONString(requestBodyBean), Enums.Api_Header_Dtos.callservice);
         System.out.println(response);
     }
