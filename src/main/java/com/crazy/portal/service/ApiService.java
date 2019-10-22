@@ -41,6 +41,9 @@ public class ApiService extends BaseService{
                     " from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
 
             String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.EQUIPMENT20);
+
+            if(response.contains("error")) return null;
+
             return JSONObject.parseObject(response, DeviceInfoBean.class);
         }catch (Exception e){
             throw new BusinessException("",e);
