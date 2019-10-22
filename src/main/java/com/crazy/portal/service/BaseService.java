@@ -11,6 +11,7 @@ import com.crazy.portal.util.ErrorCodes;
 import com.crazy.portal.util.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 import java.util.HashMap;
@@ -103,7 +104,7 @@ public class BaseService {
     private Map<String,String> buildHeader(TokenBean tokenBean){
         Map<String,String> header = new HashMap<>();
         header.put(Constant.Authorization,String.format("%s %s",tokenBean.getToken_type(),tokenBean.getAccess_token()));
-        header.put("Accept","application/json");
+        header.put("Accept",MediaType.APPLICATION_JSON_VALUE);
         header.put("Cache-Control","no-cache");
 
         Pattern pattern = Pattern.compile("Basic (.*)");
@@ -113,7 +114,7 @@ public class BaseService {
             header.put("x-client-id", secret.split(":")[0]);
         }
         header.put("x-client-version", "1.0");
-        header.put("Content-Type", "application/json");
+        header.put("Content-Type", MediaType.APPLICATION_JSON_VALUE);
         return header;
     }
 }
