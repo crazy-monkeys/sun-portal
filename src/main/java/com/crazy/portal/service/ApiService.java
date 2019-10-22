@@ -46,10 +46,22 @@ public class ApiService extends BaseService{
     }
 
     /**
-     *
+     *维保注册
      * @param bean
      */
     public void maintenaceApi(MaintenanceBean bean)throws Exception{
+        String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
+        String response = super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
+        System.out.println(response);
+    }
+
+    public void insurance(MaintenanceBean bean)throws Exception{
+        String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
+        String response = super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
+        System.out.println(response);
+    }
+
+    private RequestBodyBean getParam(MaintenanceBean bean){
         RequestBodyBean requestBodyBean = new RequestBodyBean();
         List<UdfValuesBean> params = new ArrayList<>();
 
@@ -66,12 +78,6 @@ public class ApiService extends BaseService{
         requestBodyBean.setUdfValues(params);
         requestBodyBean.setEquipments(bean.getProductId());
         requestBodyBean.setBusinessPartner(bean.getBusinessPartner());
-
-        String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
-        String response = super.invokeApi(url, JSON.toJSONString(requestBodyBean), Enums.Api_Header_Dtos.SERVICECALL25);
-        System.out.println(response);
+        return requestBodyBean;
     }
-
-
-
 }

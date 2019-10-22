@@ -4,7 +4,6 @@ import com.crazy.portal.bean.BaseResponse;
 import com.crazy.portal.bean.maintenance.MaintenanceBean;
 import com.crazy.portal.service.MaintenanceCreateService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
@@ -21,7 +20,7 @@ public class MaintenanceCreateController extends BaseController{
     private MaintenanceCreateService maintenanceCreateService;
 
     @PostMapping("/create")
-    public BaseResponse maintenanceCreate(@RequestBody MaintenanceBean bean){
+    public BaseResponse maintenanceCreate(MaintenanceBean bean){
         maintenanceCreateService.saveMaintenance(bean);
         return successResult();
     }
