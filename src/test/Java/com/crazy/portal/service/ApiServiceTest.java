@@ -53,9 +53,14 @@ public class ApiServiceTest {
         log.info(deviceInfoBean.toString());
 
         DeviceData data = deviceInfoBean.getData().get(0);
-        List<DeviceEq> deviceEqs = data.getEq();
-        List<UdfValuesBean> udfValues = deviceEqs.get(0).getUdfValues();
+        DeviceEq deviceEq = data.getEq();
+        List<UdfValuesBean> udfValues = deviceEq.getUdfValues();
         UdfValuesBean udfValuesBean = udfValues.get(0);
         Assert.assertTrue(udfValuesBean.getValue().equals("SG5K-D"));
+    }
+
+    @Test
+    public void getDeviceAddressInfo() {
+
     }
 }

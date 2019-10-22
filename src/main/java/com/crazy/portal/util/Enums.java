@@ -130,7 +130,8 @@ public class Enums {
     public enum Api_Header_Dtos{
         EQUIPMENT20("Equipment.20"),
         SERVICECALL25("ServiceCall.25"),
-        ACTIVITY28("Activity.28");
+        ACTIVITY28("Activity.28"),
+        ADDRESS18("Address.18");
 
         Api_Header_Dtos(String value){
             this.value = value;

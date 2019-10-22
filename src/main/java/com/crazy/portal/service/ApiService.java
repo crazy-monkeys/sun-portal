@@ -36,13 +36,41 @@ public class ApiService extends BaseService{
     public DeviceInfoBean getDeviceInfo(String serialNumber){
         try{String url = String.format("%s%s", super.callRootUrl,"/data/query/v1");
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("query"," select eq.id,eq.businessPartner,eq.udf.Z_Model_excl,eq.udf.Z_DispatchDate_local from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
-            String body = JSON.toJSONString(jsonObject);
-            String response = super.invokeApi(url, body, Enums.Api_Header_Dtos.EQUIPMENT20);
+            jsonObject.put("query"," select eq.id,eq.businessPartner,eq.udf.Z_Model_excl,eq.udf.Z_DispatchDate_local" +
+                    " from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
+
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.EQUIPMENT20);
             return JSONObject.parseObject(response, DeviceInfoBean.class);
         }catch (Exception e){
             throw new BusinessException("",e);
         }
+    }
+
+    /**
+     * 获取设备信息地址信息(用于检查水货问题)
+     * E79E7FDBE94C4D728C15ADB1E8055609
+     * @param objectId 设备ID
+     * @return
+     */
+    public String getDeviceAddressInfo(String objectId){
+        try {
+            String url = String.format("%s%s",super.callRootUrl,"/data/query/v1");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query"," select adrs.country FROM Address adrs " +
+                    "where adrs.object.objectId = '"+objectId+"' and adrs.object.objectType = 'EQUIPMENT'");
+
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ADDRESS18);
+
+            List<JSONObject> objects = JSON.parseArray(response,JSONObject.class);
+
+            if(!objects.isEmpty()){
+
+            }
+        } catch (Exception e) {
+            log.error("",e);
+            throw new BusinessException("",e);
+        }
+        return null;
     }
 
     /**
