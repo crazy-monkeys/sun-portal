@@ -68,6 +68,7 @@ public class ErrorCodes {
         RESOURCE_TYPE_NOT_EXIST(10046,"资源类型不存在"),
         RESOURCE_EXIST(10047,"资源名称已经存在"),
         TOKEN_IS_NULL(10048,"Token 获取失败"),
+        PRODUCT_IS_EMPTY(10049,"设备信息不存在"),
 
         SYS_PARAM_VALUE(10048,"该选项下Code已存在"),
         SYS_BEAN_ERROR(10049,"对象映射异常"),

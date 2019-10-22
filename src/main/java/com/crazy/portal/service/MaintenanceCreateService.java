@@ -2,6 +2,7 @@ package com.crazy.portal.service;
 
 import com.crazy.portal.bean.api.token.TokenBean;
 import com.crazy.portal.bean.maintenance.MaintenanceBean;
+import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.dao.maintenance.*;
 import com.crazy.portal.entity.maintenance.SunAddress;
 import com.crazy.portal.entity.maintenance.SunContact;
@@ -39,34 +40,37 @@ public class MaintenanceCreateService {
     private SunFilesMapper sunFilesMapper;
 
     public void saveMaintenance(MaintenanceBean bean){
-       try{
-           Boolean check = productService.checkProduct(bean.getProductId(), bean.getContry());
-           BusinessUtil.assertFlase(check, ErrorCodes.SystemManagerEnum.PRODUCT_IS_PARALLEL_IMPORTS);
+           try{
+               Boolean check = productService.checkProduct(bean.getProductId(), bean.getContry());
+               BusinessUtil.assertFlase(check, ErrorCodes.SystemManagerEnum.PRODUCT_IS_PARALLEL_IMPORTS);
 
-           SunMaintenance maintenance = new SunMaintenance();
-           BeanUtils.copyNotNullFields(bean,maintenance);
-           sunMaintenanceMapper.insertSelective(maintenance);
+               SunMaintenance maintenance = new SunMaintenance();
+               BeanUtils.copyNotNullFields(bean,maintenance);
+               sunMaintenanceMapper.insertSelective(maintenance);
 
-           SunProduct product = new SunProduct();
-           BeanUtils.copyNotNullFields(bean,product);
-           product.setMaintenanceId(maintenance.getId());
-           sunProductMapper.insertSelective(product);
+               SunProduct product = new SunProduct();
+               BeanUtils.copyNotNullFields(bean,product);
+               product.setMaintenanceId(maintenance.getId());
+               sunProductMapper.insertSelective(product);
 
-           SunContact contact = new SunContact();
-           BeanUtils.copyNotNullFields(bean,contact);
-           contact.setMaintenanceId(maintenance.getId());
-           sunContactMapper.insertSelective(contact);
+               SunContact contact = new SunContact();
+               BeanUtils.copyNotNullFields(bean,contact);
+               contact.setMaintenanceId(maintenance.getId());
+               sunContactMapper.insertSelective(contact);
 
-           SunAddress address = new SunAddress();
-           BeanUtils.copyNotNullFields(bean,address);
-           address.setContactId(contact.getContactId());
-           sunAddressMapper.insertSelective(address);
+               SunAddress address = new SunAddress();
+               BeanUtils.copyNotNullFields(bean,address);
+               address.setContactId(contact.getContactId());
+               sunAddressMapper.insertSelective(address);
 
-           //TODO saveFile
-            apiService.maintenaceApi(bean);
-           //System.out.println("response"+response);
-       }catch (Exception e){
-            log.error("",e);
-       }
+               //TODO saveFile
+               apiService.maintenaceApi(bean);
+               //System.out.println("response"+response);
+           }catch (BusinessException be){
+                throw be;
+           }catch (Exception e){
+               log.error("",e);
+           }
+
     }
 }

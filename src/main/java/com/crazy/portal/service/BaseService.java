@@ -86,6 +86,7 @@ public class BaseService {
         BaseParamsBean baseParamsBean = new BaseParamsBean(account, company, user, header, dtos.getValue());
         String buildFinalUrl = String.format("%s?%s",url,baseParamsBean.toString());
         log.info(">>>>> API url to access:"+buildFinalUrl);
+        log.info(">>>>>API Param :"+body);
         String response = HttpClientUtils.post(buildFinalUrl, body, "application/json", header);
         log.info(">>>>> API return "+response);
         if(response.isEmpty()){

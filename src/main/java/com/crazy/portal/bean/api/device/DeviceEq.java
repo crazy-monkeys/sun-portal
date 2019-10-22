@@ -13,5 +13,9 @@ import java.util.List;
 @Data
 public class DeviceEq {
 
+    //设备id
+    private String id;
+    //合作伙伴id
+    private String businessPartner;
     private List<UdfValuesBean> udfValues;
 }

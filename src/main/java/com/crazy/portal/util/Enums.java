@@ -86,7 +86,7 @@ public class Enums {
         Contact_Number("EB7AF9DC6E8D49FC98DC67ACE96BFFB6","contactNumber"),
         Customer_Address("9AD25F4EAEE54EAC86D6D7DD2E2FDA2E",""),
         Business_Name("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Reference("A20288A9EAD24CC28564B4EEA7B7968F",""),
+        Reference("A20288A9EAD24CC28564B4EEA7B7968F","reference"),
         Electrical_Compliance_Certificate("A20288A9EAD24CC28564B4EEA7B7968F","electricalComplianceCertificate"),
         Invoice_Uploaded("A20288A9EAD24CC28564B4EEA7B7968F",""),
         Fault_Type("A20288A9EAD24CC28564B4EEA7B7968F",""),
@@ -95,7 +95,10 @@ public class Enums {
         Inverter_Exposed_Weather("A20288A9EAD24CC28564B4EEA7B7968F",""),
         Intervter_Connect_Battery("A20288A9EAD24CC28564B4EEA7B7968F",""),
         Post_Code("49D5913D6552439FABBCE76A26B57014","postCode"),
-        Country("49D5913D6552439FABBCE76A26B57014","contryName")
+        Country("49D5913D6552439FABBCE76A26B57014","contryName"),
+
+        Product_id("8E6F00CE608B410AADCFBC378B83F4C2",""),
+        Delivery_date("",""),
         ;
 
         private String id;

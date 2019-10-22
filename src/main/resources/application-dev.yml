@@ -26,7 +26,7 @@ spring:
   datasource:
     username: root
     password: ThreeApe!@#$2019
-    url: jdbc:mysql://47.100.106.186:3306/portal?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
+    url: jdbc:mysql://47.100.106.186:3306/yg-portal?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
 
 coresuite:

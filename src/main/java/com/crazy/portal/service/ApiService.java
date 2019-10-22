@@ -8,10 +8,13 @@ import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.maintenance.MaintenanceBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.BeanUtils;
+import com.crazy.portal.util.DateUtil;
 import com.crazy.portal.util.Enums;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +34,9 @@ public class ApiService extends BaseService{
      * @param serialNumber 序列号
      */
     public DeviceInfoBean getDeviceInfo(String serialNumber){
-        try{
-            String url = String.format("%s%s", super.callRootUrl,"/data/query/v1");
+        try{String url = String.format("%s%s", super.callRootUrl,"/data/query/v1");
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("query"," select eq.udf.Z_Model_excl from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
+            jsonObject.put("query"," select eq.id,eq.businessPartner,eq.udf.Z_Model_excl,eq.udf.Z_DispatchDate_local from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
             String body = JSON.toJSONString(jsonObject);
             String response = super.invokeApi(url, body, Enums.Api_Header_Dtos.EQUIPMENT20);
             return JSONObject.parseObject(response, DeviceInfoBean.class);
@@ -62,7 +64,6 @@ public class ApiService extends BaseService{
             }
         }
         requestBodyBean.setUdfValues(params);
-
         requestBodyBean.setEquipments(bean.getProductId());
         requestBodyBean.setBusinessPartner(bean.getBusinessPartner());
 

@@ -12,6 +12,5 @@ import java.util.List;
  */
 @Data
 public class DeviceData {
-
-    private List<DeviceEq> eq;
+    private DeviceEq eq;
 }

@@ -10,14 +10,6 @@ import lombok.Data;
 @Data
 public class UdfValuesBean {
     /**
-     * 设备ID
-     */
-    private String id;
-    /**
-     * 合作伙伴ID
-     */
-    private String businessPartner;
-    /**
      * 自定义字段ID(设备型号)
      */
     private String meta;

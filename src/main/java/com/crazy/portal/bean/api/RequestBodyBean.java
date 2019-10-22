@@ -1,8 +1,10 @@
 package com.crazy.portal.bean.api;
 
 import com.crazy.portal.bean.api.device.UdfValuesBean;
+import com.crazy.portal.util.DateUtil;
 import lombok.Data;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class RequestBodyBean {
     //	问题类型名称()
     private String problemTypeName;
     //开始
-    private Date startDateTime=new Date();
+    private String startDateTime;
     //结束
     private Date endDateTime;
     //到期
@@ -51,4 +53,14 @@ public class RequestBodyBean {
     private String[] equipments;
     //udt
     private List<UdfValuesBean> udfValues;
+
+    public void setStartDateTime() {
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+            this.startDateTime = sdf.format(new Date());
+        }catch (Exception e){
+
+        }
+
+    }
 }
