@@ -15,7 +15,9 @@ public class ErrorCodes {
         SYSTEM_TIMEOUT(0,"系统超时"),
         SUCCESS(1,"操作成功"),
         REQ_PARAM_FORMAT_ERROR(-2, "请求参数格式异常"),
+        SERVER_MEETING(-4,"The server had a meeting"),
         REQ_ILLEGAL(-3, "非法请求");
+
 
         private final int code;
         private final String msg;

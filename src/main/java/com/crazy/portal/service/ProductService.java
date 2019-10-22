@@ -3,11 +3,13 @@ package com.crazy.portal.service;
 import com.crazy.portal.bean.ResponseBean;
 import com.crazy.portal.bean.api.device.DeviceEq;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
+import com.crazy.portal.entity.maintenance.SunProduct;
 import com.crazy.portal.util.BusinessUtil;
 import com.crazy.portal.util.Enums;
 import com.crazy.portal.util.ErrorCodes;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @ClassName: ProductService
@@ -44,11 +46,10 @@ public class ProductService {
 
     /**
      * 检查水货  选择国家和物料国家不同为水货
-     * @param productId
      * @param country
      * @return  水货 true
      */
-    public Boolean checkProduct(String[] productId, String country){
+    public Boolean checkProduct(List<SunProduct> products, String country){
         return false;
     }
 }

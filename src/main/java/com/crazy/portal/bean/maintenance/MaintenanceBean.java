@@ -1,8 +1,10 @@
 package com.crazy.portal.bean.maintenance;
 
+import com.crazy.portal.entity.maintenance.SunProduct;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @ClassName: MaintenanceBean
@@ -16,6 +18,8 @@ public class MaintenanceBean {
     private String installInstaller;
     private String installCec;
     private String suggestions;
+    private String businessPartner;
+    private String[] equipments;
     /**
      * 总价格
      */
@@ -37,11 +41,9 @@ public class MaintenanceBean {
      */
     private String sendEmial;
     private String contactNumber;
+
     //产品
-    private String productNumber;
-    private String productModel;
-    private String[] productId;
-    private String businessPartner;
+    private List<SunProduct> products;
     /**
      * 认证类型
      */

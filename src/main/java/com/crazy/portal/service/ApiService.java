@@ -115,7 +115,7 @@ public class ApiService extends BaseService{
             }
         }
         requestBodyBean.setUdfValues(params);
-        requestBodyBean.setEquipments(bean.getProductId());
+        requestBodyBean.setEquipments(bean.getEquipments());
         requestBodyBean.setBusinessPartner(bean.getBusinessPartner());
         return requestBodyBean;
     }

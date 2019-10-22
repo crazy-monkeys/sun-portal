@@ -77,25 +77,29 @@ public class Enums {
     }
 
     public enum API_PARAMS{
-        Installer("DC79C374404640FC80DCAC220F4B0015","installInstaller"),
-        Installation_Date("E63BC043F4E9493B8FC8FE4421D7D292","installDate"),
-        CEC("F92DF7E17DE246BE8EDF9DA23856E8C9","installCec"),
-        ABN("5268B5F3CF964C7EA9AEC91E869A89E4",""),
-        Customer_Contact("27D073A5FCFA4F6398D74B230595B078","contactName"),
-        Contact_Email("4AFC9CD0CD8C4AA7B9921B6EC4645B95","contactEmial"),
-        Contact_Number("EB7AF9DC6E8D49FC98DC67ACE96BFFB6","contactNumber"),
-        Customer_Address("9AD25F4EAEE54EAC86D6D7DD2E2FDA2E",""),
-        Business_Name("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Reference("A20288A9EAD24CC28564B4EEA7B7968F","reference"),
+        Installer("DC79C374404640FC80DCAC220F4B0015","installInstaller"), //安装人
+        Installation_Date("E63BC043F4E9493B8FC8FE4421D7D292","installDate"),  //安装时间
+        CEC("F92DF7E17DE246BE8EDF9DA23856E8C9","installCec"),  //cec
+        ABN("5268B5F3CF964C7EA9AEC91E869A89E4","abn"),   //abn
+        Customer_Contact("27D073A5FCFA4F6398D74B230595B078","contactName"),  //维保公司名
+        Contact_Email("4AFC9CD0CD8C4AA7B9921B6EC4645B95","contactEmial"),   //邮件
+        Contact_Number("EB7AF9DC6E8D49FC98DC67ACE96BFFB6","contactNumber"), //number
+        Customer_Address("9AD25F4EAEE54EAC86D6D7DD2E2FDA2E","installAddress"), //安装地址
+        Business_Name("A20288A9EAD24CC28564B4EEA7B7968F","contactBusinessName"), //终端客户
+        Reference("A20288A9EAD24CC28564B4EEA7B7968F",""),
         Electrical_Compliance_Certificate("A20288A9EAD24CC28564B4EEA7B7968F","electricalComplianceCertificate"),
         Invoice_Uploaded("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Fault_Type("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Fault_Description("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Status_Message_LCD("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Inverter_Exposed_Weather("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Intervter_Connect_Battery("A20288A9EAD24CC28564B4EEA7B7968F",""),
+        Fault_Type("A20288A9EAD24CC28564B4EEA7B7968F","warrantyType"),
+        Fault_Description("A20288A9EAD24CC28564B4EEA7B7968F","faultDescription"),
+        Status_Message_LCD("A20288A9EAD24CC28564B4EEA7B7968F","faultMassage"),
+        Inverter_Exposed_Weather("A20288A9EAD24CC28564B4EEA7B7968F","isWeather"),
+        Intervter_Connect_Battery("A20288A9EAD24CC28564B4EEA7B7968F","inverterConnect"),
         Post_Code("49D5913D6552439FABBCE76A26B57014","postCode"),
-        Country("49D5913D6552439FABBCE76A26B57014","contryName"),
+        Country("49D5913D6552439FABBCE76A26B57014","contryCode"),
+        AMOUNT_EXCL_GST("BB18BEF42BB54039A1C51C4FDF72D2C5",""),
+        GST("89BBA2CB6528442E84A3362DB109A419",""),
+        TOTAL_AMOUNT("C36887DDD4E4486F958F0E80817DFB2F",""),
+        PURCHASE_ORDER("248246FD02874D34B0CA85E8996C0DA4",""),
 
         Product_id("8E6F00CE608B410AADCFBC378B83F4C2",""),
         Delivery_date("",""),

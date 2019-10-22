@@ -2,7 +2,7 @@ package com.crazy.portal.controller;
 
 import com.crazy.portal.bean.BaseResponse;
 import com.crazy.portal.bean.maintenance.MaintenanceBean;
-import com.crazy.portal.service.MaintenanceCreateService;
+import com.crazy.portal.service.MaintenanceService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,14 +14,14 @@ import javax.annotation.Resource;
  * @Date: 2019/10/21 19:39
  */
 @RestController
-@RequestMapping("/maintenance")
+@RequestMapping("/service")
 public class MaintenanceCreateController extends BaseController{
     @Resource
-    private MaintenanceCreateService maintenanceCreateService;
+    private MaintenanceService maintenanceCreateService;
 
-    @PostMapping("/create")
+    @PostMapping("/call")
     public BaseResponse maintenanceCreate(MaintenanceBean bean){
-        maintenanceCreateService.saveMaintenance(bean);
+        maintenanceCreateService.serviceCall(bean);
         return successResult();
     }
 }
