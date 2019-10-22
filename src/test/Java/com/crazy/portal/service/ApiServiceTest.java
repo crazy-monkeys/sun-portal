@@ -61,6 +61,9 @@ public class ApiServiceTest {
 
     @Test
     public void getDeviceAddressInfo() {
-
+        String objectId = "E79E7FDBE94C4D728C15ADB1E8055609";
+        String address = apiService.getDeviceAddressInfo(objectId);
+        log.info(address);
+        Assert.assertTrue(address.equals("US"));
     }
 }

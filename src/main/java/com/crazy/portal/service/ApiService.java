@@ -1,6 +1,7 @@
 package com.crazy.portal.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.RequestBodyBean;
@@ -61,16 +62,23 @@ public class ApiService extends BaseService{
 
             String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ADDRESS18);
 
-            List<JSONObject> objects = JSON.parseArray(response,JSONObject.class);
+            JSONObject dataArray = JSON.parseObject(response,JSONObject.class);
+            if(dataArray == null) return null;
 
-            if(!objects.isEmpty()){
+            JSONArray jsonArray = (JSONArray)dataArray.get("data");
+            if(jsonArray == null) return null;
 
-            }
+            JSONObject adrsObject = (JSONObject) jsonArray.get(0);
+            if(adrsObject == null) return null;
+
+            JSONObject adrs = (JSONObject) adrsObject.get("adrs");
+            if(adrs == null) return null;
+
+            return String.valueOf(adrs.get("country"));
         } catch (Exception e) {
             log.error("",e);
             throw new BusinessException("",e);
         }
-        return null;
     }
 
     /**
