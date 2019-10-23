@@ -1,4 +1,4 @@
-package com.crazy.portal.config.mybatis;
+package com.crazy.portal;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
