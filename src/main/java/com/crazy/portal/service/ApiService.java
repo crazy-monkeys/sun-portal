@@ -65,14 +65,8 @@ public class ApiService extends BaseService{
 
             String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ADDRESS18);
 
-            JSONObject dataArray = JSON.parseObject(response,JSONObject.class);
-            if(dataArray == null) return null;
-
-            JSONArray jsonArray = (JSONArray)dataArray.get("data");
-            if(jsonArray == null) return null;
-
-            JSONObject adrsObject = (JSONObject) jsonArray.get(0);
-            if(adrsObject == null) return null;
+            JSONObject adrsObject = this.getApiData(response);
+            if (adrsObject == null) return null;
 
             JSONObject adrs = (JSONObject) adrsObject.get("adrs");
             if(adrs == null) return null;
@@ -83,6 +77,56 @@ public class ApiService extends BaseService{
             log.error("",e);
             throw new BusinessException("",e);
         }
+    }
+
+    /**
+     * 获取设备容量信息
+     * A82DD58BA85C4387BBC42DDFE813F5A8
+     * @param id 物料ID
+     * @return
+     */
+    public UdfValuesBean getDevicePowerInfo(String id){
+        try {
+            String url = String.format("%s%s",super.callRootUrl,"/data/query/v1");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query"," SELECT itt.udf.Z_Capacity FROM Item itt where itt.id = '"+id+"'");
+
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ITEM22);
+
+            JSONObject adrsObject = this.getApiData(response);
+            if (adrsObject == null) return null;
+
+            JSONObject itt = (JSONObject) adrsObject.get("itt");
+            if(itt == null) return null;
+
+            JSONArray udfValues = (JSONArray) itt.get("udfValues");
+            if(udfValues == null) return null;
+
+            Object devicePowerObj = udfValues.get(0);
+            if(devicePowerObj == null) return null;
+
+            return JSON.parseObject(JSON.toJSONString(devicePowerObj),UdfValuesBean.class);
+        } catch (Exception e) {
+            log.error("",e);
+            throw new BusinessException("",e);
+        }
+    }
+
+    /**
+     * 封装提取返回体中的data
+     * @param response
+     * @return
+     */
+    private JSONObject getApiData(String response) {
+        JSONObject dataArray = JSON.parseObject(response, JSONObject.class);
+        if (dataArray == null) return null;
+
+        JSONArray jsonArray = (JSONArray) dataArray.get("data");
+        if (jsonArray == null) return null;
+
+        JSONObject adrsObject = (JSONObject) jsonArray.get(0);
+        if (adrsObject == null) return null;
+        return adrsObject;
     }
 
     /**

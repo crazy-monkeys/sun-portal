@@ -66,4 +66,14 @@ public class ApiServiceTest {
         log.info(address);
         Assert.assertTrue(address.equals("US"));
     }
+
+    @Test
+    public void getDevicePowerInfo() {
+        String objectId = "A82DD58BA85C4387BBC42DDFE813F5A8";
+        UdfValuesBean udfValuesBean = apiService.getDevicePowerInfo(objectId);
+        log.info(udfValuesBean.toString());
+        Assert.assertTrue(udfValuesBean.getMeta().equals("7C13CCA8BC4A472FA20493D0AD690951"));
+        Assert.assertTrue(udfValuesBean.getValue().equals("59"));
+        Assert.assertTrue(udfValuesBean.getName().equals("Z_Capacity"));
+    }
 }

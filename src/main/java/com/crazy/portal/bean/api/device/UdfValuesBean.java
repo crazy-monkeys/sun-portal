@@ -10,11 +10,11 @@ import lombok.Data;
 @Data
 public class UdfValuesBean {
     /**
-     * 自定义字段ID(设备型号)
+     * 自定义字段ID(设备型号)/电容量ID
      */
     private String meta;
     /**
-     * 设备型号值
+     * 设备型号值/电容量值
      */
     private String value;
     /**
