@@ -77,7 +77,8 @@ public class ApiService extends BaseService{
             JSONObject adrs = (JSONObject) adrsObject.get("adrs");
             if(adrs == null) return null;
 
-            return String.valueOf(adrs.get("country"));
+            Object country = adrs.get("country");
+            return country == null ? null : String.valueOf(country);
         } catch (Exception e) {
             log.error("",e);
             throw new BusinessException("",e);
