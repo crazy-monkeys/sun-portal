@@ -2,7 +2,7 @@
 server:
   port: 1024
   servlet:
-    context-path: /sun-portal
+    context-path: /sun-portal-api
 
 spring:
   profiles:
