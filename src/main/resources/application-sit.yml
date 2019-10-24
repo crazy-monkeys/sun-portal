@@ -1,12 +1,6 @@
 logging:
   config: classpath:logback-sit.xml
 
-app:
-  ad-domain: THREEAPE.CN
-  service-principal: HTTP/tomcat.threeape.cn@THREEAPE.CN
-  keytab-location: /Users/Bill/Desktop/tomcat.keytab
-  krb5-config: /Users/Bill/Desktop/krb5.ini
-
 spring:
   mail:
     host: smtp.qq.com #发送邮件服务器
@@ -26,51 +20,28 @@ spring:
   datasource:
     username: root
     password: ThreeApe!@#$2019
-    url: jdbc:mysql://47.100.106.186:3306/portal?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
+    url: jdbc:mysql://47.100.106.186:3306/yg-portal?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
 
-file:
-  path:
-    root: /service/ftp/portal_file #公用基础路径
-    root-local: ${file.path.root}/local #portal系统内文件地址入口
-    root-thrid-push: ${file.path.root}/push_thrid #portal对接第三方文件出口地址
-    root-thrid-pull: ${file.path.root}/pull_thrid #第三方传输文件至portal入口地址
-    root-template: ${file.path.root}/template #portal功能模版文件地址
-    customer: ${file.path.root-local}/customer/
-    reader-customer: ${portal.file-url}/local/customer/
-    reader-dir: ${portal.file-url}/business/
-    announcement: #公告管理模块
-      local: ${file.path.root-local}/announcement/
-    deliver: #出货管理模块
-      template: ${file.path.root-template}/deliver/
-      push: ${file.path.root-thrid-push}/deliver/
-      pull: ${file.path.root-thrid-pull}/deliver/
-      local: ${file.path.root-local}/deliver/
-    receive: #收货管理模块
-      template: ${file.path.root-template}/receive/
-      push: ${file.path.root-thrid-push}/receive/
-      pull: ${file.path.root-thrid-pull}/receive/
-      local: ${file.path.root-local}/receive/
-    forecast:
-      push: ${file.path.root-thrid-push}/forecast/
-      pull: ${file.path.root-thrid-pull}/forecast/
-
-portal:
-  view-url: http://portal-sit.threeape.cn/portal/#/pwd
-  file-url: http://portal-sit.threeape.cn/portal-api/file
-  mock-bi-server: on
-
-ecc:
+coresuite:
   api:
-    url: https://e600180-hcioem.hcisbt.cn1.hana.ondemand.com
+    token-root-url: https://auth.coresuite.com/api
+    call-root-url: https://cn.coresuite.cn/api
+    root-local: ${coresuite.api.root-url}/oauth2/v1/token
+  authorization: Basic MTIzZDAxZWQtZTExNy00YWRlLWFmYzQtN2U2OTdhYTQ1OTRmOjZjZmZmZGM1LTdlMjktNGM4YS1iNTRkLTEyZjgyMzI5ZTdmNg==
+  grant_type: password
+  username: sungrowpower-p1/dev
+  password: Welcome2020
+  mimeType: application/x-www-form-urlencoded
   auth:
     username: S0020469033
     password: CRM@Unisoc
+
 ftp:
-  host:
-  port:
-  username:
-  password:
+  host: 10.29.24.20
+  port: 21
+  username: crmftp
+  password: '123@qwe'
   path:
     handover:
       push: /handover/push/
