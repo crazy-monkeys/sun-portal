@@ -1,12 +1,6 @@
 logging:
   config: classpath:logback-dev.xml
 
-##web容器配置
-server:
-  port: 8080
-  servlet:
-    context-path: /portal-api
-
 spring:
   mail:
     host: smtp.qq.com #发送邮件服务器

@@ -1,11 +1,6 @@
 logging:
   config: classpath:logback-dev.xml
 
-server:
-  port: 9090
-  servlet:
-    context-path: /portal-api
-
 app:
   ad-domain: THREEAPE.CN
   service-principal: HTTP/tomcat.threeape.cn@THREEAPE.CN

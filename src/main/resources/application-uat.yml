@@ -1,12 +1,6 @@
 logging:
   config: classpath:logback-uat.xml
 
-##web容器配置
-server:
-  port: 8080
-  servlet:
-    context-path: /portal-api
-
 app:
   ad-domain: SPREADTRUM.COM
   service-principal: HTTP/DMSDEV.unisoc.com@SPREADTRUM.COM

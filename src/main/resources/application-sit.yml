@@ -1,12 +1,6 @@
 logging:
   config: classpath:logback-sit.xml
 
-##web容器配置
-server:
-  port: 8080
-  servlet:
-    context-path: /portal-api
-
 app:
   ad-domain: THREEAPE.CN
   service-principal: HTTP/tomcat.threeape.cn@THREEAPE.CN
