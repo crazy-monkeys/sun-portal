@@ -4,6 +4,7 @@ import com.crazy.portal.bean.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.ObjectError;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

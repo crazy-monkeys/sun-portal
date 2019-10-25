@@ -1,7 +1,6 @@
 package com.crazy.portal.config.exception;
 
 import com.crazy.portal.bean.BaseResponse;
-import com.crazy.portal.controller.BaseController;
 import com.crazy.portal.util.ErrorCodes.CommonEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;

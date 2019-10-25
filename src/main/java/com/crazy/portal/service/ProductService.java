@@ -3,6 +3,7 @@ package com.crazy.portal.service;
 import com.crazy.portal.bean.ResponseBean;
 import com.crazy.portal.bean.api.device.DeviceEq;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
+import com.crazy.portal.bean.maintenance.ProductBean;
 import com.crazy.portal.entity.maintenance.SunProduct;
 import com.crazy.portal.util.BusinessUtil;
 import com.crazy.portal.util.Enums;
@@ -49,7 +50,13 @@ public class ProductService {
      * @param country
      * @return  水货 true
      */
-    public Boolean checkProduct(List<SunProduct> products, String country){
+    public Boolean checkProduct(List<ProductBean> products, String country){
+        for(ProductBean product : products){
+            String deviceCounty=apiService.getDeviceAddressInfo(product.getProductId());
+            if(!deviceCounty.equals(country)){
+                return true;
+            }
+        }
         return false;
     }
 }

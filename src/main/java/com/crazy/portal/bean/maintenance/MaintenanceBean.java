@@ -1,6 +1,5 @@
 package com.crazy.portal.bean.maintenance;
 
-import com.crazy.portal.entity.maintenance.SunProduct;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,59 +12,39 @@ import java.util.List;
  */
 @Data
 public class MaintenanceBean {
+    //1-维保注册 2-服务请求 3-维保注册
     private Integer type;
-    private String contry;
-    private String installInstaller;
-    private String installCec;
-    private String suggestions;
+    //客户  产品带出
     private String businessPartner;
+    //设备id 组
     private String[] equipments;
-    /**
-     * 总价格
-     */
-    private BigDecimal totalAmount;
-    //firstname
-    private String contactFirstName;
-    //last name
-    private String contactLastName;
-    //business name
-    private String contactBusinessName;
-    //first+last
-    private String contactName;
-    /**
-     * 联系人邮箱
-     */
-    private String contactEmial;
-    /**
-     *接收邮件邮箱
-     */
-    private String sendEmial;
-    private String contactNumber;
-
-    //产品
-    private List<SunProduct> products;
-    /**
-     * 认证类型
-     */
-    private String warrantyType;
-    /**
-     * 采购订单
-     */
-    private String purchaseOrder;
-    //install
+    //安装时间
     private String installDate;
+    //安装人
+    private String installInstaller;
+    //安装国家
     private String contryCode;
-    private String contryName;
-    private String cityCode;
-    private String cityName;
-    private String stateCode;
-    private String stateName;
-    private String streetName;
-    private String postCode;
-    private String addressLine1;
-    private String addressLine2;
-    private String installAddress;
-    private String abn;
-    //Suburb
-    private String detail;
+    //产品
+    private List<ProductBean> products;
+    private ContactBean contact;
+    private EndUserBean endUser;
+    /**
+     *维保注册
+     */
+    //Do you have any product suggestions?
+    private String suggestions;
+    //cec
+    private String installCec;
+
+    /**
+     * 服务请求
+     */
+    //服务请求 type
+    private String businessType;
+    //Want to claim an accessory? Specify here
+    private String accessory;
+
+    private ServiceCallBean serviceCallBean;
+
+    private BigDecimal totalAmount;
 }

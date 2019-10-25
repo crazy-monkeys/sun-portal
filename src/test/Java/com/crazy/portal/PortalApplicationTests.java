@@ -1,6 +1,5 @@
 package com.crazy.portal;
 
-import com.crazy.portal.bean.maintenance.MaintenanceBean;
 import com.crazy.portal.service.ApiService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
