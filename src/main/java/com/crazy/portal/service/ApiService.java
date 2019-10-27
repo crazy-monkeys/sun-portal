@@ -9,13 +9,11 @@ import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.maintenance.MaintenanceBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.BeanUtils;
-import com.crazy.portal.util.DateUtil;
 import com.crazy.portal.util.Enums;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -130,16 +128,10 @@ public class ApiService extends BaseService{
     }
 
     /**
-     *维保注册
+     *service call
      * @param bean
      */
-    public void maintenaceApi(MaintenanceBean bean)throws Exception{
-        String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
-        String response = super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
-        System.out.println(response);
-    }
-
-    public void insurance(MaintenanceBean bean)throws Exception{
+    public void serviceCall(MaintenanceBean bean)throws Exception{
         String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
         String response = super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
         System.out.println(response);
@@ -159,6 +151,7 @@ public class ApiService extends BaseService{
                 params.add(param);
             }
         }
+        requestBodyBean.setSubject(bean.getSubject());
         requestBodyBean.setUdfValues(params);
         requestBodyBean.setEquipments(bean.getEquipments());
         requestBodyBean.setBusinessPartner(bean.getBusinessPartner());

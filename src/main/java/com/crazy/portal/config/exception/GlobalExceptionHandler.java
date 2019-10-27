@@ -25,7 +25,7 @@ public class GlobalExceptionHandler extends BaseController {
     /**
      * 全局异常捕捉
      * 注意:如果需要新加指定异常处理逻辑(x instanceOf x)需要在操作日志AOP中进行抛出,不然异常栈日志将会被aop进行全局捕获
-     * @see com.crazy.portal.aop.OperationAspect setErrorMsgAndThrowException
+//     * @see com.crazy.portal.aop.OperationAspect setErrorMsgAndThrowException
      * @param exception
      * @return
      */
