@@ -74,7 +74,10 @@ public class ErrorCodes {
 
         SYS_PARAM_VALUE(10048,"该选项下Code已存在"),
         SYS_BEAN_ERROR(10049,"对象映射异常"),
-        PRODUCT_IS_PARALLEL_IMPORTS(10050,"设备不在维保服务区内")
+        PRODUCT_IS_PARALLEL_IMPORTS(10050,"设备不在维保服务区内"),
+        IN_DATE_IS_BEFORE(10051,"安装时间不能晚于创单时间"),
+        PRICE_IS_NULL(10052,"设备没有维护对应的价格"),
+        INSTALL_DATE_IS_NOT_NULL(10053,"请选择安装时间"),
         ;
 
 

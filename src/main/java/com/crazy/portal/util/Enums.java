@@ -81,30 +81,33 @@ public class Enums {
         Installation_Date("E63BC043F4E9493B8FC8FE4421D7D292","installDate"),  //安装时间
         CEC("F92DF7E17DE246BE8EDF9DA23856E8C9","installCec"),  //cec
         ABN("5268B5F3CF964C7EA9AEC91E869A89E4","abn"),   //abn
-        Customer_Contact("27D073A5FCFA4F6398D74B230595B078","contactName"),  //维保公司名
+        Customer_Contact("27D073A5FCFA4F6398D74B230595B078","customerContact"),  //维保公司名
         Contact_Email("4AFC9CD0CD8C4AA7B9921B6EC4645B95","contactEmial"),   //邮件
         Contact_Number("EB7AF9DC6E8D49FC98DC67ACE96BFFB6","contactNumber"), //number
-        Customer_Address("9AD25F4EAEE54EAC86D6D7DD2E2FDA2E","installAddress"), //安装地址
-        Business_Name("A20288A9EAD24CC28564B4EEA7B7968F","contactBusinessName"), //终端客户
+        Customer_Address("9AD25F4EAEE54EAC86D6D7DD2E2FDA2E","customerAddress"), //安装地址
+        Business_Name("A20288A9EAD24CC28564B4EEA7B7968F","businessName"), //终端客户
         Reference("A20288A9EAD24CC28564B4EEA7B7968F",""),
         Electrical_Compliance_Certificate("A20288A9EAD24CC28564B4EEA7B7968F","electricalComplianceCertificate"),
         Invoice_Uploaded("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Fault_Type("A20288A9EAD24CC28564B4EEA7B7968F","warrantyType"),
+        Fault_Type("A20288A9EAD24CC28564B4EEA7B7968F","faultType"),
         Fault_Description("A20288A9EAD24CC28564B4EEA7B7968F","faultDescription"),
-        Status_Message_LCD("A20288A9EAD24CC28564B4EEA7B7968F","faultMassage"),
+        Status_Message_LCD("A20288A9EAD24CC28564B4EEA7B7968F","lcdMessage"),
         Inverter_Exposed_Weather("A20288A9EAD24CC28564B4EEA7B7968F","isWeather"),
-        Intervter_Connect_Battery("A20288A9EAD24CC28564B4EEA7B7968F","inverterConnect"),
+        Intervter_Connect_Battery("A20288A9EAD24CC28564B4EEA7B7968F","battery"),
         Post_Code("49D5913D6552439FABBCE76A26B57014","postCode"),
         Country("49D5913D6552439FABBCE76A26B57014","contryCode"),
-        AMOUNT_EXCL_GST("DF5B2DC1E98F4509B11D866FFB2371C2",""),
-        GST("0A652A2381B94F5A8BA42C97970201EB",""),
-        TOTAL_AMOUNT("0CF10A5B6EA94732A8253B0C801E9249",""),
-        PURCHASE_ORDER("248246FD02874D34B0CA85E8996C0DA4",""),
+        AMOUNT_EXCL_GST("DF5B2DC1E98F4509B11D866FFB2371C2","amountGST"),
+        GST("0A652A2381B94F5A8BA42C97970201EB","gst"),
+        TOTAL_AMOUNT("0CF10A5B6EA94732A8253B0C801E9249","totalAmount"),
+        PURCHASE_ORDER("248246FD02874D34B0CA85E8996C0DA4","purchaseOrder"),
         SHIPPING_ADDRESS("042D3DDDD048464EA6B39E31527B926F","shippingAddress"),
         CURRENCY_CODE("4A3E10C5776048BC984D45DA47026A37",""),
 
         Product_id("8E6F00CE608B410AADCFBC378B83F4C2",""),
         Delivery_date("",""),
+
+        Parts_Warranty_W5YP("A1B8254717004CF8A40E405B216352B5","W5YP"),
+        Parts_Warranty_W5YS("31FF6AE5353D4D498A7C68EF20454456","W5YS"),
         ;
 
         private String id;

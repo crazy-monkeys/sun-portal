@@ -1,4 +1,4 @@
-package com.crazy.portal.bean.maintenance;
+package com.crazy.portal.bean.vo;
 
 import lombok.Data;
 
@@ -17,10 +17,12 @@ public class ServiceCallBean {
     private String description;
     //Is the inverter exposed to the weather (e.g. rain)?  : yes no
     private String weather;
-    private String weatherMessage;
+    private String location;
+    private String weatherMsg;
     //Does the inverter connect with a battery : yes no
     private String battery;
-    private String batteryMessage;
+    private String model;
+    private String batteryMsg;
 
     private String shippingAddress;
 }

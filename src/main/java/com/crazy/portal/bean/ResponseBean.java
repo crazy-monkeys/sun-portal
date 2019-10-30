@@ -2,6 +2,8 @@ package com.crazy.portal.bean;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @ClassName: ResponseBean
  * @Author: God Man Qiu~
@@ -21,4 +23,6 @@ public class ResponseBean {
     private String productModel;
     //本地发货日期
     private String deliveryDate;
+
+    private BigDecimal amount;
 }

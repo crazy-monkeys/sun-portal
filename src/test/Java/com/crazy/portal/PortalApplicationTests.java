@@ -1,7 +1,7 @@
 package com.crazy.portal;
 
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
-import com.crazy.portal.bean.maintenance.*;
+import com.crazy.portal.bean.vo.*;
 import com.crazy.portal.service.ApiService;
 import com.crazy.portal.service.MaintenanceService;
 import com.crazy.portal.util.BusinessUtil;
@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,11 +35,14 @@ public class PortalApplicationTests {
      */
     @Test
     public void createTest(){
-        MaintenanceBean bean = new MaintenanceBean();
-        List<ProductBean> products = new ArrayList<>();
-
-        bean.setType(1);
-        bean.setInstallInstaller("Test");
+        MTRegistBean bean = new MTRegistBean();
+        /*bean.setContactFirstName("junguo");
+        bean.setContactLastName("he");
+        bean.setContactEmail("test@qq.com");
+        bean.setContactNumber("12345");
+        bean.setContryCode("AU");
+        bean.setCityName("test");*/
+        //bean.set
         bean.setInstallDate("2019-09-09");
         bean.setInstallCec("test");
 
@@ -51,15 +55,12 @@ public class PortalApplicationTests {
         contact.setContactEmail("test@qq.com");
         contact.setContactNumber("12323");
         contact.setAddress(addr);
-        bean.setContact(contact);
-
 
         String serialNumber = "J1904090450";
         DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);
         BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.SystemManagerEnum.PRODUCT_IS_EMPTY);
 
-        bean.setBusinessPartner(deviceInfoBean.getData().get(0).getEq().getBusinessPartner());
-
+        List<ProductBean> products = new ArrayList<>();
         ProductBean product = new ProductBean();
         product.setProductId(deviceInfoBean.getData().get(0).getEq().getId());
         deviceInfoBean.getData().get(0).getEq().getUdfValues().forEach(e->{
@@ -71,7 +72,7 @@ public class PortalApplicationTests {
         products.add(product);
         bean.setProducts(products);
         try{
-            maintenaceApi.serviceCall(bean);
+            maintenaceApi.mtRegister(bean);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -147,13 +148,66 @@ public class PortalApplicationTests {
         callBean.setDescription("description");
         callBean.setShippingAddress("shippingaddress");
         callBean.setWeather("Yes");
-        callBean.setWeatherMessage("message");
+        callBean.setWeatherMsg("message");
         callBean.setBattery("battery");
-        callBean.setBatteryMessage("batterymessage");
-        bean.setServiceCallBean(callBean);
+        callBean.setBatteryMsg("batterymessage");
+        bean.setServiceCall(callBean);
 
         try{
             maintenaceApi.serviceCall(bean);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 延保注册
+     */
+    @Test
+    public void serviceyanbaoCall(){
+        EIRegisterBean bean = new EIRegisterBean();
+        bean.setBillType("business");
+        bean.setBusinessName("test");
+
+        AddressBean addressBean = new AddressBean();
+        addressBean.setContryCode("AU");
+        addressBean.setCityName("city");
+        addressBean.setStateName("state");
+        addressBean.setPostCode("postcode");
+        addressBean.setAddressLine1("1");
+        addressBean.setAddressLine2("2");
+        bean.setAddress(addressBean);
+
+        bean.setFirstName("firstname");
+        bean.setLastName("lastName");
+        bean.setEmail("mail");
+        bean.setSendEmail("sendemail");
+        bean.setContactNumber("number");
+
+        String serialNumber = "J1904090450";
+        DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);
+        BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.SystemManagerEnum.PRODUCT_IS_EMPTY);
+
+        List<ProductBean> products = new ArrayList<>();
+        ProductBean product = new ProductBean();
+        product.setProductId(deviceInfoBean.getData().get(0).getEq().getId());
+        deviceInfoBean.getData().get(0).getEq().getUdfValues().forEach(e->{
+            if(e.getMeta().equals(Enums.API_PARAMS.Product_id.getId())){
+                product.setProductModel(e.getName());
+            }else if(e.getMeta().equals(Enums.API_PARAMS.Delivery_date.getId())){
+            }
+        });
+        product.setWarrantyType("W5YP");
+        product.setAmount(new BigDecimal("100"));
+        products.add(product);
+        bean.setProducts(products);
+
+        bean.setInstallDate("2019-09-09");
+        bean.setShippingAddress("shippingadress");
+        bean.setPurchaseOrder("order");
+
+        try{
+            maintenaceApi.eiRegister(bean);
         }catch (Exception e){
             e.printStackTrace();
         }

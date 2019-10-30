@@ -20,6 +20,10 @@ public class PriceService {
     @Resource
     private PriceListMapper priceListMapper;
 
+    public PriceList getModelPrice(String type){
+        return priceListMapper.selectPriceByType(type);
+    }
+
     public List<PriceList> priceLists(PriceListVO priceListVO){
         return priceListMapper.selectWithPage(priceListVO);
     }

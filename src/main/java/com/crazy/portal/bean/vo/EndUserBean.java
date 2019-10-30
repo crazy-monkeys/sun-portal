@@ -1,4 +1,4 @@
-package com.crazy.portal.bean.maintenance;
+package com.crazy.portal.bean.vo;
 
 import lombok.Data;
 

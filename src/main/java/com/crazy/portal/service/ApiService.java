@@ -3,18 +3,21 @@ package com.crazy.portal.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.crazy.portal.bean.api.ApiParamBean;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.RequestBodyBean;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
-import com.crazy.portal.bean.maintenance.MaintenanceBean;
+import com.crazy.portal.bean.vo.MaintenanceBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.BeanUtils;
+import com.crazy.portal.util.DateUtil;
 import com.crazy.portal.util.Enums;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -131,13 +134,19 @@ public class ApiService extends BaseService{
      *service call
      * @param bean
      */
-    public void serviceCall(MaintenanceBean bean)throws Exception{
+    public void serviceCall(ApiParamBean bean)throws Exception{
         String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
         String response = super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
         System.out.println(response);
     }
 
-    private RequestBodyBean getParam(MaintenanceBean bean){
+    public void materialCall(String param,String function)throws Exception{
+        String url = String.format("%s%s", callRootUrl,function);
+        String response = super.invokeApi(url, param, Enums.Api_Header_Dtos.SERVICECALL25);
+        System.out.println(response);
+    }
+
+    private RequestBodyBean getParam(ApiParamBean bean){
         RequestBodyBean requestBodyBean = new RequestBodyBean();
         List<UdfValuesBean> params = new ArrayList<>();
 
@@ -145,12 +154,15 @@ public class ApiService extends BaseService{
         for(Map.Entry<String, String> entry : mapStr.entrySet()){
             UdfValuesBean param = new UdfValuesBean();
             String paramId = Enums.API_PARAMS.Customer_Contact.getId(entry.getKey());
-            if(StringUtils.isNotEmpty(paramId)){
+            if(StringUtils.isNotEmpty(entry.getValue())&&StringUtils.isNotEmpty(paramId)){
                 param.setMeta(paramId);
-                param.setValue(entry.getKey());
+                param.setValue(entry.getValue());
                 params.add(param);
             }
         }
+
+        requestBodyBean.setStatusCode(bean.getStatusCode());
+        requestBodyBean.setStatusName(bean.getStatusName());
         requestBodyBean.setSubject(bean.getSubject());
         requestBodyBean.setUdfValues(params);
         requestBodyBean.setEquipments(bean.getEquipments());

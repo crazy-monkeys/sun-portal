@@ -122,4 +122,8 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <select id="selectPriceByType" resultMap="BaseResultMap">
+      select * from t_price_list where active =1 and model = #{productModel,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

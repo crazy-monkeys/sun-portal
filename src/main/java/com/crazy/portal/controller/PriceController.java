@@ -1,5 +1,6 @@
 package com.crazy.portal.controller;
 
+import com.crazy.portal.bean.BaseResponse;
 import com.crazy.portal.bean.price.PriceListVO;
 import com.crazy.portal.entity.price.PriceList;
 import com.crazy.portal.service.PriceService;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/price")
-public class PriceController {
+public class PriceController extends BaseController{
 
     @Resource
     private PriceService priceService;
@@ -32,7 +33,7 @@ public class PriceController {
      * @return
      */
     @GetMapping("/query")
-    public List<PriceList> query(@RequestBody(required = false) PriceListVO priceListVO){
-        return priceService.priceLists(priceListVO);
+    public BaseResponse query(@RequestBody(required = false) PriceListVO priceListVO){
+        return successResult(priceService.priceLists(priceListVO));
     }
 }

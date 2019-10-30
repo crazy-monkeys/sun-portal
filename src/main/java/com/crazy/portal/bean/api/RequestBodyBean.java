@@ -18,7 +18,7 @@ public class RequestBodyBean {
     //客户
     private String businessPartner;
     //主题
-    private String subject="Warranty Registration";
+    private String subject;
     //优先级(MEDIUM)
     private String priority="MEDIUM";
     //同步状态（固定值：IN_CLOUD）
@@ -28,9 +28,9 @@ public class RequestBodyBean {
     //类型名称（Warranty Registration）
     private String typeName="Warranty Registration";
     //状态码（-5/Z01/-2/-1/-4/-3）
-    private String statusCode="-3";
+    private String statusCode;
     //状态名称(Technically Complete）
-    private String statusName="Technically Complete";
+    private String statusName;
     //来源码（-3）
     private String originCode="-3";
     //来源名称(Web Portal)
@@ -54,13 +54,13 @@ public class RequestBodyBean {
     //udt
     private List<UdfValuesBean> udfValues;
 
-    public void setStartDateTime() {
+    public String getStartDateTime() {
         try{
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             this.startDateTime = sdf.format(new Date());
         }catch (Exception e){
 
         }
-
+        return startDateTime;
     }
 }

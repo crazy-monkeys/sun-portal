@@ -1,11 +1,9 @@
 package com.crazy.portal.controller;
 
 import com.crazy.portal.bean.BaseResponse;
+import com.crazy.portal.bean.vo.ProductBean;
 import com.crazy.portal.service.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -25,4 +23,8 @@ public class ProductController extends BaseController{
        return successResult(productService.getProduct(serialNumber));
     }
 
+    @PostMapping("/info/price")
+    public BaseResponse getProductPrice(ProductBean bean){
+        return successResult(productService.getPrice(bean));
+    }
 }

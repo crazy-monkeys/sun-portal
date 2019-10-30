@@ -1,7 +1,9 @@
 package com.crazy.portal.controller;
 
 import com.crazy.portal.bean.BaseResponse;
-import com.crazy.portal.bean.maintenance.MaintenanceBean;
+import com.crazy.portal.bean.vo.EIRegisterBean;
+import com.crazy.portal.bean.vo.MTRegistBean;
+import com.crazy.portal.bean.vo.MaintenanceBean;
 import com.crazy.portal.service.MaintenanceService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,21 @@ public class MaintenanceCreateController extends BaseController{
     @Resource
     private MaintenanceService maintenanceCreateService;
 
-    @PostMapping("/call")
-    public BaseResponse maintenanceCreate(MaintenanceBean bean){
+    @PostMapping("/mt/regist")
+    public BaseResponse maintenanceCreate(MTRegistBean bean){
+        maintenanceCreateService.mtRegister(bean);
+        return successResult();
+    }
+
+    @PostMapping("/service/call")
+    public BaseResponse serviceCall(MaintenanceBean bean){
         maintenanceCreateService.serviceCall(bean);
+        return successResult();
+    }
+
+    @PostMapping("/ei/register")
+    public BaseResponse EIRegist(EIRegisterBean bean){
+        maintenanceCreateService.eiRegister(bean);
         return successResult();
     }
 }

@@ -1,4 +1,4 @@
-package com.crazy.portal.bean.maintenance;
+package com.crazy.portal.bean.vo;
 
 import lombok.Data;
 
@@ -45,7 +45,7 @@ public class MaintenanceBean {
     //Want to claim an accessory? Specify here
     private String accessory;
 
-    private ServiceCallBean serviceCallBean;
+    private ServiceCallBean serviceCall;
 
     private BigDecimal totalAmount;
 }

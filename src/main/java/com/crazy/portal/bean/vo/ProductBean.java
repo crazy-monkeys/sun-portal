@@ -1,7 +1,8 @@
-package com.crazy.portal.bean.maintenance;
+package com.crazy.portal.bean.vo;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -18,5 +19,11 @@ public class ProductBean {
 
     private String productNumber;
 
-   private List<WarrantyBean> warrantys;
+    private String deliveryDate;
+
+    private String warrantyType;
+
+    private String purchaseOrder;
+
+    private BigDecimal amount;
 }
