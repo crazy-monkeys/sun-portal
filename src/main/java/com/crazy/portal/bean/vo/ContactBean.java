@@ -2,6 +2,8 @@ package com.crazy.portal.bean.vo;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
+
 /**
  * @ClassName: ContactBean
  * @Author: God Man Qiu~
@@ -16,8 +18,10 @@ public class ContactBean {
     //last name
     private String contactLastName;
     //联系人邮箱
+    @Email(message="邮箱格式错误")
     private String contactEmail;
     //收件邮箱
+    @Email(message="邮箱格式错误")
     private String sendEmail;
     //number
     private String contactNumber;

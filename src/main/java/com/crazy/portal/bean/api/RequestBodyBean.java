@@ -51,6 +51,8 @@ public class RequestBodyBean {
     private String contact;
     //设备
     private String[] equipments;
+
+    private String remarks;
     //udt
     private List<UdfValuesBean> udfValues;
 

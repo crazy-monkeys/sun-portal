@@ -88,7 +88,7 @@ public class PortalApplicationTests {
         ContactBean contact = new ContactBean();
         AddressBean addr = new AddressBean();
 
-        bean.setType(2);
+
 
         String serialNumber = "J1904090450";
         DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);

@@ -2,6 +2,7 @@ package com.crazy.portal.bean.vo;
 
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
  */
 @Data
 public class EIRegisterBean {
+    private String type;
     private String billType;
     private String businessName;
     private String abn;
@@ -19,7 +21,9 @@ public class EIRegisterBean {
 
     private String firstName;
     private String lastName;
+    @Email(message="邮箱格式错误")
     private String email;
+    @Email(message="邮箱格式错误")
     private String sendEmail;
     private String contactNumber;
     private List<ProductBean> products;
