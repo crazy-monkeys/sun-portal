@@ -13,6 +13,6 @@ import java.util.List;
 @Data
 public class WarehouseOwnerRequest {
 
-    private String reservedMaterialWarehouse;
+    private boolean reservedMaterialWarehouse;
     private List<String> owners;
 }

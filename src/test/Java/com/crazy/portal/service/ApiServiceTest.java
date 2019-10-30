@@ -6,8 +6,12 @@ import com.crazy.portal.bean.api.device.DeviceData;
 import com.crazy.portal.bean.api.device.DeviceEq;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
+import com.crazy.portal.bean.api.inventory.InventoryInfoReponse;
+import com.crazy.portal.bean.api.inventory.InventoryInfoRequest;
 import com.crazy.portal.bean.api.token.TokenBean;
+import com.crazy.portal.bean.api.warehouse.WarehouseOwnerRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -87,5 +92,46 @@ public class ApiServiceTest {
         AttachmentResponse attachmentResponse = apiService.attachmentUpload(attachmentRequest);
         log.info(attachmentResponse.toString());
         Assert.assertTrue(attachmentResponse.getFileName().equals("test2.txt"));
+    }
+
+    @Test
+    public void getMaterialIdByCode() {
+        String id = apiService.getMaterialIdByCode("P400104");
+        log.info(id);
+        Assert.assertTrue(StringUtils.isNotEmpty(id));
+    }
+
+    @Test
+    public void getWarehouseIdByCode() {
+        String id = apiService.getWarehouseIdByCode("P400104");
+        log.info(id);
+        Assert.assertTrue(StringUtils.isNotEmpty(id));
+    }
+
+    @Test
+    public void updateWarehouseOwner() {
+        String warehouseId = "DB5BE91DC8F24DB7B95D9693F8EBD531";
+        WarehouseOwnerRequest warehouseOwnerRequest = new WarehouseOwnerRequest();
+        warehouseOwnerRequest.setReservedMaterialWarehouse(false);
+        warehouseOwnerRequest.setOwners(Arrays.asList("92DD31EF89FD46C38B1DDA98108D3F2F", "C1E42CCAF0554C7DA4E5286C88B5E135"));
+        //没有返回值？？
+        apiService.updateWarehouseOwner(warehouseId,warehouseOwnerRequest);
+    }
+
+    @Test
+    public void getOwnerId() {
+        String id = apiService.getOwnerId("rxie01");
+        log.info(id);
+        Assert.assertTrue(StringUtils.isNotEmpty(id));
+    }
+
+    @Test
+    public void updateInventoryInfo() {
+        InventoryInfoRequest inventoryInfoRequest = new InventoryInfoRequest();
+        inventoryInfoRequest.setWarehouse("F23AE0184E734D99B4C321C9ACF49F8");
+        inventoryInfoRequest.setItem("6F9B4E73D0C64971B64407267B022341");
+        inventoryInfoRequest.setInStock("100");
+        InventoryInfoReponse res = apiService.updateInventoryInfo(inventoryInfoRequest);
+        Assert.assertTrue(res.getItem().equals("6F9B4E73D0C64971B64407267B022341"));
     }
 }
