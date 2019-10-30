@@ -9,6 +9,9 @@ import com.crazy.portal.bean.api.attachment.AttachmentResponse;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.RequestBodyBean;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
+import com.crazy.portal.bean.api.inventory.InventoryInfoReponse;
+import com.crazy.portal.bean.api.inventory.InventoryInfoRequest;
+import com.crazy.portal.bean.api.warehouse.WarehouseOwnerRequest;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.BeanUtils;
 import com.crazy.portal.util.Enums;
@@ -35,7 +38,8 @@ public class ApiService extends BaseService{
      * @param serialNumber 序列号
      */
     public DeviceInfoBean getDeviceInfo(String serialNumber){
-        try{String url = String.format("%s%s", super.callRootUrl,"/data/query/v1");
+        try{
+            String url = String.format("%s%s", super.callRootUrl,"/data/query/v1");
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query"," select eq.id,eq.businessPartner,eq.udf.Z_Model_excl,eq.udf.Z_DispatchDate_local" +
                     " from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
@@ -134,7 +138,99 @@ public class ApiService extends BaseService{
         }
     }
 
-    
+    /**
+     * 根据物料号获取物料ID
+     * @param code
+     * @return
+     */
+    public String getMaterialIdByCode(String code){
+        try {
+            String url = String.format("%s%s",super.callRootUrl,"/data/query/v1");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query"," SELECT itt.id FROM Item itt WHERE itt.code = '"+code+"'");
+
+            return super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ITEM22);
+        } catch (Exception e) {
+            log.error("",e);
+            throw new BusinessException("",e);
+        }
+    }
+
+    /**
+     * 根据仓库号获取Id
+     * @param code
+     * @return
+     */
+    public String getWarehouseIdByCode(String code){
+        try {
+            String url = String.format("%s%s",super.callRootUrl,"/data/query/v1");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query"," SELECT whh.id FROM Warehouse whh WHERE whh.code = '"+code+"'");
+
+            return super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.WAREHOUSE15);
+        } catch (Exception e) {
+            log.error("",e);
+            throw new BusinessException("",e);
+        }
+    }
+
+
+    /**
+     * 更新仓库owner
+     * @param warehouseId
+     * @param warehouseOwnerRequest
+     */
+    public void updateWarehouseOwner(String warehouseId,WarehouseOwnerRequest warehouseOwnerRequest){
+        try {
+            String url = String.format("%s%s%s",super.callRootUrl,"/data/v4/Warehouse/",warehouseId);
+            //没有返回值？？
+            super.invokeApi(url, JSON.toJSONString(warehouseOwnerRequest), Enums.Api_Header_Dtos.ATTACHMENT15);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取ownerId
+     * @param externalld 外部ID
+     * @return
+     */
+    public String getOwnerId(String externalld){
+        try {
+            String url = String.format("%s%s",super.callRootUrl,"/data/query/v1");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("query"," SELECT pr.id FROM Person pr WHERE pr.externalId = '"+externalld+"'");
+
+            return super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.PERSON20);
+        } catch (Exception e) {
+            log.error("",e);
+            throw new BusinessException("",e);
+        }
+    }
+
+
+    /**
+     * 批量更新
+     * @return
+     */
+    public InventoryInfoReponse updateInventoryInfo(InventoryInfoRequest inventoryInfoRequest){
+        try {
+            String url = String.format("%s%s",super.callRootUrl,"/data/v4/ItemWarehouseLevel");
+            String response = super.invokeApi(url, JSON.toJSONString(inventoryInfoRequest), Enums.Api_Header_Dtos.ITEMWAREHOUSELEVEL14);
+
+            JSONObject data = this.getApiData(response);
+            if (data == null) return null;
+
+            Object itemWarehouseLevel = data.get("itemWarehouseLevel");
+            if(itemWarehouseLevel == null) return null;
+
+
+            return JSON.parseObject(JSON.toJSONString(itemWarehouseLevel),InventoryInfoReponse.class);
+        } catch (Exception e) {
+            log.error("",e);
+            throw new BusinessException("",e);
+        }
+    }
 
     /**
      * 封装提取返回体中的data

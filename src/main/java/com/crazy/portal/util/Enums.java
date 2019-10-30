@@ -142,7 +142,10 @@ public class Enums {
         ACTIVITY28("Activity.28"),
         ADDRESS18("Address.18"),
         ITEM22("Item.22"),
-        ATTACHMENT15("Attachment.15");
+        ATTACHMENT15("Attachment.15"),
+        ITEMWAREHOUSELEVEL14("ItemWarehouseLevel.14"),
+        WAREHOUSE15("Warehouse.15"),
+        PERSON20("Person.20");
 
         Api_Header_Dtos(String value){
             this.value = value;
