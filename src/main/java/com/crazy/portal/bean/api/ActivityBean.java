@@ -16,7 +16,7 @@ public class ActivityBean {
     private String executionStage="DISPATCHING";
     private Boolean inactive=false;
     private String status;
-    private ObjectBean objectBean;
+    private ObjectBean object;
     private String equipments;
     private String externalId;
     private String startDateTime;

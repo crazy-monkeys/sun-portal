@@ -2,6 +2,7 @@ package com.crazy.portal.bean.vo;
 
 import lombok.Data;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -11,6 +12,8 @@ import java.util.List;
  */
 @Data
 public class MTRegistBean {
+    private String type;
+    @Valid
     private ContactBean contacts;
     private AddressBean address;
 
@@ -20,4 +23,5 @@ public class MTRegistBean {
     private String installCec;
     private String suggestions;
     private String businessPartner;
+
 }
