@@ -174,7 +174,6 @@ public class ApiService extends BaseService{
         }
     }
 
-
     /**
      * 更新仓库owner
      * @param warehouseId
@@ -252,9 +251,10 @@ public class ApiService extends BaseService{
      *service call
      * @param bean
      */
-    public String serviceCall(ApiParamBean bean)throws Exception{
+    public void serviceCall(ApiParamBean bean)throws Exception{
         String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
-        return super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
+        String response = super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
+        System.out.println(response);
     }
 
     public void materialCall(String param,String function)throws Exception{
@@ -284,7 +284,6 @@ public class ApiService extends BaseService{
         requestBodyBean.setUdfValues(params);
         requestBodyBean.setEquipments(bean.getEquipments());
         requestBodyBean.setBusinessPartner(bean.getBusinessPartner());
-        requestBodyBean.setRemarks(bean.getRemark());
         return requestBodyBean;
     }
 }
