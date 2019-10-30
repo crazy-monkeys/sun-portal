@@ -1,6 +1,7 @@
 package com.crazy.portal.service;
 
-import com.alibaba.fastjson.JSON;
+import com.crazy.portal.bean.api.attachment.AttachmentRequest;
+import com.crazy.portal.bean.api.attachment.AttachmentResponse;
 import com.crazy.portal.bean.api.device.DeviceData;
 import com.crazy.portal.bean.api.device.DeviceEq;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
@@ -12,10 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -75,5 +74,18 @@ public class ApiServiceTest {
         Assert.assertTrue(udfValuesBean.getMeta().equals("7C13CCA8BC4A472FA20493D0AD690951"));
         Assert.assertTrue(udfValuesBean.getValue().equals("59"));
         Assert.assertTrue(udfValuesBean.getName().equals("Z_Capacity"));
+    }
+
+    @Test
+    public void attachmentUpload() {
+        AttachmentRequest attachmentRequest = new AttachmentRequest();
+        attachmentRequest.setFileName("test2.txt");
+        attachmentRequest.setFileContent("MTIzZDAxZWQtZTExNy00YWRlLWFmYzQtN2U2OTdhYTQ1OTRmOjZjZmZmZGM1LTdlMjktNGM4YS1iNTRkLTEyZjgyMzI5ZTdmNg==");
+        attachmentRequest.setTitle("test2.txt");
+        attachmentRequest.setType("TXT");
+
+        AttachmentResponse attachmentResponse = apiService.attachmentUpload(attachmentRequest);
+        log.info(attachmentResponse.toString());
+        Assert.assertTrue(attachmentResponse.getFileName().equals("test2.txt"));
     }
 }

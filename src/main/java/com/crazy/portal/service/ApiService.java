@@ -4,20 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.crazy.portal.bean.api.ApiParamBean;
+import com.crazy.portal.bean.api.attachment.AttachmentRequest;
+import com.crazy.portal.bean.api.attachment.AttachmentResponse;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.RequestBodyBean;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
-import com.crazy.portal.bean.vo.MaintenanceBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.BeanUtils;
-import com.crazy.portal.util.DateUtil;
 import com.crazy.portal.util.Enums;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +106,28 @@ public class ApiService extends BaseService{
             if(devicePowerObj == null) return null;
 
             return JSON.parseObject(JSON.toJSONString(devicePowerObj),UdfValuesBean.class);
+        } catch (Exception e) {
+            log.error("",e);
+            throw new BusinessException("",e);
+        }
+    }
+
+    /**
+     * 附件上传
+     * @return
+     */
+    public AttachmentResponse attachmentUpload(AttachmentRequest attachmentRequest){
+        try {
+            String url = String.format("%s%s",super.callRootUrl,"/data/v4/Attachment");
+            String response = super.invokeApi(url, JSON.toJSONString(attachmentRequest), Enums.Api_Header_Dtos.ATTACHMENT15);
+
+            JSONObject data = this.getApiData(response);
+            if (data == null) return null;
+
+            Object attachment = data.get("attachment");
+            if(attachment == null) return null;
+
+            return JSON.parseObject(JSON.toJSONString(attachment),AttachmentResponse.class);
         } catch (Exception e) {
             log.error("",e);
             throw new BusinessException("",e);
