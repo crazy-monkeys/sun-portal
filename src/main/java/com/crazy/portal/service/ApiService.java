@@ -149,7 +149,18 @@ public class ApiService extends BaseService{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query"," SELECT itt.id FROM Item itt WHERE itt.code = '"+code+"'");
 
-            return super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ITEM22);
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ITEM22);
+            JSONObject data = this.getApiData(response);
+            if (data == null) return null;
+
+            Object itt = data.get("itt");
+
+            if(itt == null) return null;
+
+
+            JSONObject materialObj = JSON.parseObject(JSON.toJSONString(itt),JSONObject.class);
+
+            return materialObj != null ? (String)materialObj.get("id") : null;
         } catch (Exception e) {
             log.error("",e);
             throw new BusinessException("",e);

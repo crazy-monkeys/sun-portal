@@ -98,9 +98,11 @@ public class ApiServiceTest {
     public void getMaterialIdByCode() {
         String id = apiService.getMaterialIdByCode("P400104");
         log.info(id);
-        Assert.assertTrue(StringUtils.isNotEmpty(id));
+        Assert.assertTrue(id.equals("A82DD58BA85C4387BBC42DDFE813F5A8"));
     }
 
+
+    //TODO 返回为null数组
     @Test
     public void getWarehouseIdByCode() {
         String id = apiService.getWarehouseIdByCode("P400104");
@@ -118,6 +120,7 @@ public class ApiServiceTest {
         apiService.updateWarehouseOwner(warehouseId,warehouseOwnerRequest);
     }
 
+    //TODO 返回为null数组
     @Test
     public void getOwnerId() {
         String id = apiService.getOwnerId("rxie01");
@@ -125,6 +128,11 @@ public class ApiServiceTest {
         Assert.assertTrue(StringUtils.isNotEmpty(id));
     }
 
+    //{"error":"CA-09","message":"CA-09: Could not deserialize uploaded object to [ItemWarehouseLevelDTO_V14],
+    // because [ it contains invalid json syntax or some of the passed data doesn't respect the required data type]",
+    // "values":["ItemWarehouseLevelDTO_V14","
+    // it contains invalid json syntax or some of the passed data doesn't respect the required data type"],
+    // "id":"9d11f1b8064b40a0a260cfd6637b91b3"}
     @Test
     public void updateInventoryInfo() {
         InventoryInfoRequest inventoryInfoRequest = new InventoryInfoRequest();
