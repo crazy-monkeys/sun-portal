@@ -60,7 +60,8 @@ public class MaintenanceService {
 
             apiParamBean.setContryCode(country);
             apiParamBean.setPostCode(bean.getAddress().getPostCode());
-            String customerAddress = String.format("%s%s%s%s",bean.getAddress().getCityName(),
+            String customerAddress = String.format("%s%s%s%s",
+                    bean.getAddress().getCityName(),
                     bean.getAddress().getStateName(),
                     bean.getAddress().getAddressLine1(),
                     bean.getAddress().getAddressLine2());
@@ -73,6 +74,7 @@ public class MaintenanceService {
             //TODO save response
             String code = JSONObject.parseObject(serviceCall(apiParamBean)).getJSONArray(DATA).getJSONObject(0).getJSONObject(SERVICE).getString(CODE);
             if(StringUtils.isNotEmpty(code)){
+                System.out.println("service Code :"+code);
                 return code;
             }
             throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
@@ -282,8 +284,8 @@ public class MaintenanceService {
     }
     private void checkFile(MultipartFile file, ApiParamBean apiParamBean){
         if(null == file){
-            apiParamBean.setElectricalComplianceCertificate(false);
-            apiParamBean.setInvliceUpload(false);
+            apiParamBean.setElectricalComplianceCertificate(true);
+            apiParamBean.setInvliceUpload(true);
         }else{
             apiParamBean.setElectricalComplianceCertificate(true);
             apiParamBean.setInvliceUpload(true);

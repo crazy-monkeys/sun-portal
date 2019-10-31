@@ -86,14 +86,14 @@ public class Enums {
         Contact_Number("EB7AF9DC6E8D49FC98DC67ACE96BFFB6","contactNumber"), //number
         Customer_Address("9AD25F4EAEE54EAC86D6D7DD2E2FDA2E","customerAddress"), //安装地址
         Business_Name("A20288A9EAD24CC28564B4EEA7B7968F","businessName"), //终端客户
-        Reference("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Electrical_Compliance_Certificate("A20288A9EAD24CC28564B4EEA7B7968F","electricalComplianceCertificate"),
-        Invoice_Uploaded("A20288A9EAD24CC28564B4EEA7B7968F",""),
-        Fault_Type("A20288A9EAD24CC28564B4EEA7B7968F","faultType"),
-        Fault_Description("A20288A9EAD24CC28564B4EEA7B7968F","faultDescription"),
-        Status_Message_LCD("A20288A9EAD24CC28564B4EEA7B7968F","lcdMessage"),
-        Inverter_Exposed_Weather("A20288A9EAD24CC28564B4EEA7B7968F","isWeather"),
-        Intervter_Connect_Battery("A20288A9EAD24CC28564B4EEA7B7968F","battery"),
+        Reference("0BB75D000E45404FAA3E2AB8189B1301",""),
+        Electrical_Compliance_Certificate("1029856393994F4695065FB1A76D00B9","electricalComplianceCertificate"),
+        Invoice_Uploaded("88D2D00FB3544918942470A7A3F6281C","invliceUpload"),
+        Fault_Type("CF85B3DC233E4B70852F409812713A37","faultType"),
+        Fault_Description("D31C9BE662904521A5A7577311D282FF","faultDescription"),
+        Status_Message_LCD("99763AADA25D422089AAAB338C49E848","lcdMessage"),
+        Inverter_Exposed_Weather("776769F766484874ADD9354E01AF0F16","isWeather"),
+        Intervter_Connect_Battery("B029CDE660DA4053BACC2322E90B29CD","battery"),
         Post_Code("49D5913D6552439FABBCE76A26B57014","postCode"),
         Country("48B4E9768FE14BC9B60D231B80893A36","contryCode"),
         AMOUNT_EXCL_GST("DF5B2DC1E98F4509B11D866FFB2371C2","amountGST"),

@@ -262,10 +262,9 @@ public class ApiService extends BaseService{
      *service call
      * @param bean
      */
-    public void serviceCall(ApiParamBean bean)throws Exception{
+    public String serviceCall(ApiParamBean bean)throws Exception{
         String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
-        String response = super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
-        System.out.println(response);
+        return super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
     }
 
     public void materialCall(String param,String function)throws Exception{
@@ -289,12 +288,13 @@ public class ApiService extends BaseService{
             }
         }
 
+        requestBodyBean.setEquipments(bean.getEquipments());
+        requestBodyBean.setBusinessPartner(bean.getBusinessPartner());
         requestBodyBean.setStatusCode(bean.getStatusCode());
         requestBodyBean.setStatusName(bean.getStatusName());
         requestBodyBean.setSubject(bean.getSubject());
         requestBodyBean.setUdfValues(params);
-        requestBodyBean.setEquipments(bean.getEquipments());
-        requestBodyBean.setBusinessPartner(bean.getBusinessPartner());
+        requestBodyBean.setRemarks(bean.getRemark());
         return requestBodyBean;
     }
 }
