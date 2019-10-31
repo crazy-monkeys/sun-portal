@@ -178,7 +178,18 @@ public class ApiService extends BaseService{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query"," SELECT whh.id FROM Warehouse whh WHERE whh.code = '"+code+"'");
 
-            return super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.WAREHOUSE15);
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.WAREHOUSE15);
+            JSONObject data = this.getApiData(response);
+            if (data == null) return null;
+
+            Object whh = data.get("whh");
+
+            if(whh == null) return null;
+
+
+            JSONObject materialObj = JSON.parseObject(JSON.toJSONString(whh),JSONObject.class);
+
+            return materialObj != null ? (String)materialObj.get("id") : null;
         } catch (Exception e) {
             log.error("",e);
             throw new BusinessException("",e);
@@ -193,8 +204,7 @@ public class ApiService extends BaseService{
     public void updateWarehouseOwner(String warehouseId,WarehouseOwnerRequest warehouseOwnerRequest){
         try {
             String url = String.format("%s%s%s",super.callRootUrl,"/data/v4/Warehouse/",warehouseId);
-            //没有返回值？？
-            super.invokeApi(url, JSON.toJSONString(warehouseOwnerRequest), Enums.Api_Header_Dtos.ATTACHMENT15);
+            super.invokeApi(url, JSON.toJSONString(warehouseOwnerRequest), Enums.Api_Header_Dtos.WAREHOUSE15);
         } catch (Exception e) {
             e.printStackTrace();
         }
