@@ -102,12 +102,11 @@ public class ApiServiceTest {
     }
 
 
-    //TODO 返回为null数组
     @Test
     public void getWarehouseIdByCode() {
-        String id = apiService.getWarehouseIdByCode("P400104");
+        String id = apiService.getWarehouseIdByCode("st02");
         log.info(id);
-        Assert.assertTrue(StringUtils.isNotEmpty(id));
+        Assert.assertTrue(id.equals("DB5BE91DC8F24DB7B95D9693F8EBD531"));
     }
 
     @Test
@@ -116,11 +115,10 @@ public class ApiServiceTest {
         WarehouseOwnerRequest warehouseOwnerRequest = new WarehouseOwnerRequest();
         warehouseOwnerRequest.setReservedMaterialWarehouse(false);
         warehouseOwnerRequest.setOwners(Arrays.asList("92DD31EF89FD46C38B1DDA98108D3F2F", "C1E42CCAF0554C7DA4E5286C88B5E135"));
-        //没有返回值？？
         apiService.updateWarehouseOwner(warehouseId,warehouseOwnerRequest);
     }
 
-    //TODO 返回为null数组
+    //TODO return {"data":[]}
     @Test
     public void getOwnerId() {
         String id = apiService.getOwnerId("rxie01");
