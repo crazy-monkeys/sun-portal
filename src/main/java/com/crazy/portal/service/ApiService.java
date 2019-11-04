@@ -261,7 +261,7 @@ public class ApiService extends BaseService{
         if (dataArray == null) return null;
 
         JSONArray jsonArray = (JSONArray) dataArray.get("data");
-        if (jsonArray == null) return null;
+        if (jsonArray == null || jsonArray.size() == 0) return null;
 
         JSONObject adrsObject = (JSONObject) jsonArray.get(0);
         if (adrsObject == null) return null;
