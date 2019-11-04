@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crazy.portal.dao.system.SysSeqMapper">
+  <resultMap id="BaseResultMap" type="com.crazy.portal.entity.system.SysSeq">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="seq_model" jdbcType="VARCHAR" property="seqModel" />
+    <result column="seq_day" jdbcType="VARCHAR" property="seqDay" />
+    <result column="seq_value" jdbcType="INTEGER" property="seqValue" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_tiem" jdbcType="TIMESTAMP" property="updateTiem" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, seq_model, seq_day, seq_value, create_time, update_tiem
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_seq
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_seq
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.crazy.portal.entity.system.SysSeq">
+    insert into t_sys_seq (id, seq_model, seq_day, 
+      seq_value, create_time, update_tiem
+      )
+    values (#{id,jdbcType=INTEGER}, #{seqModel,jdbcType=VARCHAR}, #{seqDay,jdbcType=VARCHAR}, 
+      #{seqValue,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTiem,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.crazy.portal.entity.system.SysSeq" useGeneratedKeys="true" keyProperty="id">
+    insert into t_sys_seq
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="seqModel != null">
+        seq_model,
+      </if>
+      <if test="seqDay != null">
+        seq_day,
+      </if>
+      <if test="seqValue != null">
+        seq_value,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTiem != null">
+        update_tiem,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="seqModel != null">
+        #{seqModel,jdbcType=VARCHAR},
+      </if>
+      <if test="seqDay != null">
+        #{seqDay,jdbcType=VARCHAR},
+      </if>
+      <if test="seqValue != null">
+        #{seqValue,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTiem != null">
+        #{updateTiem,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.crazy.portal.entity.system.SysSeq">
+    update t_sys_seq
+    <set>
+      <if test="seqModel != null">
+        seq_model = #{seqModel,jdbcType=VARCHAR},
+      </if>
+      <if test="seqDay != null">
+        seq_day = #{seqDay,jdbcType=VARCHAR},
+      </if>
+      <if test="seqValue != null">
+        seq_value = #{seqValue,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTiem != null">
+        update_tiem = #{updateTiem,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.crazy.portal.entity.system.SysSeq">
+    update t_sys_seq
+    set seq_model = #{seqModel,jdbcType=VARCHAR},
+      seq_day = #{seqDay,jdbcType=VARCHAR},
+      seq_value = #{seqValue,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_tiem = #{updateTiem,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByDayModel" resultMap="BaseResultMap">
+    select * from t_sys_seq where seq_model = #{model,jdbcType=VARCHAR} and seq_day= #{day,jdbcType=VARCHAR}
+  </select>
+</mapper>

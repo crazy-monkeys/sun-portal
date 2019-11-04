@@ -78,6 +78,7 @@ public class ErrorCodes {
         IN_DATE_IS_BEFORE(10051,"安装时间不能晚于创单时间"),
         PRICE_IS_NULL(10052,"设备没有维护对应的价格"),
         INSTALL_DATE_IS_NOT_NULL(10053,"请选择安装时间"),
+        EMAIL_IS_NO(10054,"确认邮箱错误"),
         ;
 
 

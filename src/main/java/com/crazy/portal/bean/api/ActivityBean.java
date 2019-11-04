@@ -1,6 +1,9 @@
 package com.crazy.portal.bean.api;
 
+import com.crazy.portal.bean.api.device.UdfValuesBean;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @ClassName: ActivityBean
@@ -15,13 +18,14 @@ public class ActivityBean {
     private String syncStatus="IN_CLOUD";
     private String executionStage="DISPATCHING";
     private Boolean inactive=false;
-    private String status;
+    private String status="OPEN";
     private ObjectBean object;
-    private String equipments;
+    private String equipment;
     private String externalId;
     private String startDateTime;
     private String endDateTime;
     private String earliestStartDateTime;
     private String dueDateTime;
-    private String subType="E911C630FCD2478E84B003F4233CF5B4";
+    //private String subType;
+    private List<UdfValuesBean> udfValues;
 }

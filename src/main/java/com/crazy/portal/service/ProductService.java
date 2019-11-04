@@ -50,16 +50,21 @@ public class ProductService {
         return responseBean;
     }
 
+    /**
+     *
+     * @param bean
+     * @return
+     */
     public BigDecimal getPrice(ProductBean bean){
         BigDecimal price = BigDecimal.ONE;
         try{
-            bean.setDeliveryDate(DateUtil.format(new Date(),DateUtil.WEB_FORMAT));
             Date deliveryDate = DateUtil.parseDate(bean.getDeliveryDate(),DateUtil.WEB_FORMAT);
-            Date endDate = DateUtil.addDays(new Date(),365);
+            Date endDate = DateUtil.addDays(deliveryDate,365);
 
             PriceList priceList = priceService.getModelPrice(bean.getProductModel());
             BusinessUtil.assertFlase(null == priceList,ErrorCodes.SystemManagerEnum.PRICE_IS_NULL);
-            if(deliveryDate.before(endDate)){
+
+            if(new Date().before(endDate)){
                 price = priceList.getStandardEarlyBirdDiscount();
             }else{
                 price = priceList.getPartEarlyBirdDiscount();

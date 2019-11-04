@@ -7,11 +7,14 @@ import com.crazy.portal.bean.api.ActivityBean;
 import com.crazy.portal.bean.api.ApiParamBean;
 import com.crazy.portal.bean.api.MaterialRequestBodyBean;
 import com.crazy.portal.bean.api.ObjectBean;
+import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.vo.EIRegisterBean;
 import com.crazy.portal.bean.vo.MTRegistBean;
 import com.crazy.portal.bean.vo.MaintenanceBean;
 import com.crazy.portal.bean.vo.ProductBean;
 import com.crazy.portal.config.exception.BusinessException;
+import com.crazy.portal.dao.system.SysSeqMapper;
+import com.crazy.portal.entity.system.SysSeq;
 import com.crazy.portal.util.BusinessUtil;
 import com.crazy.portal.util.DateUtil;
 import com.crazy.portal.util.Enums;
@@ -20,10 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,18 +41,22 @@ public class MaintenanceService {
     private final static String DATA = "data";
     private final static String SERVICE = "serviceCall";
     private final static String CODE = "code";
+    private final static String OBJECTID = "id";
     @Resource
     private ApiService apiService;
     @Resource
     private ProductService productService;
+    @Resource
+    private SysSeqMapper sysSeqMapper;
 
     public String mtRegister(MTRegistBean bean){
         try{
             this.checkDate(bean.getInstallDate());
-            String country = bean.getAddress().getContryCode();
+            String country = bean.getCountry();
             this.checkProduct(bean.getProducts(),country);
 
             ApiParamBean apiParamBean = mappingApiParamBean(bean.getType());
+            apiParamBean.setContryCode(country);
             this.checkFile(null, apiParamBean);
 
             apiParamBean.setEquipments(new String[]{bean.getProducts().get(0).getProductId()});
@@ -58,7 +65,7 @@ public class MaintenanceService {
             apiParamBean.setInstallDate(bean.getInstallDate());
             apiParamBean.setInstallCec(bean.getInstallCec());
 
-            apiParamBean.setContryCode(country);
+            apiParamBean.setCurrency("AUD");
             apiParamBean.setPostCode(bean.getAddress().getPostCode());
             String customerAddress = String.format("%s%s%s%s",
                     bean.getAddress().getCityName(),
@@ -89,21 +96,18 @@ public class MaintenanceService {
     public String serviceCall(MaintenanceBean bean){
         try{
             this.checkDate(bean.getInstallDate());
-            String country = bean.getContact().getAddress().getContryCode();
+            String country = bean.getCountry();
             this.checkProduct(bean.getProducts(),country);
 
             ApiParamBean apiParamBean = mappingApiParamBean(bean.getType());
             //this.checkFile(null, apiParamBean);
 
-
-            //负责人
-            //联系人
-            //Reference
             apiParamBean.setContryCode(country);
             apiParamBean.setEquipments(new String[]{bean.getProducts().get(0).getProductId()});
             apiParamBean.setBusinessPartner(bean.getBusinessPartner());
 
-            if(null != bean.getContact()){
+            if(null != bean.getContact().getAddress()){
+                apiParamBean.setContactEmial(bean.getContact().getContactEmail());
                 apiParamBean.setAbn(bean.getContact().getAbn());
                 apiParamBean.setCustomerContact(bean.getContact().getPerson());
                 apiParamBean.setContactNumber(bean.getContact().getContactNumber());
@@ -116,6 +120,7 @@ public class MaintenanceService {
                 apiParamBean.setBusinessName(bean.getContact().getBusinessName());
                 apiParamBean.setPostCode(bean.getContact().getAddress().getPostCode());
             }else{
+                apiParamBean.setContactEmial(bean.getEndUser().getContactEmail());
                 apiParamBean.setCustomerContact(bean.getEndUser().getPerson());
                 apiParamBean.setContactNumber(bean.getEndUser().getContactNumber());
                 String customerAddress = String.format("%s%s%s%s",bean.getEndUser().getAddress().getCityName(),
@@ -127,18 +132,24 @@ public class MaintenanceService {
                 apiParamBean.setPostCode(bean.getEndUser().getAddress().getPostCode());
             }
 
-            apiParamBean.setFaultType(bean.getServiceCall().getFault());
+            apiParamBean.setFaultType(bean.getServiceCall().getFault().equals("Permanent")?"1":"2");
             apiParamBean.setFaultDescription(bean.getServiceCall().getDescription());
             apiParamBean.setLcdMessage(bean.getServiceCall().getLcd());
             apiParamBean.setIsWeather(bean.getServiceCall().getWeather());
-            apiParamBean.setBattery(bean.getServiceCall().getBattery());
+            apiParamBean.setBatteryModel(bean.getServiceCall().getModel());
            // apiParamBean.setInstallInstaller(bean.getInstallInstaller());
             apiParamBean.setInstallDate(bean.getInstallDate());
 
+            apiParamBean.setReference(bean.getServiceCall().getWeatherMsg());
+            apiParamBean.setLocation(bean.getServiceCall().getLocation());
+            apiParamBean.setRemark(bean.getServiceCall().getBatteryMsg());
+
             //TODO save response
-            String code = JSONObject.parseObject(serviceCall(apiParamBean)).getJSONArray(DATA).getJSONObject(0).getJSONObject(SERVICE).getString(CODE);
+            JSONObject serviceCall = JSONObject.parseObject(serviceCall(apiParamBean)).getJSONArray(DATA).getJSONObject(0).getJSONObject(SERVICE);
+            String code = serviceCall.getString(CODE);
+            String objectId = serviceCall.getString(OBJECTID);
             if(StringUtils.isNotEmpty(code)){
-                activityCreate(apiParamBean,code);
+                activityCreate(apiParamBean,objectId);
                 return code;
             }
             throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
@@ -154,11 +165,14 @@ public class MaintenanceService {
     public String eiRegister(EIRegisterBean bean){
         try{
             this.checkDate(bean.getInstallDate());
-            String country = bean.getAddress().getContryCode();
+            String country = bean.getCountry();
             this.checkProduct(bean.getProducts(),country);
+            BusinessUtil.assertTrue(bean.getEmail().equals(bean.getSendEmail()),ErrorCodes.SystemManagerEnum.EMAIL_IS_NO);
 
             ApiParamBean apiParamBean = mappingApiParamBean(bean.getType());
-            //this.checkFile(null, apiParamBean);
+            apiParamBean.setContryCode(country);
+            apiParamBean.setEquipments(new String[]{bean.getProducts().get(0).getProductId()});
+            apiParamBean.setBusinessPartner(bean.getBusinessPartner());
 
             apiParamBean.setBusinessName(bean.getBusinessName());
             apiParamBean.setPostCode(bean.getPostCode());
@@ -166,8 +180,13 @@ public class MaintenanceService {
 
             apiParamBean.setInstallInstaller(bean.getFirstName()+bean.getLastName());
             apiParamBean.setInstallDate(bean.getInstallDate());
+            String customerAddress = String.format("%s%s%s%s",bean.getAddress().getCityName(),
+                    bean.getAddress().getStateName(),
+                    bean.getAddress().getAddressLine1(),
+                    bean.getAddress().getAddressLine2());
+            apiParamBean.setCustomerAddress(customerAddress);
             apiParamBean.setShippingAddress(bean.getShippingAddress());
-            apiParamBean.setContryCode(bean.getAddress().getContryCode());
+            apiParamBean.setContryCode(bean.getAddress().getCountryCode());
 
             apiParamBean.setContactEmial(bean.getEmail());
             apiParamBean.setContactNumber(bean.getContactNumber());
@@ -189,19 +208,24 @@ public class MaintenanceService {
         }
     }
 
-    //TODO 接口报错
-    private void activityCreate(ApiParamBean apiParamBean,String serviceCallId){
+    private void activityCreate(ApiParamBean apiParamBean,String objectId){
         try {
             ActivityBean activityBean = new ActivityBean();
             activityBean.setSubject(apiParamBean.getSubject());
             activityBean.setBusinessPartner(apiParamBean.getBusinessPartner());
-            activityBean.setStatus(serviceCallId);
 
             ObjectBean objectBean = new ObjectBean();
-            objectBean.setObjectId(serviceCallId);
+            objectBean.setObjectId(objectId);
             activityBean.setObject(objectBean);
 
-            activityBean.setEquipments(apiParamBean.getEquipments()[0]);
+            UdfValuesBean udfValuesBean = new UdfValuesBean();
+            udfValuesBean.setMeta("75AD82098BAC40E2BD709AC1E10D81E4");
+            udfValuesBean.setValue("Z001");
+            List<UdfValuesBean> udfValuesBeans = new ArrayList<>();
+            udfValuesBeans.add(udfValuesBean);
+            activityBean.setUdfValues(udfValuesBeans);
+
+            activityBean.setEquipment(apiParamBean.getEquipments()[0]);
             activityBean.setExternalId(String.valueOf(new Date().getTime()));
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -210,7 +234,7 @@ public class MaintenanceService {
             activityBean.setEndDateTime(date);
             activityBean.setEarliestStartDateTime(date);
             activityBean.setDueDateTime(date);
-            apiService.materialCall(JSON.toJSONString(activityBean),"/data/v4/Activity");
+            apiService.materialCall(JSON.toJSONString(activityBean),"/data/v4/Activity", Enums.Api_Header_Dtos.ACTIVITY);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -232,7 +256,7 @@ public class MaintenanceService {
                 unitPriceBean.setCurrency("USD");
                 materialRequestBodyBean.setUnitPrice(unitPriceBean);
 
-                apiService.materialCall(JSON.toJSONString(materialRequestBodyBean),"/data/v4/Material");
+                apiService.materialCall(JSON.toJSONString(materialRequestBodyBean),"/data/v4/Material", Enums.Api_Header_Dtos.MATERIAL);
             }catch (Exception ex){
                 log.error("",ex);
             }
@@ -271,15 +295,17 @@ public class MaintenanceService {
      * @param apiParamBean
      */
     private void getTotalAmount(List<ProductBean> products,ApiParamBean apiParamBean){
+        apiParamBean.setCurrency("AUD");
         if(products.size()==1){
-            apiParamBean.setTotalAmount(String.valueOf(products.get(0).getAmount()));
+            apiParamBean.setAmountGST(String.valueOf(products.get(0).getAmount()));
+            apiParamBean.setTotalAmount(String.valueOf(products.get(0).getAmount().multiply(new BigDecimal("110"))));
         }else{
             BigDecimal totalAmount = BigDecimal.ZERO;
             for(ProductBean e : products){
                 apiParamBean.setGst(String.valueOf(e.getAmount()));
                 totalAmount = e.getAmount().add(totalAmount);
             }
-            apiParamBean.setTotalAmount(String.valueOf(totalAmount));
+            apiParamBean.setTotalAmount(String.valueOf(totalAmount.multiply(new BigDecimal("110"))));
         }
     }
     private void checkFile(MultipartFile file, ApiParamBean apiParamBean){
@@ -310,24 +336,21 @@ public class MaintenanceService {
             statusName = "9-Technically Complete";
             typeCode = "0003";
             typeName = "Technically Complete";
-            //TODO 每日从1开始
-            String seq = String.format("%0" + 3 + "d", 1);
+            String seq = String.format("%0" + 3 + "d", this.getSeq(Enums.Sys_Seq.maintenance.toString()));
             subject = String.format("%s%s%s","Warranty Registration_", DateUtil.format(new Date(),DateUtil.SHORT_FORMAT),seq);
         }else if(type.equals("2")){
             statusCode = "-5";
             statusName = "1-Submitted";
             typeCode = "0002";
             typeName = "Warranty Claim";
-            //TODO 每日从1开始
-            String seq = String.format("%0" + 3 + "d", 1);
+            String seq = String.format("%0" + 3 + "d", this.getSeq(Enums.Sys_Seq.servicecall.toString()));
             subject = String.format("%s%s%s","Warranty Claim_", DateUtil.format(new Date(),DateUtil.SHORT_FORMAT), seq);
         }else if(type.equals("3")){
             statusCode = "-5";
-            statusName = "Submitted";
+            statusName = "1-Submitted";
             typeCode = "0004";
             typeName = "Warranty Extension";
-            //TODO 每日从1开始
-            String seq = String.format("%0" + 3 + "d", 1);
+            String seq = String.format("%0" + 3 + "d", this.getSeq(Enums.Sys_Seq.insurance.toString()));
             subject = String.format("%s%s%s","Warranty Extension_", DateUtil.format(new Date(),DateUtil.SHORT_FORMAT), seq);
         }
 
@@ -337,6 +360,18 @@ public class MaintenanceService {
         apiParamBean.setTypeName(typeName);
         apiParamBean.setSubject(subject);
         return apiParamBean;
+    }
+
+    private Integer getSeq(String model){
+        SysSeq seq = sysSeqMapper.selectByDayModel(DateUtil.format(new Date(),DateUtil.WEB_FORMAT),model);
+        if(null == seq){
+            seq = new SysSeq();
+            seq.setSeqDay(DateUtil.format(new Date(),DateUtil.WEB_FORMAT));
+            seq.setSeqModel(model);
+            seq.setSeqValue(1);
+            sysSeqMapper.insertSelective(seq);
+        }
+        return seq.getSeqValue();
     }
 
 }

@@ -26,4 +26,6 @@ public class ProductBean {
     private String purchaseOrder;
 
     private BigDecimal amount;
+
+    private String businessPartner;
 }

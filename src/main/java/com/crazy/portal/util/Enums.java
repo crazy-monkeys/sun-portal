@@ -86,7 +86,7 @@ public class Enums {
         Contact_Number("EB7AF9DC6E8D49FC98DC67ACE96BFFB6","contactNumber"), //number
         Customer_Address("9AD25F4EAEE54EAC86D6D7DD2E2FDA2E","customerAddress"), //安装地址
         Business_Name("A20288A9EAD24CC28564B4EEA7B7968F","businessName"), //终端客户
-        Reference("0BB75D000E45404FAA3E2AB8189B1301",""),
+        Reference("0BB75D000E45404FAA3E2AB8189B1301","reference"),
         Electrical_Compliance_Certificate("1029856393994F4695065FB1A76D00B9","electricalComplianceCertificate"),
         Invoice_Uploaded("88D2D00FB3544918942470A7A3F6281C","invliceUpload"),
         Fault_Type("CF85B3DC233E4B70852F409812713A37","faultType"),
@@ -101,10 +101,12 @@ public class Enums {
         TOTAL_AMOUNT("0CF10A5B6EA94732A8253B0C801E9249","totalAmount"),
         PURCHASE_ORDER("248246FD02874D34B0CA85E8996C0DA4","purchaseOrder"),
         SHIPPING_ADDRESS("042D3DDDD048464EA6B39E31527B926F","shippingAddress"),
-        CURRENCY_CODE("4A3E10C5776048BC984D45DA47026A37",""),
+        CURRENCY_CODE("4A3E10C5776048BC984D45DA47026A37","currency"),
+        INVERTER_INSTALLATION_LOCATION("E6DB2E39349C4FEBB681500A674DF80D","location"),
+        BATTERY_MODEL("C65359DD9C8B49BFA12462263498CFF7","batteryModel"),
 
         Product_id("8E6F00CE608B410AADCFBC378B83F4C2",""),
-        Delivery_date("",""),
+        Delivery_date("5D66B7A7012843A49E9B2FF11F49C972",""),
 
         Parts_Warranty_W5YP("A1B8254717004CF8A40E405B216352B5","W5YP"),
         Parts_Warranty_W5YS("31FF6AE5353D4D498A7C68EF20454456","W5YS"),
@@ -143,6 +145,7 @@ public class Enums {
         ADDRESS18("Address.18"),
         ITEM22("Item.22"),
         ACTIVITY("Activity.28"),
+        MATERIAL("Material.19"),
         ATTACHMENT15("Attachment.15"),
         ITEMWAREHOUSELEVEL14("ItemWarehouseLevel.14"),
         WAREHOUSE15("Warehouse.15"),
@@ -157,5 +160,9 @@ public class Enums {
         public String getValue() {
             return value;
         }
+    }
+
+    public enum Sys_Seq{
+        maintenance,servicecall,insurance
     }
 }

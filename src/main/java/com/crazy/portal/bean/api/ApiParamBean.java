@@ -30,7 +30,6 @@ public class ApiParamBean {
     private String contactNumber; //number
     private String customerAddress; //安装地址
     private String businessName; //终端客户
-    //Reference("A20288A9EAD24CC28564B4EEA7B7968F",""),
     private Boolean electricalComplianceCertificate;  //电气合格证
     private Boolean invliceUpload;
     //Invoice_Uploaded("A20288A9EAD24CC28564B4EEA7B7968F",""),
@@ -46,6 +45,10 @@ public class ApiParamBean {
     private String gst;
     private String purchaseOrder;
     private String remark;
+    private String location;
+    private String batteryModel;
+    private String reference;
+    private String currency;
     //GST("0A652A2381B94F5A8BA42C97970201EB",""),
     //TOTAL_AMOUNT("0CF10A5B6EA94732A8253B0C801E9249",""),
     //PURCHASE_ORDER("248246FD02874D34B0CA85E8996C0DA4",""),

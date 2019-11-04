@@ -15,6 +15,7 @@ import java.util.List;
 public class MaintenanceBean {
     //1-维保注册 2-服务请求 3-维保注册
     private String type;
+    private String country;
     private String subject;
     //客户  产品带出
     private String businessPartner;
@@ -24,8 +25,6 @@ public class MaintenanceBean {
     private String installDate;
     //安装人
     private String installInstaller;
-    //安装国家
-    private String contryCode;
     //产品
     private List<ProductBean> products;
     @Valid

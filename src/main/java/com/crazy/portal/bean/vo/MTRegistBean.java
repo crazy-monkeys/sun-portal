@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 public class MTRegistBean {
     private String type;
+    private String country;
     @Valid
     private ContactBean contacts;
     private AddressBean address;

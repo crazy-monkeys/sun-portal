@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class AddressBean {
     private String addressType;
-    private String contryCode;
+    private String countryCode;
     private String cityName;
     private String stateName;
     private String postCode;

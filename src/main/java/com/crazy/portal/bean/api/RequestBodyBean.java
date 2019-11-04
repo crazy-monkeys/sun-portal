@@ -24,9 +24,9 @@ public class RequestBodyBean {
     //同步状态（固定值：IN_CLOUD）
     private String syncStatus="IN_CLOUD";
     //类型（0003）
-    private String typeCode="0003";
+    private String typeCode;
     //类型名称（Warranty Registration）
-    private String typeName="Warranty Registration";
+    private String typeName;
     //状态码（-5/Z01/-2/-1/-4/-3）
     private String statusCode;
     //状态名称(Technically Complete）

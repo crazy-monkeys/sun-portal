@@ -24,7 +24,7 @@ public class ProductController extends BaseController{
     }
 
     @PostMapping("/info/price")
-    public BaseResponse getProductPrice(ProductBean bean){
+    public BaseResponse getProductPrice(@RequestBody ProductBean bean){
         return successResult(productService.getPrice(bean));
     }
 }

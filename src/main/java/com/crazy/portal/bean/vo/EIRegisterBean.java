@@ -13,7 +13,9 @@ import java.util.List;
 @Data
 public class EIRegisterBean {
     private String type;
+    private String country;
     private String billType;
+    private String businessPartner;
     private String businessName;
     private String abn;
     private String postCode;
