@@ -284,6 +284,7 @@ public class MaintenanceService {
      * @param country
      */
     private void checkProduct(List<ProductBean> products, String country){
+        log.info("this conuntry is " + country);
         Boolean check = productService.checkProduct(products, country);
         BusinessUtil.assertFlase(check, ErrorCodes.SystemManagerEnum.PRODUCT_IS_PARALLEL_IMPORTS);
     }

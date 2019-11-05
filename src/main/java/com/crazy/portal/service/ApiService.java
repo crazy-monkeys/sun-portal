@@ -70,6 +70,7 @@ public class ApiService extends BaseService{
             String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ADDRESS18);
 
             JSONObject adrsObject = this.getApiData(response);
+
             if (adrsObject == null) return null;
 
             JSONObject adrs = (JSONObject) adrsObject.get("adrs");
@@ -261,10 +262,12 @@ public class ApiService extends BaseService{
         if (dataArray == null) return null;
 
         JSONArray jsonArray = (JSONArray) dataArray.get("data");
-        if (jsonArray == null) return null;
+        if (jsonArray == null || jsonArray.size() == 0) return null;
 
         JSONObject adrsObject = (JSONObject) jsonArray.get(0);
+
         if (adrsObject == null) return null;
+
         return adrsObject;
     }
 
