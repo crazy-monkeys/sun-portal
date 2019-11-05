@@ -21,8 +21,5 @@ public class UdfValuesBean {
      * 自定义字段名（设备型号）
      */
     private String name;
-    /**
-     * 物料ID
-     */
-    private String item;
+
 }

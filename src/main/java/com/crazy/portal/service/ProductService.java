@@ -42,7 +42,6 @@ public class ProductService {
             if(e.getMeta().equals(Enums.API_PARAMS.Product_id.getId())){
                 responseBean.setProductModel(e.getName());
                 responseBean.setProductModelValue(e.getValue());
-                responseBean.setItem(e.getItem());
             }else if(e.getMeta().equals(Enums.API_PARAMS.Delivery_date.getId())){
                 responseBean.setDeliveryDate(e.getValue());
             }
@@ -56,7 +55,7 @@ public class ProductService {
      * @return
      */
     public BigDecimal getPrice(ProductBean bean){
-        BigDecimal price = BigDecimal.ONE;
+        BigDecimal price = BigDecimal.ZERO;
         try{
             Date deliveryDate = DateUtil.parseDate(bean.getDeliveryDate(),DateUtil.WEB_FORMAT);
             Date endDate = DateUtil.addDays(deliveryDate,365);
@@ -65,12 +64,22 @@ public class ProductService {
             BusinessUtil.assertFlase(null == priceList,ErrorCodes.SystemManagerEnum.PRICE_IS_NULL);
 
             if(new Date().before(endDate)){
-                price = priceList.getStandardEarlyBirdDiscount();
+                if (bean.getWarrantyType().equals("W5YS")){
+                    price = priceList.getStandardEarlyBirdDiscount();
+                }else{
+                    price = priceList.getPartEarlyBirdDiscount();
+                }
+
             }else{
-                price = priceList.getPartEarlyBirdDiscount();
+                if (bean.getWarrantyType().equals("W5YS")){
+                    price = priceList.getStandardStandard();
+                }else{
+                    price = priceList.getPartStandard();
+                }
             }
 
-            UdfValuesBean udfValuesBean = apiService.getDevicePowerInfo(bean.getProductId());
+            //TODO 多物料 先累积出10KW以下的设备总价  总价大于5000 该部分设备总价*0.9  其他原价
+            UdfValuesBean udfValuesBean = apiService.getDevicePowerInfo(bean.getItem());
             if(null != udfValuesBean &&
                     new BigDecimal(udfValuesBean.getValue()).compareTo(new BigDecimal("10"))==-1
                     && price.compareTo(new BigDecimal("5000"))==1){

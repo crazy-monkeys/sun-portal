@@ -13,7 +13,7 @@ public class MaterialRequestBodyBean {
     private String item;
     private String equipment;
     private Integer quantity=1;
-    //private String chargeOption = "CHARGEABLE";
+    private String chargeOption = "CHARGEABLE";
     private ObjectBean object;
     private UnitPriceBean unitPrice;
 }

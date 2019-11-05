@@ -41,7 +41,7 @@ public class ApiService extends BaseService{
         try{
             String url = String.format("%s%s", super.callRootUrl,"/data/query/v1");
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("query"," select eq.id,eq.businessPartner,eq.udf.Z_Model_excl,eq.udf.Z_DispatchDate_local" +
+            jsonObject.put("query"," select eq.id,eq.item,eq.businessPartner,eq.udf.Z_Model_excl,eq.udf.Z_DispatchDate_local" +
                     " from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
 
             String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.EQUIPMENT20);

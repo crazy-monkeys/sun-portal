@@ -17,6 +17,9 @@ public class ProductBean {
     //产品型号
     private String productModel;
 
+    //TODO 前端保存并返回
+    private String item = "322EA4550BAC4C7E87CD407C1EB43EA1";
+
     private String productNumber;
 
     private String deliveryDate;

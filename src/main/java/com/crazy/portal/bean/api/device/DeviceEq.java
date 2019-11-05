@@ -17,5 +17,9 @@ public class DeviceEq {
     private String id;
     //合作伙伴id
     private String businessPartner;
+    /**
+     * 物料ID
+     */
+    private String item;
     private List<UdfValuesBean> udfValues;
 }
