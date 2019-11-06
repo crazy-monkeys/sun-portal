@@ -11,6 +11,7 @@ import com.crazy.portal.bean.api.RequestBodyBean;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.api.inventory.InventoryInfoReponse;
 import com.crazy.portal.bean.api.inventory.InventoryInfoRequest;
+import com.crazy.portal.bean.api.warehouse.CreateWarehouseRequest;
 import com.crazy.portal.bean.api.warehouse.WarehouseOwnerRequest;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.BeanUtils;
@@ -168,6 +169,7 @@ public class ApiService extends BaseService{
         }
     }
 
+
     /**
      * 根据仓库号获取Id
      * @param code
@@ -194,6 +196,18 @@ public class ApiService extends BaseService{
         } catch (Exception e) {
             log.error("",e);
             throw new BusinessException("",e);
+        }
+    }
+
+    /**
+     * 创建仓库
+     */
+    public void createWarehouse(CreateWarehouseRequest createWarehouseRequest){
+        try {
+            String url = String.format("%s%s",super.callRootUrl,"/data/v4/Warehouse");
+            super.invokeApi(url, JSON.toJSONString(createWarehouseRequest), Enums.Api_Header_Dtos.WAREHOUSE15);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -230,7 +244,7 @@ public class ApiService extends BaseService{
     }
 
     /**
-     * 批量更新
+     * 批量更新库存
      * @return
      */
     public InventoryInfoReponse updateInventoryInfo(InventoryInfoRequest inventoryInfoRequest){
