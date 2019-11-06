@@ -79,6 +79,7 @@ public class ErrorCodes {
         PRICE_IS_NULL(10052,"设备没有维护对应的价格"),
         INSTALL_DATE_IS_NOT_NULL(10053,"请选择安装时间"),
         EMAIL_IS_NO(10054,"确认邮箱错误"),
+        PRODUCT_BUSINESSPARTNER_IS_DIF(10055,"设备客户不一致"),
         ;
 
 

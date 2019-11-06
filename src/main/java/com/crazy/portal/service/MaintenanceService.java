@@ -164,18 +164,15 @@ public class MaintenanceService {
 
     public String eiRegister(EIRegisterBean bean){
         try{
-            this.checkDate(bean.getInstallDate());
             String country = bean.getCountry();
             this.checkProduct(bean.getProducts(),country);
             BusinessUtil.assertTrue(bean.getEmail().equals(bean.getSendEmail()),ErrorCodes.SystemManagerEnum.EMAIL_IS_NO);
 
             ApiParamBean apiParamBean = mappingApiParamBean(bean.getType());
+            this.getTotalAmount(bean.getProducts(),apiParamBean, bean);
             apiParamBean.setContryCode(country);
-            apiParamBean.setEquipments(new String[]{bean.getProducts().get(0).getProductId()});
-            apiParamBean.setBusinessPartner(bean.getBusinessPartner());
-
             apiParamBean.setBusinessName(bean.getBusinessName());
-            apiParamBean.setPostCode(bean.getPostCode());
+            apiParamBean.setPostCode(bean.getAddress().getPostCode());
             apiParamBean.setAbn(bean.getAbn());
 
             apiParamBean.setInstallInstaller(bean.getFirstName()+bean.getLastName());
@@ -188,15 +185,17 @@ public class MaintenanceService {
             apiParamBean.setShippingAddress(bean.getShippingAddress());
             apiParamBean.setContryCode(bean.getAddress().getCountryCode());
 
+            apiParamBean.setCustomerContact(bean.getFirstName()+bean.getLastName());
             apiParamBean.setContactEmial(bean.getEmail());
             apiParamBean.setContactNumber(bean.getContactNumber());
-            this.getTotalAmount(bean.getProducts(),apiParamBean);
             apiParamBean.setPurchaseOrder(bean.getPurchaseOrder());
 
             //TODO save response
-            String code = JSONObject.parseObject(serviceCall(apiParamBean)).getJSONArray(DATA).getJSONObject(0).getJSONObject(SERVICE).getString(CODE);
+            JSONObject serviceCall = JSONObject.parseObject(serviceCall(apiParamBean)).getJSONArray(DATA).getJSONObject(0).getJSONObject(SERVICE);
+            String code = serviceCall.getString(CODE);
+            String objectId = serviceCall.getString(OBJECTID);
             if(StringUtils.isNotEmpty(code)){
-                materialCreate(bean);
+                materialCreate(bean, objectId);
                 return code;
             }
             throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
@@ -240,20 +239,20 @@ public class MaintenanceService {
         }
     }
 
-    private void materialCreate(EIRegisterBean bean){
+    private void materialCreate(EIRegisterBean bean, String objectId){
         bean.getProducts().forEach(e->{
             try{
                 MaterialRequestBodyBean materialRequestBodyBean = new MaterialRequestBodyBean();
-                materialRequestBodyBean.setItem(Enums.API_PARAMS.Customer_Contact.getId(e.getWarrantyType()));
+                materialRequestBodyBean.setItem(e.getItem());
                 materialRequestBodyBean.setEquipment(e.getProductId());
 
                 ObjectBean objectBean = new ObjectBean();
-                objectBean.setObjectId(String.valueOf(new Date().getTime()));
+                objectBean.setObjectId(objectId);
                 materialRequestBodyBean.setObject(objectBean);
 
                 UnitPriceBean unitPriceBean = new UnitPriceBean();
                 unitPriceBean.setAmount(e.getAmount());
-                unitPriceBean.setCurrency("USD");
+                unitPriceBean.setCurrency("AUD");
                 materialRequestBodyBean.setUnitPrice(unitPriceBean);
 
                 apiService.materialCall(JSON.toJSONString(materialRequestBodyBean),"/data/v4/Material", Enums.Api_Header_Dtos.MATERIAL);
@@ -295,18 +294,41 @@ public class MaintenanceService {
      * @param products
      * @param apiParamBean
      */
-    private void getTotalAmount(List<ProductBean> products,ApiParamBean apiParamBean){
-        apiParamBean.setCurrency("AUD");
+    private void getTotalAmount(List<ProductBean> products,ApiParamBean apiParamBean, EIRegisterBean bean)throws Exception{
+        apiParamBean.setCurrency("4");
         if(products.size()==1){
-            apiParamBean.setAmountGST(String.valueOf(products.get(0).getAmount()));
-            apiParamBean.setTotalAmount(String.valueOf(products.get(0).getAmount().multiply(new BigDecimal("110"))));
+            BigDecimal amount = products.get(0).getAmount();
+            apiParamBean.setAmountGST(String.valueOf(amount));
+            BigDecimal totalAmount = products.get(0).getAmount().multiply(new BigDecimal("1.1"));
+            apiParamBean.setTotalAmount(String.valueOf(totalAmount));
+            apiParamBean.setGst(String.valueOf(totalAmount.subtract(amount)));
+
+            this.checkDate(bean.getInstallDate());
+            apiParamBean.setEquipments(new String[]{products.get(0).getProductId()});
+            apiParamBean.setBusinessPartner(bean.getBusinessPartner());
         }else{
             BigDecimal totalAmount = BigDecimal.ZERO;
+            BigDecimal amount = BigDecimal.ZERO;
+            String businessPartner = "";
+            List<String> equipments = new ArrayList<>();
             for(ProductBean e : products){
-                apiParamBean.setGst(String.valueOf(e.getAmount()));
-                totalAmount = e.getAmount().add(totalAmount);
+                if(StringUtils.isEmpty(businessPartner)){
+                    businessPartner = e.getBusinessPartner();
+                }else{
+                    if(!businessPartner.equals(e.getBusinessPartner())){
+                        throw new BusinessException(ErrorCodes.SystemManagerEnum.PRODUCT_BUSINESSPARTNER_IS_DIF);
+                    }
+                }
+                amount = amount.add(e.getAmount());
+                equipments.add(e.getProductId());
             }
-            apiParamBean.setTotalAmount(String.valueOf(totalAmount.multiply(new BigDecimal("110"))));
+            totalAmount = amount.multiply(new BigDecimal("1.1"));
+            apiParamBean.setAmountGST(String.valueOf(amount));
+            apiParamBean.setTotalAmount(String.valueOf(totalAmount));
+            apiParamBean.setGst(String.valueOf(totalAmount.subtract(amount)));
+
+            apiParamBean.setBusinessPartner(bean.getBusinessPartner());
+            apiParamBean.setEquipments(equipments.toArray(new String[equipments.size()]));
         }
     }
     private void checkFile(MultipartFile file, ApiParamBean apiParamBean){
@@ -336,7 +358,7 @@ public class MaintenanceService {
             statusCode = "-3";
             statusName = "9-Technically Complete";
             typeCode = "0003";
-            typeName = "Technically Complete";
+            typeName = "Warranty Registration";
             String seq = String.format("%0" + 3 + "d", this.getSeq(Enums.Sys_Seq.maintenance.toString()));
             subject = String.format("%s%s%s","Warranty Registration_", DateUtil.format(new Date(),DateUtil.SHORT_FORMAT),seq);
         }else if(type.equals("2")){
@@ -371,6 +393,10 @@ public class MaintenanceService {
             seq.setSeqModel(model);
             seq.setSeqValue(1);
             sysSeqMapper.insertSelective(seq);
+        }else{
+            Integer seqNum = seq.getSeqValue()+1;
+            seq.setSeqValue(seqNum);
+            sysSeqMapper.updateByPrimaryKeySelective(seq);
         }
         return seq.getSeqValue();
     }
