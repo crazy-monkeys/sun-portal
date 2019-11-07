@@ -72,10 +72,10 @@ public class MaintenanceService {
             apiParamBean.setCurrency("AUD");
             apiParamBean.setPostCode(bean.getAddress().getPostCode());
             String customerAddress = String.format("%s%s%s%s",
-                    bean.getAddress().getCityName(),
-                    bean.getAddress().getStateName(),
                     bean.getAddress().getAddressLine1(),
-                    bean.getAddress().getAddressLine2());
+                    bean.getAddress().getAddressLine2(),
+                    bean.getAddress().getCityName(),
+                    bean.getAddress().getStateName());
             apiParamBean.setCustomerAddress(customerAddress);
             apiParamBean.setCustomerContact(bean.getContacts().getContactFirstName()+" "+bean.getContacts().getContactLastName());
             apiParamBean.setContactEmial(bean.getContacts().getContactEmail());
@@ -121,10 +121,11 @@ public class MaintenanceService {
                 apiParamBean.setAbn(bean.getContact().getAbn());
                 apiParamBean.setCustomerContact(bean.getContact().getPerson());
                 apiParamBean.setContactNumber(bean.getContact().getContactNumber());
-                String customerAddress = String.format("%s%s%s%s",bean.getContact().getAddress().getCityName(),
-                        bean.getContact().getAddress().getStateName(),
+                String customerAddress = String.format("%s%s%s%s",
                         bean.getContact().getAddress().getAddressLine1(),
-                        bean.getContact().getAddress().getAddressLine2());
+                        bean.getContact().getAddress().getAddressLine2(),
+                        bean.getContact().getAddress().getCityName(),
+                        bean.getContact().getAddress().getStateName());
                 apiParamBean.setCustomerAddress(customerAddress);
                 apiParamBean.setBusinessName(bean.getContact().getBusinessName());
                 apiParamBean.setPostCode(bean.getContact().getAddress().getPostCode());
@@ -132,26 +133,27 @@ public class MaintenanceService {
                 apiParamBean.setContactEmial(bean.getEndUser().getContactEmail());
                 apiParamBean.setCustomerContact(bean.getEndUser().getPerson());
                 apiParamBean.setContactNumber(bean.getEndUser().getContactNumber());
-                String customerAddress = String.format("%s%s%s%s",bean.getEndUser().getAddress().getCityName(),
-                        bean.getEndUser().getAddress().getStateName(),
+                String customerAddress = String.format("%s%s%s%s",
                         bean.getEndUser().getAddress().getAddressLine1(),
-                        bean.getEndUser().getAddress().getAddressLine2());
+                        bean.getEndUser().getAddress().getAddressLine2(),
+                        bean.getEndUser().getAddress().getCityName(),
+                        bean.getEndUser().getAddress().getStateName());
                 apiParamBean.setCustomerAddress(customerAddress);
                 apiParamBean.setPostCode(bean.getEndUser().getAddress().getPostCode());
             }
-            apiParamBean.setShippingAddress(bean.getServiceCall().getShippingAddress());
-
-            apiParamBean.setFaultType(bean.getServiceCall().getFault().equals("Permanent")?"1":"2");
-            apiParamBean.setFaultDescription(bean.getServiceCall().getDescription());
-            apiParamBean.setLcdMessage(bean.getServiceCall().getLcd());
-            apiParamBean.setIsWeather(bean.getServiceCall().getWeather().toUpperCase());
-            apiParamBean.setBattery(bean.getServiceCall().getBattery().toUpperCase());
-            apiParamBean.setBatteryModel(bean.getServiceCall().getModel());
             apiParamBean.setInstallDate(bean.getInstallDate());
-
-            apiParamBean.setReference(bean.getServiceCall().getWeatherMsg());
-            apiParamBean.setLocation(bean.getServiceCall().getLocation());
-            apiParamBean.setRemark(bean.getServiceCall().getBatteryMsg());
+            if(null != bean.getServiceCall()){
+                apiParamBean.setShippingAddress(bean.getServiceCall().getShippingAddress());
+                apiParamBean.setFaultType(bean.getServiceCall().getFault().equals("Permanent")?"1":"2");
+                apiParamBean.setFaultDescription(bean.getServiceCall().getDescription());
+                apiParamBean.setLcdMessage(bean.getServiceCall().getLcd());
+                apiParamBean.setIsWeather(bean.getServiceCall().getWeather().toUpperCase());
+                apiParamBean.setBattery(bean.getServiceCall().getBattery().toUpperCase());
+                apiParamBean.setBatteryModel(bean.getServiceCall().getModel());
+                apiParamBean.setReference(bean.getServiceCall().getWeatherMsg());
+                apiParamBean.setLocation(bean.getServiceCall().getLocation());
+                apiParamBean.setRemark(bean.getServiceCall().getBatteryMsg());
+            }
 
             //TODO save response
             JSONObject serviceCall = JSONObject.parseObject(serviceCall(apiParamBean)).getJSONArray(DATA).getJSONObject(0).getJSONObject(SERVICE);
@@ -189,10 +191,11 @@ public class MaintenanceService {
 
             apiParamBean.setInstallInstaller(bean.getFirstName()+" "+bean.getLastName());
             apiParamBean.setInstallDate(bean.getInstallDate());
-            String customerAddress = String.format("%s%s%s%s",bean.getAddress().getCityName(),
-                    bean.getAddress().getStateName(),
+            String customerAddress = String.format("%s%s%s%s",
                     bean.getAddress().getAddressLine1(),
-                    bean.getAddress().getAddressLine2());
+                    bean.getAddress().getAddressLine2(),
+                    bean.getAddress().getCityName(),
+                    bean.getAddress().getStateName());
             apiParamBean.setCustomerAddress(customerAddress);
             apiParamBean.setShippingAddress(bean.getShippingAddress());
 
