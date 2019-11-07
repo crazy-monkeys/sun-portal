@@ -106,7 +106,13 @@ public class BaseService {
         String buildFinalUrl = String.format("%s?%s",url,ParamsBean.toString());
         log.info(">>>>> API url to access:"+buildFinalUrl);
         log.info(">>>>>API Param :"+body);
-        String response = HttpClientUtils.post(buildFinalUrl, body, "application/json", header);
+
+        String response;
+        if(forceUpdate != null){
+            response = HttpClientUtils.patch(buildFinalUrl, body, "application/json", header);
+        }else{
+            response = HttpClientUtils.post(buildFinalUrl, body, "application/json", header);
+        }
         log.info(">>>>> API return "+response);
         if(response.isEmpty()){
             throw new RuntimeException("error invoke");

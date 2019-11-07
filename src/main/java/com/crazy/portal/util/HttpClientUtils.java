@@ -9,6 +9,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -42,8 +43,6 @@ public class HttpClientUtils {
 
     private static HttpClient client;
 
-    public static final String MIMETYPE_JSON = "application/json";
-
     static {
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
         cm.setMaxTotal(128);
@@ -52,11 +51,15 @@ public class HttpClientUtils {
     }
 
     public static String get(String url, String authSecret) throws IOException {
-        return get(url, CHARSET, authSecret, null, null);
+        return get(url, authSecret, null, null);
     }
 
     public static String post(String url, String body, String mimeType, Map<String,String> header) throws IOException{
         return post(url, body, header, mimeType, CHARSET, CONNECT_TIMEOUT, READ_TIMEOUT);
+    }
+
+    public static String patch(String url, String body, String mimeType, Map<String,String> header) throws IOException{
+        return patch(url, body, header, mimeType, CHARSET, CONNECT_TIMEOUT, READ_TIMEOUT);
     }
 
     /**
@@ -73,7 +76,7 @@ public class HttpClientUtils {
      * @throws SocketTimeoutException  响应超时
      * @throws Exception
      */
-    public static String post(String url, String body,Map<String,String> header, String mimeType,String charset, Integer connTimeout, Integer readTimeout) throws IOException {
+    private static String post(String url, String body,Map<String,String> header, String mimeType,String charset, Integer connTimeout, Integer readTimeout) throws IOException {
         HttpClient client = null;
         HttpPost post = new HttpPost(url);
         String result = "";
@@ -114,11 +117,55 @@ public class HttpClientUtils {
         return result;
     }
 
+    private static String patch(String url, String body,Map<String,String> header, String mimeType,String charset, Integer connTimeout, Integer readTimeout) throws IOException {
+        HttpClient client = null;
+        HttpPatch patch = new HttpPatch(url);
+        String result = "";
+        boolean isHttps = url.startsWith("https");
+        try {
+            if (StringUtils.isNotBlank(body)) {
+                HttpEntity entity = new StringEntity(body, ContentType.create(mimeType, charset));
+                patch.setEntity(entity);
+            }
+            // 设置参数
+            RequestConfig.Builder customReqConf = RequestConfig.custom();
+            if (connTimeout != null) {
+                customReqConf.setConnectTimeout(connTimeout);
+            }
+            if (readTimeout != null) {
+                customReqConf.setSocketTimeout(readTimeout);
+            }
+            patch.setConfig(customReqConf.build());
+
+            if(header != null) {
+                header.forEach((k,v)-> patch.setHeader(k,v));
+            }
+            client = isHttps ? createSSLInsecureClient() : HttpClientUtils.client;
+            HttpResponse res = client.execute(patch);
+
+            result = IOUtils.toString(res.getEntity().getContent(), charset);
+
+        } catch (GeneralSecurityException | IOException e) {
+            log.error("",e);
+        } finally {
+            close(client, patch, isHttps);
+        }
+        return result;
+    }
+
+    private static void close(HttpClient client, HttpPatch patch, boolean isHttps) throws IOException {
+        patch.releaseConnection();
+
+        if (isHttps &&
+                client != null && client instanceof CloseableHttpClient) {
+            ((CloseableHttpClient) client).close();
+        }
+    }
+
     /**
      * 发送一个 GET 请求
      *
      * @param url
-     * @param charset
      * @param connTimeout  建立链接超时时间,毫秒.
      * @param readTimeout  响应超时时间,毫秒.
      * @return
@@ -126,7 +173,7 @@ public class HttpClientUtils {
      * @throws SocketTimeoutException   响应超时
      * @throws Exception
      */
-    public static String get(String url, String charset, String header, Integer connTimeout,Integer readTimeout) throws IOException {
+    private static String get(String url,String header, Integer connTimeout,Integer readTimeout) throws IOException {
 
         String result = "";
         HttpClient client = null;

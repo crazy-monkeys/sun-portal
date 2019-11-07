@@ -162,10 +162,10 @@ public class ApiServiceTest {
      */
     @Test
     public void updateWarehouseOwner() {
-        String warehouseId = "DB5BE91DC8F24DB7B95D9693F8EBD531";
+        String warehouseId = "39DA29338109419ABD0E56BB35422CFB";
         WarehouseOwnerRequest warehouseOwnerRequest = new WarehouseOwnerRequest();
         warehouseOwnerRequest.setReservedMaterialWarehouse(false);
-        warehouseOwnerRequest.setOwners(Arrays.asList("92DD31EF89FD46C38B1DDA98108D3F2F", "C1E42CCAF0554C7DA4E5286C88B5E135"));
+        warehouseOwnerRequest.setOwners(Arrays.asList("6334C731996E4021B4567A823B666DA6", "4E1E9EDC9F1F4628A7316AF90948D34E"));
 
         WarehouseResponse warehouseResponse = apiService.updateWarehouseOwner(warehouseId,warehouseOwnerRequest);
         Assert.assertTrue(warehouseResponse != null);
@@ -177,10 +177,11 @@ public class ApiServiceTest {
     @Test
     public void updateInventoryInfo() {
         InventoryInfoRequest inventoryInfoRequest = new InventoryInfoRequest();
-        inventoryInfoRequest.setWarehouse("F23AE0184E734D99B4C321AC9ACF49F8");
-        inventoryInfoRequest.setItem("6F9B4E73D0C64971B64407267B022341");
+        inventoryInfoRequest.setWarehouse("DB5BE91DC8F24DB7B95D9693F8EBD531");
+        inventoryInfoRequest.setItem("A82DD58BA85C4387BBC42DDFE813F5A8");
         inventoryInfoRequest.setInStock("100");
         InventoryInfoReponse res = apiService.updateInventoryInfo(inventoryInfoRequest);
-        Assert.assertTrue(res.getItem().equals("6F9B4E73D0C64971B64407267B022341"));
+        //对方无返回
+        Assert.assertTrue(res == null);
     }
 }

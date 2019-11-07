@@ -40,7 +40,7 @@ public class ParamsBean {
         sb.append("clientIdentifier=").append(clientIdentifier).append('&');
         sb.append("user=").append(user);
         if(Objects.nonNull(forceUpdate)){
-            sb.append("forceUpdate=").append(forceUpdate);
+            sb.append("&forceUpdate=").append(forceUpdate);
         }
         return sb.toString();
     }
