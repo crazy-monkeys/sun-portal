@@ -80,6 +80,7 @@ public class ErrorCodes {
         INSTALL_DATE_IS_NOT_NULL(10053,"请选择安装时间"),
         EMAIL_IS_NO(10054,"确认邮箱错误"),
         PRODUCT_BUSINESSPARTNER_IS_DIF(10055,"设备客户不一致"),
+        ID_NON_MODEL(10056,"According to our database, a warranty extension is already purchased for the inverter S/N J1904090450. The current warranty period is 10 years Standard Warranty. Please check!"),
         ;
 
 

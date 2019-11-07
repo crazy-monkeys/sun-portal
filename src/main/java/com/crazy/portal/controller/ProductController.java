@@ -21,7 +21,7 @@ public class ProductController extends BaseController{
 
     @GetMapping("/info/{serialNumber}")
     public BaseResponse getProduct(@PathVariable String serialNumber){
-       return successResult(productService.getProduct(serialNumber));
+        return successResult(productService.getProduct(serialNumber));
     }
 
     @PostMapping("/info/price")

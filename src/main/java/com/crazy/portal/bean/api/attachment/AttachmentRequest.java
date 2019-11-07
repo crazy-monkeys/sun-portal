@@ -1,6 +1,7 @@
 package com.crazy.portal.bean.api.attachment;
 
-import com.alibaba.fastjson.JSONObject;
+import com.crazy.portal.bean.api.ObjectBean;
+import lombok.Data;
 
 /**
  * @Desc:
@@ -8,21 +9,22 @@ import com.alibaba.fastjson.JSONObject;
  * @Date: created in 22:43 2019-10-30
  * @Modified by:
  */
+@Data
 public class AttachmentRequest {
 
     private String fileName;
     private String fileContent;
-    private JSONObject object;
+    private ObjectBean object;
     private String title;
     private String type;
 
-    public AttachmentRequest(){
+   /* public AttachmentRequest(){
         this.object = new JSONObject();
         object.put("objectType","SERVICECALL");
         object.put("objectId","5C4EEE7704914C69915E19D06F936B5A");
-    }
+    }*/
 
-    public JSONObject getObject() {
+   /* public JSONObject getObject() {
         return object;
     }
 
@@ -56,5 +58,5 @@ public class AttachmentRequest {
 
     public void setType(String type) {
         this.type = type;
-    }
+    }*/
 }

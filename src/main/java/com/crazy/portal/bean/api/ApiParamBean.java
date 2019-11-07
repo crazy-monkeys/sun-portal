@@ -30,8 +30,8 @@ public class ApiParamBean {
     private String contactNumber; //number
     private String customerAddress; //安装地址
     private String businessName; //终端客户
-    private Boolean electricalComplianceCertificate;  //电气合格证
-    private Boolean invliceUpload;
+    private String electricalComplianceCertificate;  //电气合格证
+    private String invliceUpload;
     //Invoice_Uploaded("A20288A9EAD24CC28564B4EEA7B7968F",""),
     private String faultType; //担保类型
     private String faultDescription;  //fault

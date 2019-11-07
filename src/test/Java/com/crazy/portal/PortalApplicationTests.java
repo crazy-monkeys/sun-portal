@@ -49,7 +49,6 @@ public class PortalApplicationTests {
         AddressBean addr = new AddressBean();
         addr.setCityName("AU");
         addr.setPostCode("123");
-        addr.setCountryCode("AU");
 
         ContactBean contact = new ContactBean();
         contact.setContactEmail("test@qq.com");
@@ -118,7 +117,6 @@ public class PortalApplicationTests {
         contact.setContactNumber("number");
         contact.setContactEmail("email");
 
-        addr.setCountryCode("AU");
         addr.setCityName("AU");
         addr.setCityName("state");
         addr.setPostCode("123");
@@ -133,7 +131,6 @@ public class PortalApplicationTests {
         endUserBean.setContactEmail("endUserEmail");
 
         addr = new AddressBean();
-        addr.setCountryCode("AU");
         addr.setCityName("AU");
         addr.setCityName("state");
         addr.setPostCode("123");
@@ -170,7 +167,6 @@ public class PortalApplicationTests {
         bean.setBusinessName("test");
 
         AddressBean addressBean = new AddressBean();
-        addressBean.setCountryCode("AU");
         addressBean.setCityName("city");
         addressBean.setStateName("state");
         addressBean.setPostCode("postcode");

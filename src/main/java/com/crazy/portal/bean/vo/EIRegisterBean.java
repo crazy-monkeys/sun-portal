@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Data
 public class EIRegisterBean {
+    private Integer submitType;
     private String type;
     private String country;
     private String billType;

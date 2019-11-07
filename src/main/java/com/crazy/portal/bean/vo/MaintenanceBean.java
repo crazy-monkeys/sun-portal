@@ -1,6 +1,7 @@
 package com.crazy.portal.bean.vo;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -49,5 +50,5 @@ public class MaintenanceBean {
 
     private ServiceCallBean serviceCall;
 
-    private BigDecimal totalAmount;
+    private MultipartFile[] files;
 }

@@ -7,6 +7,7 @@ import com.crazy.portal.bean.api.ActivityBean;
 import com.crazy.portal.bean.api.ApiParamBean;
 import com.crazy.portal.bean.api.MaterialRequestBodyBean;
 import com.crazy.portal.bean.api.ObjectBean;
+import com.crazy.portal.bean.api.attachment.AttachmentRequest;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.vo.EIRegisterBean;
 import com.crazy.portal.bean.vo.MTRegistBean;
@@ -22,11 +23,14 @@ import com.crazy.portal.util.ErrorCodes;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +61,7 @@ public class MaintenanceService {
 
             ApiParamBean apiParamBean = mappingApiParamBean(bean.getType());
             apiParamBean.setContryCode(country);
-            this.checkFile(null, apiParamBean);
+            this.checkFile(bean, apiParamBean);
 
             apiParamBean.setEquipments(new String[]{bean.getProducts().get(0).getProductId()});
             apiParamBean.setBusinessPartner(bean.getBusinessPartner());
@@ -73,15 +77,23 @@ public class MaintenanceService {
                     bean.getAddress().getAddressLine1(),
                     bean.getAddress().getAddressLine2());
             apiParamBean.setCustomerAddress(customerAddress);
-            apiParamBean.setCustomerContact(bean.getContacts().getContactFirstName()+bean.getContacts().getContactLastName());
+            apiParamBean.setCustomerContact(bean.getContacts().getContactFirstName()+" "+bean.getContacts().getContactLastName());
             apiParamBean.setContactEmial(bean.getContacts().getContactEmail());
             apiParamBean.setContactNumber(bean.getContacts().getContactNumber());
             apiParamBean.setRemark(bean.getSuggestions());
 
             //TODO save response
-            String code = JSONObject.parseObject(serviceCall(apiParamBean)).getJSONArray(DATA).getJSONObject(0).getJSONObject(SERVICE).getString(CODE);
+            JSONObject serviceCall = JSONObject.parseObject(serviceCall(apiParamBean)).getJSONArray(DATA).getJSONObject(0).getJSONObject(SERVICE);
+            String code = serviceCall.getString(CODE);
+            String objectId = serviceCall.getString(OBJECTID);
             if(StringUtils.isNotEmpty(code)){
                 System.out.println("service Code :"+code);
+                if(null != bean.getInvoiceFile()){
+                    this.uploadFile(bean.getInvoiceFile(),"Invoice"+code, objectId);
+                }
+                if(null != bean.getCecFile()){
+                    this.uploadFile(bean.getCecFile(),"Electrical Compliance Certificate"+code,objectId);
+                }
                 return code;
             }
             throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
@@ -100,8 +112,6 @@ public class MaintenanceService {
             this.checkProduct(bean.getProducts(),country);
 
             ApiParamBean apiParamBean = mappingApiParamBean(bean.getType());
-            //this.checkFile(null, apiParamBean);
-
             apiParamBean.setContryCode(country);
             apiParamBean.setEquipments(new String[]{bean.getProducts().get(0).getProductId()});
             apiParamBean.setBusinessPartner(bean.getBusinessPartner());
@@ -116,7 +126,6 @@ public class MaintenanceService {
                         bean.getContact().getAddress().getAddressLine1(),
                         bean.getContact().getAddress().getAddressLine2());
                 apiParamBean.setCustomerAddress(customerAddress);
-                apiParamBean.setShippingAddress(customerAddress);
                 apiParamBean.setBusinessName(bean.getContact().getBusinessName());
                 apiParamBean.setPostCode(bean.getContact().getAddress().getPostCode());
             }else{
@@ -128,16 +137,16 @@ public class MaintenanceService {
                         bean.getEndUser().getAddress().getAddressLine1(),
                         bean.getEndUser().getAddress().getAddressLine2());
                 apiParamBean.setCustomerAddress(customerAddress);
-                apiParamBean.setShippingAddress(customerAddress);
                 apiParamBean.setPostCode(bean.getEndUser().getAddress().getPostCode());
             }
+            apiParamBean.setShippingAddress(bean.getServiceCall().getShippingAddress());
 
             apiParamBean.setFaultType(bean.getServiceCall().getFault().equals("Permanent")?"1":"2");
             apiParamBean.setFaultDescription(bean.getServiceCall().getDescription());
             apiParamBean.setLcdMessage(bean.getServiceCall().getLcd());
-            apiParamBean.setIsWeather(bean.getServiceCall().getWeather());
+            apiParamBean.setIsWeather(bean.getServiceCall().getWeather().toUpperCase());
+            apiParamBean.setBattery(bean.getServiceCall().getBattery().toUpperCase());
             apiParamBean.setBatteryModel(bean.getServiceCall().getModel());
-           // apiParamBean.setInstallInstaller(bean.getInstallInstaller());
             apiParamBean.setInstallDate(bean.getInstallDate());
 
             apiParamBean.setReference(bean.getServiceCall().getWeatherMsg());
@@ -150,6 +159,9 @@ public class MaintenanceService {
             String objectId = serviceCall.getString(OBJECTID);
             if(StringUtils.isNotEmpty(code)){
                 activityCreate(apiParamBean,objectId);
+                for(MultipartFile file : bean.getFiles()){
+                    this.uploadFile(file,"Warranty Claim",objectId);
+                }
                 return code;
             }
             throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
@@ -175,7 +187,7 @@ public class MaintenanceService {
             apiParamBean.setPostCode(bean.getAddress().getPostCode());
             apiParamBean.setAbn(bean.getAbn());
 
-            apiParamBean.setInstallInstaller(bean.getFirstName()+bean.getLastName());
+            apiParamBean.setInstallInstaller(bean.getFirstName()+" "+bean.getLastName());
             apiParamBean.setInstallDate(bean.getInstallDate());
             String customerAddress = String.format("%s%s%s%s",bean.getAddress().getCityName(),
                     bean.getAddress().getStateName(),
@@ -183,9 +195,8 @@ public class MaintenanceService {
                     bean.getAddress().getAddressLine2());
             apiParamBean.setCustomerAddress(customerAddress);
             apiParamBean.setShippingAddress(bean.getShippingAddress());
-            apiParamBean.setContryCode(bean.getAddress().getCountryCode());
 
-            apiParamBean.setCustomerContact(bean.getFirstName()+bean.getLastName());
+            apiParamBean.setCustomerContact(bean.getFirstName()+" "+bean.getLastName());
             apiParamBean.setContactEmial(bean.getEmail());
             apiParamBean.setContactNumber(bean.getContactNumber());
             apiParamBean.setPurchaseOrder(bean.getPurchaseOrder());
@@ -296,7 +307,7 @@ public class MaintenanceService {
      */
     private void getTotalAmount(List<ProductBean> products,ApiParamBean apiParamBean, EIRegisterBean bean)throws Exception{
         apiParamBean.setCurrency("4");
-        if(products.size()==1){
+        if(bean.getSubmitType().equals(1)){
             BigDecimal amount = products.get(0).getAmount();
             apiParamBean.setAmountGST(String.valueOf(amount));
             BigDecimal totalAmount = products.get(0).getAmount().multiply(new BigDecimal("1.1"));
@@ -327,19 +338,40 @@ public class MaintenanceService {
             apiParamBean.setTotalAmount(String.valueOf(totalAmount));
             apiParamBean.setGst(String.valueOf(totalAmount.subtract(amount)));
 
-            apiParamBean.setBusinessPartner(bean.getBusinessPartner());
+            apiParamBean.setBusinessPartner(businessPartner);
             apiParamBean.setEquipments(equipments.toArray(new String[equipments.size()]));
         }
     }
-    private void checkFile(MultipartFile file, ApiParamBean apiParamBean){
-        if(null == file){
-            apiParamBean.setElectricalComplianceCertificate(true);
-            apiParamBean.setInvliceUpload(true);
+    private void checkFile(MTRegistBean bean, ApiParamBean apiParamBean)throws IOException{
+        if(null == bean.getInvoiceFile()){
+            apiParamBean.setInvliceUpload("NO");
         }else{
-            apiParamBean.setElectricalComplianceCertificate(true);
-            apiParamBean.setInvliceUpload(true);
+            apiParamBean.setInvliceUpload("YES");
+        }
+        if(null == bean.getCecFile()){
+            apiParamBean.setElectricalComplianceCertificate("NO");
+        }else{
+            apiParamBean.setElectricalComplianceCertificate("YES");
         }
     }
+
+    private void uploadFile(MultipartFile file,String title, String objectId) throws IOException{
+        AttachmentRequest request = new AttachmentRequest();
+        String fileName = file.getOriginalFilename();
+        request.setFileName(fileName);
+        byte[] byteArray = file.getBytes();
+        request.setFileContent(new String(Base64Utils.encode(byteArray),"UTF-8"));
+        request.setTitle(title);
+        request.setType(fileName.substring(fileName.lastIndexOf(".")+1).toUpperCase());
+
+        ObjectBean object = new ObjectBean();
+        object.setObjectType("SERVICECALL");
+        object.setObjectId(objectId);
+        request.setObject(object);
+
+        apiService.attachmentUpload(request);
+    }
+
 
     /**
      * 初始化请求参数对象

@@ -9,6 +9,7 @@ import com.crazy.portal.util.BusinessUtil;
 import com.crazy.portal.util.DateUtil;
 import com.crazy.portal.util.Enums;
 import com.crazy.portal.util.ErrorCodes;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -60,20 +61,26 @@ public class ProductService {
             Date deliveryDate = DateUtil.parseDate(bean.getDeliveryDate(),DateUtil.WEB_FORMAT);
             Date endDate = DateUtil.addDays(deliveryDate,365);
 
-            PriceList priceList = priceService.getModelPrice(bean.getProductModel());
+            String productModel = bean.getProductModel();
+            String checkModel = String.format("%s%s",productModel.substring(0,6),"*");
+
+            /*校验产品是否是不可延保*/
+            PriceList checkPrice = priceService.getModelPrice(checkModel);
+            BusinessUtil.assertFlase(null != checkPrice, ErrorCodes.SystemManagerEnum.ID_NON_MODEL);
+
+            PriceList priceList = priceService.getModelPrice(productModel);
             BusinessUtil.assertFlase(null == priceList,ErrorCodes.SystemManagerEnum.PRICE_IS_NULL);
 
             if(new Date().before(endDate)){
                 if (bean.getWarrantyType().equals("W5YS")){
                     price = priceList.getStandardEarlyBirdDiscount();
-                }else{
+                }else if(bean.getWarrantyType().equals("W5YP")){
                     price = priceList.getPartEarlyBirdDiscount();
                 }
-
             }else{
                 if (bean.getWarrantyType().equals("W5YS")){
                     price = priceList.getStandardStandard();
-                }else{
+                }else if(bean.getWarrantyType().equals("W5YP")){
                     price = priceList.getPartStandard();
                 }
             }

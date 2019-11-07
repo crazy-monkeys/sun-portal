@@ -1,6 +1,7 @@
 package com.crazy.portal.bean.vo;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -25,4 +26,6 @@ public class MTRegistBean {
     private String suggestions;
     private String businessPartner;
 
+    private MultipartFile invoiceFile;
+    private MultipartFile cecFile;
 }
