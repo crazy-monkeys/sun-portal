@@ -143,16 +143,45 @@ public class MaintenanceService {
             }
             apiParamBean.setInstallDate(bean.getInstallDate());
             if(null != bean.getServiceCall()){
-                apiParamBean.setShippingAddress(bean.getServiceCall().getShippingAddress());
-                apiParamBean.setFaultType(bean.getServiceCall().getFault().equals("Permanent")?"1":"2");
-                apiParamBean.setFaultDescription(bean.getServiceCall().getDescription());
-                apiParamBean.setLcdMessage(bean.getServiceCall().getLcd());
-                apiParamBean.setIsWeather(bean.getServiceCall().getWeather().toUpperCase());
-                apiParamBean.setBattery(bean.getServiceCall().getBattery().toUpperCase());
-                apiParamBean.setBatteryModel(bean.getServiceCall().getModel());
-                apiParamBean.setReference(bean.getServiceCall().getWeatherMsg());
-                apiParamBean.setLocation(bean.getServiceCall().getLocation());
-                apiParamBean.setRemark(bean.getServiceCall().getBatteryMsg());
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getShippingAddress())){
+                    apiParamBean.setShippingAddress(bean.getServiceCall().getShippingAddress());
+                }
+
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getFault())){
+                    apiParamBean.setFaultType(bean.getServiceCall().getFault().equals("Permanent")?"1":"2");
+                }
+
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getDescription())){
+                    apiParamBean.setFaultDescription(bean.getServiceCall().getDescription());
+                }
+
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getLcd())){
+                    apiParamBean.setLcdMessage(bean.getServiceCall().getLcd());
+                }
+
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getWeather())){
+                    apiParamBean.setIsWeather(bean.getServiceCall().getWeather().toUpperCase());
+                }
+
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getBattery())){
+                    apiParamBean.setBattery(bean.getServiceCall().getBattery().toUpperCase());
+                }
+
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getModel())){
+                    apiParamBean.setBatteryModel(bean.getServiceCall().getModel());
+                }
+
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getWeatherMsg())){
+                    apiParamBean.setReference(bean.getServiceCall().getWeatherMsg());
+                }
+
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getLocation())){
+                    apiParamBean.setLocation(bean.getServiceCall().getLocation());
+                }
+
+                if(StringUtils.isNotEmpty(bean.getServiceCall().getBatteryMsg())){
+                    apiParamBean.setRemark(bean.getServiceCall().getBatteryMsg());
+                }
             }
 
             //TODO save response
