@@ -9,6 +9,7 @@ import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.api.inventory.InventoryInfoReponse;
 import com.crazy.portal.bean.api.inventory.InventoryInfoRequest;
 import com.crazy.portal.bean.api.token.TokenBean;
+import com.crazy.portal.bean.api.warehouse.CreateWarehouseRequest;
 import com.crazy.portal.bean.api.warehouse.WarehouseOwnerRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -107,6 +108,20 @@ public class ApiServiceTest {
         String id = apiService.getWarehouseIdByCode("st02");
         log.info(id);
         Assert.assertTrue(id.equals("DB5BE91DC8F24DB7B95D9693F8EBD531"));
+    }
+
+//    API return {"error":"CA-202",
+//    "message":"CA-202: Object [Warehouse:1B80ECDE2FF641EABD99EA3F54CEC3E1]
+//    doesn't have a unique code [ST04].",
+//    "values":["Warehouse","1B80ECDE2FF641EABD99EA3F54CEC3E1","ST04"],"id":"eee016ce1f2d4edf8b3d5b580b3cb6f9"}
+    @Test
+    public void createWarehouse() {
+        CreateWarehouseRequest request = new CreateWarehouseRequest();
+        request.setCode("ST04");
+        request.setName("测试仓库4");
+        request.setReservedMaterialWarehouse(false);
+
+        apiService.createWarehouse(request);
     }
 
     @Test
