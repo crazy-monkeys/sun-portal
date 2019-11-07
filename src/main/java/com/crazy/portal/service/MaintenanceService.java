@@ -71,7 +71,7 @@ public class MaintenanceService {
 
             apiParamBean.setCurrency("AUD");
             apiParamBean.setPostCode(bean.getAddress().getPostCode());
-            String customerAddress = String.format("%s%s%s%s",
+            String customerAddress = String.format("%s,%s,%s,%s",
                     bean.getAddress().getAddressLine1(),
                     bean.getAddress().getAddressLine2(),
                     bean.getAddress().getCityName(),
@@ -121,7 +121,7 @@ public class MaintenanceService {
                 apiParamBean.setAbn(bean.getContact().getAbn());
                 apiParamBean.setCustomerContact(bean.getContact().getPerson());
                 apiParamBean.setContactNumber(bean.getContact().getContactNumber());
-                String customerAddress = String.format("%s%s%s%s",
+                String customerAddress = String.format("%s,%s,%s,%s",
                         bean.getContact().getAddress().getAddressLine1(),
                         bean.getContact().getAddress().getAddressLine2(),
                         bean.getContact().getAddress().getCityName(),
@@ -133,7 +133,7 @@ public class MaintenanceService {
                 apiParamBean.setContactEmial(bean.getEndUser().getContactEmail());
                 apiParamBean.setCustomerContact(bean.getEndUser().getPerson());
                 apiParamBean.setContactNumber(bean.getEndUser().getContactNumber());
-                String customerAddress = String.format("%s%s%s%s",
+                String customerAddress = String.format("%s,%s,%s,%s",
                         bean.getEndUser().getAddress().getAddressLine1(),
                         bean.getEndUser().getAddress().getAddressLine2(),
                         bean.getEndUser().getAddress().getCityName(),
@@ -191,7 +191,7 @@ public class MaintenanceService {
 
             apiParamBean.setInstallInstaller(bean.getFirstName()+" "+bean.getLastName());
             apiParamBean.setInstallDate(bean.getInstallDate());
-            String customerAddress = String.format("%s%s%s%s",
+            String customerAddress = String.format("%s,%s,%s,%s",
                     bean.getAddress().getAddressLine1(),
                     bean.getAddress().getAddressLine2(),
                     bean.getAddress().getCityName(),
