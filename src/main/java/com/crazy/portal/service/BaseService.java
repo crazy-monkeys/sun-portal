@@ -1,7 +1,7 @@
 package com.crazy.portal.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.crazy.portal.bean.api.BaseParamsBean;
+import com.crazy.portal.bean.api.ParamsBean;
 import com.crazy.portal.bean.api.token.TokenBean;
 import com.crazy.portal.bean.common.Constant;
 import com.crazy.portal.config.exception.BusinessException;
@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -77,15 +79,31 @@ public class BaseService {
      * @return
      * @throws Exception
      */
-    protected String invokeApi(String url, String body, Enums.Api_Header_Dtos dtos) throws Exception{
+    protected String invokeApi(String url, String body, Enums.API_HEADER_DTOS dtos) throws Exception{
+        return this.getApiResponse(url, body, dtos,null);
+    }
+
+    /**
+     * 封装通用调用api
+     * @param url
+     * @param body
+     * @param dtos
+     * @return
+     * @throws Exception
+     */
+    protected String invokeApi(String url, String body, Enums.API_HEADER_DTOS dtos, Boolean forceUpdate) throws Exception{
+        return this.getApiResponse(url, body, dtos,forceUpdate);
+    }
+
+    private String getApiResponse(String url, String body, Enums.API_HEADER_DTOS dtos, Boolean forceUpdate) throws IOException {
         TokenBean tokenBean = this.getToken();
 
         Map<String,String> header = this.buildHeader(tokenBean);
         String account = tokenBean.getAccount();
         String company = tokenBean.getCompanies().get(0).getName();
         String user = tokenBean.getUser();
-        BaseParamsBean baseParamsBean = new BaseParamsBean(account, company, user, header, dtos.getValue());
-        String buildFinalUrl = String.format("%s?%s",url,baseParamsBean.toString());
+        ParamsBean ParamsBean = new ParamsBean(account, company, user, header, dtos.getValue(),forceUpdate);
+        String buildFinalUrl = String.format("%s?%s",url,ParamsBean.toString());
         log.info(">>>>> API url to access:"+buildFinalUrl);
         log.info(">>>>>API Param :"+body);
         String response = HttpClientUtils.post(buildFinalUrl, body, "application/json", header);

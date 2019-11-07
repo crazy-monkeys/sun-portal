@@ -11,13 +11,14 @@ import com.crazy.portal.bean.api.inventory.InventoryInfoRequest;
 import com.crazy.portal.bean.api.token.TokenBean;
 import com.crazy.portal.bean.api.warehouse.CreateWarehouseRequest;
 import com.crazy.portal.bean.api.warehouse.WarehouseOwnerRequest;
+import com.crazy.portal.bean.api.warehouse.WarehouseResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -40,6 +41,10 @@ public class ApiServiceTest {
     @Resource
     private BaseService baseService;
 
+    /**
+     * 获取头信息
+     * @throws Exception
+     */
     @Test
     public void getHeader() throws Exception{
         TokenBean tokenBean = baseService.getToken();
@@ -51,6 +56,9 @@ public class ApiServiceTest {
         Assert.assertTrue(header.get("x-client-id").equals("123d01ed-e117-4ade-afc4-7e697aa4594f"));
     }
 
+    /**
+     * 获取设备信息
+     */
     @Test
     public void getDeviceInfo(){
         String serialNumber = "J1904090450";
@@ -64,6 +72,9 @@ public class ApiServiceTest {
         Assert.assertTrue(udfValuesBean.getValue().equals("SG5K-D"));
     }
 
+    /**
+     * 获取设备地址信息
+     */
     @Test
     public void getDeviceAddressInfo() {
         String objectId = "E79E7FDBE94C4D728C15ADB1E8055609";
@@ -72,6 +83,9 @@ public class ApiServiceTest {
         Assert.assertTrue(address.equals("US"));
     }
 
+    /**
+     * 获取设备容量信息
+     */
     @Test
     public void getDevicePowerInfo() {
         String objectId = "A82DD58BA85C4387BBC42DDFE813F5A8";
@@ -82,6 +96,9 @@ public class ApiServiceTest {
         Assert.assertTrue(udfValuesBean.getName().equals("Z_Capacity"));
     }
 
+    /**
+     * 附件上传
+     */
     @Test
     public void attachmentUpload() {
         AttachmentRequest attachmentRequest = new AttachmentRequest();
@@ -95,6 +112,9 @@ public class ApiServiceTest {
         Assert.assertTrue(attachmentResponse.getFileName().equals("test2.txt"));
     }
 
+    /**
+     * 根据物料号获取物料编码
+     */
     @Test
     public void getMaterialIdByCode() {
         String id = apiService.getMaterialIdByCode("P400104");
@@ -103,6 +123,9 @@ public class ApiServiceTest {
     }
 
 
+    /**
+     * 根据仓库号获取仓库编码
+     */
     @Test
     public void getWarehouseIdByCode() {
         String id = apiService.getWarehouseIdByCode("st02");
@@ -110,10 +133,19 @@ public class ApiServiceTest {
         Assert.assertTrue(id.equals("DB5BE91DC8F24DB7B95D9693F8EBD531"));
     }
 
-//    API return {"error":"CA-202",
-//    "message":"CA-202: Object [Warehouse:1B80ECDE2FF641EABD99EA3F54CEC3E1]
-//    doesn't have a unique code [ST04].",
-//    "values":["Warehouse","1B80ECDE2FF641EABD99EA3F54CEC3E1","ST04"],"id":"eee016ce1f2d4edf8b3d5b580b3cb6f9"}
+    /**
+     * 根据owner名称获取编码
+     */
+    @Test
+    public void getOwnerId() {
+        String id = apiService.getOwnerId("Peter");
+        log.info(id);
+        Assert.assertTrue(id.equals("4E1E9EDC9F1F4628A7316AF90948D34E"));
+    }
+
+    /**
+     * 创建仓库
+     */
     @Test
     public void createWarehouse() {
         CreateWarehouseRequest request = new CreateWarehouseRequest();
@@ -121,35 +153,31 @@ public class ApiServiceTest {
         request.setName("测试仓库4");
         request.setReservedMaterialWarehouse(false);
 
-        apiService.createWarehouse(request);
+        WarehouseResponse warehouseResponse = apiService.createWarehouse(request);
+        Assert.assertTrue(warehouseResponse != null);
     }
 
+    /**
+     * 更新仓库owner
+     */
     @Test
     public void updateWarehouseOwner() {
         String warehouseId = "DB5BE91DC8F24DB7B95D9693F8EBD531";
         WarehouseOwnerRequest warehouseOwnerRequest = new WarehouseOwnerRequest();
         warehouseOwnerRequest.setReservedMaterialWarehouse(false);
         warehouseOwnerRequest.setOwners(Arrays.asList("92DD31EF89FD46C38B1DDA98108D3F2F", "C1E42CCAF0554C7DA4E5286C88B5E135"));
-        apiService.updateWarehouseOwner(warehouseId,warehouseOwnerRequest);
+
+        WarehouseResponse warehouseResponse = apiService.updateWarehouseOwner(warehouseId,warehouseOwnerRequest);
+        Assert.assertTrue(warehouseResponse != null);
     }
 
-    //TODO return {"data":[]}
-    @Test
-    public void getOwnerId() {
-        String id = apiService.getOwnerId("rxie01");
-        log.info(id);
-        Assert.assertTrue(StringUtils.isNotEmpty(id));
-    }
-
-    //{"error":"CA-09","message":"CA-09: Could not deserialize uploaded object to [ItemWarehouseLevelDTO_V14],
-    // because [ it contains invalid json syntax or some of the passed data doesn't respect the required data type]",
-    // "values":["ItemWarehouseLevelDTO_V14","
-    // it contains invalid json syntax or some of the passed data doesn't respect the required data type"],
-    // "id":"9d11f1b8064b40a0a260cfd6637b91b3"}
+    /**
+     * 更新库存信息
+     */
     @Test
     public void updateInventoryInfo() {
         InventoryInfoRequest inventoryInfoRequest = new InventoryInfoRequest();
-        inventoryInfoRequest.setWarehouse("F23AE0184E734D99B4C321C9ACF49F8");
+        inventoryInfoRequest.setWarehouse("F23AE0184E734D99B4C321AC9ACF49F8");
         inventoryInfoRequest.setItem("6F9B4E73D0C64971B64407267B022341");
         inventoryInfoRequest.setInStock("100");
         InventoryInfoReponse res = apiService.updateInventoryInfo(inventoryInfoRequest);

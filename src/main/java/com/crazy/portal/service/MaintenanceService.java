@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -276,7 +275,7 @@ public class MaintenanceService {
             activityBean.setEndDateTime(date);
             activityBean.setEarliestStartDateTime(date);
             activityBean.setDueDateTime(date);
-            apiService.materialCall(JSON.toJSONString(activityBean),"/data/v4/Activity", Enums.Api_Header_Dtos.ACTIVITY);
+            apiService.materialCall(JSON.toJSONString(activityBean),"/data/v4/Activity", Enums.API_HEADER_DTOS.ACTIVITY);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -298,7 +297,7 @@ public class MaintenanceService {
                 unitPriceBean.setCurrency("AUD");
                 materialRequestBodyBean.setUnitPrice(unitPriceBean);
 
-                apiService.materialCall(JSON.toJSONString(materialRequestBodyBean),"/data/v4/Material", Enums.Api_Header_Dtos.MATERIAL);
+                apiService.materialCall(JSON.toJSONString(materialRequestBodyBean),"/data/v4/Material", Enums.API_HEADER_DTOS.MATERIAL);
             }catch (Exception ex){
                 log.error("",ex);
             }

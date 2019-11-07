@@ -13,6 +13,7 @@ import com.crazy.portal.bean.api.inventory.InventoryInfoReponse;
 import com.crazy.portal.bean.api.inventory.InventoryInfoRequest;
 import com.crazy.portal.bean.api.warehouse.CreateWarehouseRequest;
 import com.crazy.portal.bean.api.warehouse.WarehouseOwnerRequest;
+import com.crazy.portal.bean.api.warehouse.WarehouseResponse;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.BeanUtils;
 import com.crazy.portal.util.Enums;
@@ -45,7 +46,7 @@ public class ApiService extends BaseService{
             jsonObject.put("query"," select eq.id,eq.item,eq.businessPartner,eq.udf.Z_Model_excl,eq.udf.Z_DispatchDate_local" +
                     " from Equipment eq where eq.serialNumber = '"+serialNumber+"'");
 
-            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.EQUIPMENT20);
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.API_HEADER_DTOS.EQUIPMENT20);
 
             if(response.contains("error")) return null;
 
@@ -68,7 +69,7 @@ public class ApiService extends BaseService{
             jsonObject.put("query"," select adrs.country FROM Address adrs " +
                     "where adrs.object.objectId = '"+objectId+"' and adrs.object.objectType = 'EQUIPMENT'");
 
-            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ADDRESS18);
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.API_HEADER_DTOS.ADDRESS18);
 
             JSONObject adrsObject = this.getApiData(response);
 
@@ -97,7 +98,7 @@ public class ApiService extends BaseService{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query"," SELECT itt.udf.Z_Capacity FROM Item itt where itt.id = '"+id+"'");
 
-            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ITEM22);
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.API_HEADER_DTOS.ITEM22);
 
             JSONObject adrsObject = this.getApiData(response);
             if (adrsObject == null) return null;
@@ -125,7 +126,7 @@ public class ApiService extends BaseService{
     public AttachmentResponse attachmentUpload(AttachmentRequest attachmentRequest){
         try {
             String url = String.format("%s%s",super.callRootUrl,"/data/v4/Attachment");
-            String response = super.invokeApi(url, JSON.toJSONString(attachmentRequest), Enums.Api_Header_Dtos.ATTACHMENT15);
+            String response = super.invokeApi(url, JSON.toJSONString(attachmentRequest), Enums.API_HEADER_DTOS.ATTACHMENT15);
 
             JSONObject data = this.getApiData(response);
             if (data == null) return null;
@@ -151,7 +152,7 @@ public class ApiService extends BaseService{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query"," SELECT itt.id FROM Item itt WHERE itt.code = '"+code+"'");
 
-            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.ITEM22);
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.API_HEADER_DTOS.ITEM22);
             JSONObject data = this.getApiData(response);
             if (data == null) return null;
 
@@ -181,7 +182,7 @@ public class ApiService extends BaseService{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query"," SELECT whh.id FROM Warehouse whh WHERE whh.code = '"+code+"'");
 
-            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.WAREHOUSE15);
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.API_HEADER_DTOS.WAREHOUSE15);
             JSONObject data = this.getApiData(response);
             if (data == null) return null;
 
@@ -202,12 +203,15 @@ public class ApiService extends BaseService{
     /**
      * 创建仓库
      */
-    public void createWarehouse(CreateWarehouseRequest createWarehouseRequest){
+    public WarehouseResponse createWarehouse(CreateWarehouseRequest createWarehouseRequest){
         try {
             String url = String.format("%s%s",super.callRootUrl,"/data/v4/Warehouse");
-            super.invokeApi(url, JSON.toJSONString(createWarehouseRequest), Enums.Api_Header_Dtos.WAREHOUSE15);
+            String response = super.invokeApi(url, JSON.toJSONString(createWarehouseRequest), Enums.API_HEADER_DTOS.WAREHOUSE15);
+
+            return this.getWarehouseResponse(response);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("",e);
+            throw new BusinessException("",e);
         }
     }
 
@@ -216,12 +220,17 @@ public class ApiService extends BaseService{
      * @param warehouseId
      * @param warehouseOwnerRequest
      */
-    public void updateWarehouseOwner(String warehouseId,WarehouseOwnerRequest warehouseOwnerRequest){
+    public WarehouseResponse updateWarehouseOwner(String warehouseId, WarehouseOwnerRequest warehouseOwnerRequest){
         try {
             String url = String.format("%s%s%s",super.callRootUrl,"/data/v4/Warehouse/",warehouseId);
-            super.invokeApi(url, JSON.toJSONString(warehouseOwnerRequest), Enums.Api_Header_Dtos.WAREHOUSE15);
+            String response = super.invokeApi(url,
+                            JSON.toJSONString(warehouseOwnerRequest),
+                            Enums.API_HEADER_DTOS.WAREHOUSE15,true);
+
+            return this.getWarehouseResponse(response);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("",e);
+            throw new BusinessException("",e);
         }
     }
 
@@ -236,7 +245,19 @@ public class ApiService extends BaseService{
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("query"," SELECT pr.id FROM Person pr WHERE pr.externalId = '"+externalld+"'");
 
-            return super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.Api_Header_Dtos.PERSON20);
+            String response = super.invokeApi(url, JSON.toJSONString(jsonObject), Enums.API_HEADER_DTOS.PERSON20);
+
+            JSONObject data = this.getApiData(response);
+            if (data == null) return null;
+
+            Object prObj = data.get("pr");
+            if(prObj == null) return null;
+
+            JSONObject pr = JSON.parseObject(JSON.toJSONString(prObj),JSONObject.class);
+
+            if(pr == null) return null;
+
+            return (String) pr.get("id");
         } catch (Exception e) {
             log.error("",e);
             throw new BusinessException("",e);
@@ -250,7 +271,7 @@ public class ApiService extends BaseService{
     public InventoryInfoReponse updateInventoryInfo(InventoryInfoRequest inventoryInfoRequest){
         try {
             String url = String.format("%s%s",super.callRootUrl,"/data/v4/ItemWarehouseLevel");
-            String response = super.invokeApi(url, JSON.toJSONString(inventoryInfoRequest), Enums.Api_Header_Dtos.ITEMWAREHOUSELEVEL14);
+            String response = super.invokeApi(url, JSON.toJSONString(inventoryInfoRequest), Enums.API_HEADER_DTOS.ITEMWAREHOUSELEVEL14);
 
             JSONObject data = this.getApiData(response);
             if (data == null) return null;
@@ -291,10 +312,10 @@ public class ApiService extends BaseService{
      */
     public String serviceCall(ApiParamBean bean)throws Exception{
         String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
-        return super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.Api_Header_Dtos.SERVICECALL25);
+        return super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.API_HEADER_DTOS.SERVICECALL25);
     }
 
-    public void materialCall(String param,String function,  Enums.Api_Header_Dtos dtos)throws Exception{
+    public void materialCall(String param,String function,  Enums.API_HEADER_DTOS dtos)throws Exception{
         String url = String.format("%s%s", callRootUrl,function);
         String response = super.invokeApi(url, param, dtos);
         System.out.println(response);
@@ -325,5 +346,15 @@ public class ApiService extends BaseService{
         requestBodyBean.setUdfValues(params);
         requestBodyBean.setRemarks(bean.getRemark());
         return requestBodyBean;
+    }
+
+    private WarehouseResponse getWarehouseResponse(String response) {
+        JSONObject data = this.getApiData(response);
+        if (data == null) return null;
+
+        Object warehouseOwner = data.get("warehouse");
+        if (warehouseOwner == null) return null;
+
+        return JSON.parseObject(JSON.toJSONString(warehouseOwner), WarehouseResponse.class);
     }
 }

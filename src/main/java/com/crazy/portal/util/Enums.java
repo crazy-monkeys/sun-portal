@@ -138,7 +138,7 @@ public class Enums {
         }
     }
 
-    public enum Api_Header_Dtos{
+    public enum API_HEADER_DTOS {
         EQUIPMENT20("Equipment.20"),
         SERVICECALL25("ServiceCall.25"),
         ACTIVITY28("Activity.28"),
@@ -151,7 +151,7 @@ public class Enums {
         WAREHOUSE15("Warehouse.15"),
         PERSON20("Person.20");
 
-        Api_Header_Dtos(String value){
+        API_HEADER_DTOS(String value){
             this.value = value;
         }
 

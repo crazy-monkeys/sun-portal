@@ -1,10 +1,9 @@
 package com.crazy.portal.bean.api;
 
-import com.crazy.portal.bean.common.Constant;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Desc:
@@ -13,19 +12,19 @@ import java.util.Map;
  * @Modified by:
  */
 @Data
-public class BaseParamsBean {
+public class ParamsBean {
 
-    private BaseParamsBean(){};
-
-    public BaseParamsBean(String account, String company, String user,Map<String, String> header, String dtos) {
+    public ParamsBean(String account, String company, String user, Map<String, String> header, String dtos,Boolean forceUpdate) {
         this.header = header;
         this.account = account;
         this.company = company;
         this.user = user;
         this.dtos = dtos;
+        this.forceUpdate = forceUpdate;
     }
 
     private Map<String, String> header;
+    private Boolean forceUpdate;
     private String dtos;
     private String account;
     private String company;
@@ -40,6 +39,9 @@ public class BaseParamsBean {
         sb.append("company=").append(company).append('&');
         sb.append("clientIdentifier=").append(clientIdentifier).append('&');
         sb.append("user=").append(user);
+        if(Objects.nonNull(forceUpdate)){
+            sb.append("forceUpdate=").append(forceUpdate);
+        }
         return sb.toString();
     }
 }
