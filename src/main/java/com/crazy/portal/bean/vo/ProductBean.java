@@ -31,4 +31,6 @@ public class ProductBean {
     private BigDecimal amount;
 
     private String businessPartner;
+
+    private String devicePower;
 }

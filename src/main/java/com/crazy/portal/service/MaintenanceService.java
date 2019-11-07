@@ -86,13 +86,17 @@ public class MaintenanceService {
             String code = serviceCall.getString(CODE);
             String objectId = serviceCall.getString(OBJECTID);
             if(StringUtils.isNotEmpty(code)){
-                System.out.println("service Code :"+code);
-                if(null != bean.getInvoiceFile()){
-                    this.uploadFile(bean.getInvoiceFile(),"Invoice"+code, objectId);
-                }
-                if(null != bean.getCecFile()){
-                    this.uploadFile(bean.getCecFile(),"Electrical Compliance Certificate"+code,objectId);
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(null != bean.getInvoiceFile()){
+                            uploadFile(bean.getInvoiceFile(),"Invoice"+code, objectId);
+                        }
+                        if(null != bean.getCecFile()){
+                            uploadFile(bean.getCecFile(),"Electrical Compliance Certificate"+code,objectId);
+                        }
+                    }
+                }).start();
                 return code;
             }
             throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
@@ -189,9 +193,14 @@ public class MaintenanceService {
             String objectId = serviceCall.getString(OBJECTID);
             if(StringUtils.isNotEmpty(code)){
                 activityCreate(apiParamBean,objectId);
-                for(MultipartFile file : bean.getFiles()){
-                    this.uploadFile(file,"Warranty Claim",objectId);
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(MultipartFile file : bean.getFiles()){
+                            uploadFile(file,"Warranty Claim",objectId);
+                        }
+                    }
+                }).start();
                 return code;
             }
             throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
@@ -373,6 +382,7 @@ public class MaintenanceService {
             apiParamBean.setEquipments(equipments.toArray(new String[equipments.size()]));
         }
     }
+
     private void checkFile(MTRegistBean bean, ApiParamBean apiParamBean)throws IOException{
         if(null == bean.getInvoiceFile()){
             apiParamBean.setInvliceUpload("NO");
@@ -386,23 +396,26 @@ public class MaintenanceService {
         }
     }
 
-    private void uploadFile(MultipartFile file,String title, String objectId) throws IOException{
-        AttachmentRequest request = new AttachmentRequest();
-        String fileName = file.getOriginalFilename();
-        request.setFileName(fileName);
-        byte[] byteArray = file.getBytes();
-        request.setFileContent(new String(Base64Utils.encode(byteArray),"UTF-8"));
-        request.setTitle(title);
-        request.setType(fileName.substring(fileName.lastIndexOf(".")+1).toUpperCase());
+    private void uploadFile(MultipartFile file,String title, String objectId){
+        try{
+            AttachmentRequest request = new AttachmentRequest();
+            String fileName = file.getOriginalFilename();
+            request.setFileName(fileName);
+            byte[] byteArray = file.getBytes();
+            request.setFileContent(new String(Base64Utils.encode(byteArray),"UTF-8"));
+            request.setTitle(title);
+            request.setType(fileName.substring(fileName.lastIndexOf(".")+1).toUpperCase());
 
-        ObjectBean object = new ObjectBean();
-        object.setObjectType("SERVICECALL");
-        object.setObjectId(objectId);
-        request.setObject(object);
+            ObjectBean object = new ObjectBean();
+            object.setObjectType("SERVICECALL");
+            object.setObjectId(objectId);
+            request.setObject(object);
 
-        apiService.attachmentUpload(request);
+            apiService.attachmentUpload(request);
+        }catch (Exception e){
+            log.error("附件上传失败");
+        }
     }
-
 
     /**
      * 初始化请求参数对象
