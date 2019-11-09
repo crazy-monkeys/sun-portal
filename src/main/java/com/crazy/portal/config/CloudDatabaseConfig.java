@@ -1,6 +1,7 @@
 package com.crazy.portal.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,8 @@ import javax.sql.DataSource;
  * @Modified by:
  */
 @Configuration
-@Profile({"sit","uat","prod"})
+@Profile("sit")
+@Slf4j
 public class CloudDatabaseConfig {
 
     @Bean
@@ -25,6 +27,7 @@ public class CloudDatabaseConfig {
                                  @Value("${hana.password}")final String password) {
 
 
+        log.info("initial database "+ url);
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .driverClassName(com.sap.db.jdbc.Driver.class.getName())
