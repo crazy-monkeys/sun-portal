@@ -9,10 +9,7 @@ import com.crazy.portal.bean.api.MaterialRequestBodyBean;
 import com.crazy.portal.bean.api.ObjectBean;
 import com.crazy.portal.bean.api.attachment.AttachmentRequest;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
-import com.crazy.portal.bean.vo.EIRegisterBean;
-import com.crazy.portal.bean.vo.MTRegistBean;
-import com.crazy.portal.bean.vo.MaintenanceBean;
-import com.crazy.portal.bean.vo.ProductBean;
+import com.crazy.portal.bean.vo.*;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.dao.system.SysSeqMapper;
 import com.crazy.portal.entity.system.SysSeq;
@@ -215,8 +212,14 @@ public class MaintenanceService {
 
     public String eiRegister(EIRegisterBean bean){
         try{
+            if(null != bean.getMultiple() && bean.getMultiple()){
+                MultipleProductResponse response = productService.multiplePrice(bean.getMultipleProduct());
+                bean.setProducts(response.getProducts());
+            }
+
             String country = bean.getCountry();
             this.checkProduct(bean.getProducts(),country);
+            BusinessUtil.assertFlase(StringUtils.isEmpty(bean.getEmail())||StringUtils.isEmpty(bean.getSendEmail()),ErrorCodes.SystemManagerEnum.EMAIL_IS_NO);
             BusinessUtil.assertTrue(bean.getEmail().equals(bean.getSendEmail()),ErrorCodes.SystemManagerEnum.EMAIL_IS_NO);
 
             ApiParamBean apiParamBean = mappingApiParamBean(bean.getType());
@@ -335,13 +338,12 @@ public class MaintenanceService {
      * @param country
      */
     private void checkProduct(List<ProductBean> products, String country){
-        log.info("this conuntry is " + country);
         Boolean check = productService.checkProduct(products, country);
         BusinessUtil.assertFlase(check, ErrorCodes.SystemManagerEnum.PRODUCT_IS_PARALLEL_IMPORTS);
     }
 
     /**
-     * 计算价格
+     * 封装价格
      * @param products
      * @param apiParamBean
      */

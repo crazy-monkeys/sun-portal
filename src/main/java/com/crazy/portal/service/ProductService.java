@@ -4,6 +4,7 @@ import com.crazy.portal.bean.ResponseBean;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
 import com.crazy.portal.bean.api.device.UdfValuesBean;
 import com.crazy.portal.bean.vo.MultipleProduct;
+import com.crazy.portal.bean.vo.MultipleProductResponse;
 import com.crazy.portal.bean.vo.ProductBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.entity.price.PriceList;
@@ -15,9 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ClassName: ProductService
@@ -41,8 +40,7 @@ public class ProductService {
         DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);
         BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.SystemManagerEnum.PRODUCT_IS_EMPTY);
         ResponseBean responseBean = new ResponseBean();
-        String id = deviceInfoBean.getData().get(0).getEq().getId();
-        responseBean.setId(id);
+        responseBean.setId(deviceInfoBean.getData().get(0).getEq().getId());
         responseBean.setBusinessPartner(deviceInfoBean.getData().get(0).getEq().getBusinessPartner());
         deviceInfoBean.getData().get(0).getEq().getUdfValues().forEach(e->{
             if(e.getMeta().equals(Enums.API_PARAMS.Product_id.getId())){
@@ -55,7 +53,7 @@ public class ProductService {
 
         if(type.equals(2)){
             //获取容量
-            UdfValuesBean udfValuesBean = apiService.getDevicePowerInfo(id);
+            UdfValuesBean udfValuesBean = apiService.getDevicePowerInfo(deviceInfoBean.getData().get(0).getEq().getItem());
             responseBean.setDevicePower(null == udfValuesBean?"0":udfValuesBean.getValue());
         }
         return responseBean;
@@ -83,22 +81,24 @@ public class ProductService {
      * @return
      */
     public List<ProductBean> getListPrice(List<ProductBean> beans){
-        List<ProductBean> powerBean = new ArrayList<>();
+        Map<String,BigDecimal> powerBean = new HashMap<>();
         BigDecimal powerAmount = BigDecimal.ZERO;
 
         for(ProductBean bean : beans){
             BigDecimal price = checkPrice(bean);
             bean.setAmount(price);
-
             if(new BigDecimal(bean.getDevicePower()).compareTo(new BigDecimal("10"))==-1){
-                powerBean.add(bean);
+                powerBean.put(bean.getProductId(),bean.getAmount());
                 powerAmount = powerAmount.add(price);
             }
-            if(price.compareTo(new BigDecimal("5000"))==1){
-                beans.forEach(e->{
+        }
+
+        if(powerAmount.compareTo(new BigDecimal("5000"))==1){
+            beans.forEach(e->{
+                if(powerBean.get(e.getProductId()).compareTo(BigDecimal.ZERO)==1){
                     e.setAmount(e.getAmount().multiply(new BigDecimal("0.9")));
-                });
-            }
+                }
+            });
         }
         return beans;
     }
@@ -107,10 +107,69 @@ public class ProductService {
      * 数据物料设备计算
      * @param multipleProduct
      */
-    public void multiplePrice(List<MultipleProduct> multipleProduct){
-        multipleProduct.forEach(e->{
-           // e.getNumberList().replace(",");
-        });
+    public MultipleProductResponse multiplePrice(List<MultipleProduct> multipleProduct){
+        MultipleProductResponse response = new MultipleProductResponse();
+        List<ProductBean> products = new ArrayList<>();
+        Map<String,BigDecimal> powerBean = new HashMap<>();
+
+        BigDecimal amount = BigDecimal.ZERO;
+        BigDecimal powerAmount = BigDecimal.ZERO;
+        Integer totalItem = 0;
+
+        for (MultipleProduct product : multipleProduct) {
+            String[] strArray = product.getSerialNumbers().split(",");
+            for(String str : strArray){
+                ResponseBean responseBean = this.getProduct(str,2);
+
+                ProductBean bean = new ProductBean();
+                bean.setProductId(responseBean.getId());
+                bean.setBusinessPartner(responseBean.getBusinessPartner());
+                bean.setSerialNumber(str);
+                bean.setDevicePower(null == responseBean.getDevicePower()?"0":responseBean.getDevicePower());
+                bean.setDeliveryDate(responseBean.getDeliveryDate());
+                bean.setProductModel(responseBean.getProductModelValue());
+                bean.setWarrantyType(product.getWarrantyType());
+                if(product.getWarrantyType().equals("W5YS")){
+                    bean.setDiscount("Early bird discount");
+                    bean.setType("Additional 5 Years Standard Warranty");
+                }else{
+                    bean.setDiscount("Standard discount");
+                    bean.setType("Additional 5 Years Parts Warranty");
+                }
+
+                BigDecimal price = this.checkPrice(bean);
+                bean.setAmount(price);
+                products.add(bean);
+
+                if(new BigDecimal(bean.getDevicePower()).compareTo(new BigDecimal("10"))==-1){
+                    powerAmount = powerAmount.add(price);
+                    powerBean.put(bean.getProductId(),bean.getAmount());
+                }
+                totalItem ++;
+                amount = amount.add(price);
+            }
+        }
+
+        if(powerAmount.compareTo(new BigDecimal("5000"))==1){
+            amount = BigDecimal.ZERO;
+            for(ProductBean product : products){
+                if(powerBean.get(product.getProductId()).compareTo(BigDecimal.ZERO)==1){
+                    BigDecimal price = product.getAmount().multiply(new BigDecimal("0.9"));
+                    product.setAmount(price);
+                    amount = amount.add(price);
+                }else{
+                    amount = amount.add(product.getAmount());
+                }
+            }
+        }
+
+        response.setProducts(products);
+        response.setItem(totalItem);
+        BigDecimal totalAmount = amount.multiply(new BigDecimal("1.1"));
+        response.setInclGst(totalAmount);
+        response.setExclGst(amount);
+        response.setGst(totalAmount.subtract(amount));
+        return response;
     }
 
     private BigDecimal checkPrice(ProductBean bean){

@@ -41,6 +41,6 @@ public class ProductController extends BaseController{
 
     @PostMapping("/multiple/price")
     public BaseResponse getListProductPriceInfo(@RequestBody List<MultipleProduct> multipleProduct){
-        return successResult();
+        return successResult(productService.multiplePrice(multipleProduct));
     }
 }

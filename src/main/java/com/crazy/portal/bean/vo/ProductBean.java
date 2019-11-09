@@ -20,11 +20,13 @@ public class ProductBean {
     //TODO 前端保存并返回
     private String item = "322EA4550BAC4C7E87CD407C1EB43EA1";
 
-    private String productNumber;
+    private String serialNumber;
 
     private String deliveryDate;
 
     private String warrantyType;
+
+    private String type;
 
     private String purchaseOrder;
 
@@ -33,4 +35,6 @@ public class ProductBean {
     private String businessPartner;
 
     private String devicePower;
+
+    private String discount;
 }
