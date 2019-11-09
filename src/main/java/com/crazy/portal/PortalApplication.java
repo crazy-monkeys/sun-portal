@@ -4,6 +4,7 @@ import com.crazy.portal.util.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
@@ -15,9 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 @Slf4j
-@EnableCaching
-@EnableScheduling
-@SpringBootApplication
+@SpringBootApplication(exclude = GsonAutoConfiguration.class)
 @EnableTransactionManagement(proxyTargetClass = true)
 public class PortalApplication extends SpringBootServletInitializer {
 
