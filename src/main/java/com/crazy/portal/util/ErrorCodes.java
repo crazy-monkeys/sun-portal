@@ -11,12 +11,12 @@ import com.crazy.portal.config.exception.ErrorInfo;
 public class ErrorCodes {
 
     public enum CommonEnum implements ErrorInfo {
-        SYSTEM_EXCEPTION(-1,"系统异常"),
-        SYSTEM_TIMEOUT(0,"系统超时"),
-        SUCCESS(1,"操作成功"),
-        REQ_PARAM_FORMAT_ERROR(-2, "请求参数格式异常"),
+        SYSTEM_EXCEPTION(-1,"System exception"),
+        SYSTEM_TIMEOUT(0,"System timeout"),
+        SUCCESS(1,"Successful operation"),
+        REQ_PARAM_FORMAT_ERROR(-2, "Request parameter format exception"),
         SERVER_MEETING(-4,"The server had a meeting"),
-        REQ_ILLEGAL(-3, "非法请求");
+        REQ_ILLEGAL(-3, "Illegal request");
 
 
         private final int code;
@@ -40,12 +40,12 @@ public class ErrorCodes {
      * 系统管理状态码
      */
     public enum SystemManagerEnum implements ErrorInfo {
-        ACCOUNT_ERROR(10001,"登录名或密码错误"),
-        LOCKED(10002,"账户锁定"),
-        PASSWORD_INVALID(10003,"密码过期,请联系管理员重置"),
-        AUTH_ERROR(10004,"权限不足"),
-        TOKEN_INVALID(10005,"会话已经过期,请重新登录"),
-        USER_EXISTS(10010,"登录名已经存在"),
+        ACCOUNT_ERROR(10001,"Wrong login or password"),
+        LOCKED(10002,"Account lockout"),
+        PASSWORD_INVALID(10003,"Password expired, please contact the administrator to reset"),
+        AUTH_ERROR(10004,"Insufficient authority"),
+        TOKEN_INVALID(10005,"The session has expired. Please log in again"),
+        USER_EXISTS(10010,"Login already exists"),
         USER_EMPTY_USER_NAME(10011,"登录名不能为空"),
         USER_NOT_EXISTS(10012,"用户不存在"),
         USER_INVALID_PASSWORD(10013,"原密码不正确"),
@@ -70,17 +70,18 @@ public class ErrorCodes {
         RESOURCE_TYPE_NOT_EXIST(10046,"资源类型不存在"),
         RESOURCE_EXIST(10047,"资源名称已经存在"),
         TOKEN_IS_NULL(10048,"Token 获取失败"),
-        PRODUCT_IS_EMPTY(10049,"设备信息不存在"),
+        PRODUCT_IS_EMPTY(10049,"Device information does not exist"),
 
-        SYS_PARAM_VALUE(10048,"该选项下Code已存在"),
-        SYS_BEAN_ERROR(10049,"对象映射异常"),
-        PRODUCT_IS_PARALLEL_IMPORTS(10050,"设备不在维保服务区内"),
-        IN_DATE_IS_BEFORE(10051,"安装时间不能晚于创单时间"),
-        PRICE_IS_NULL(10052,"设备没有维护对应的价格"),
-        INSTALL_DATE_IS_NOT_NULL(10053,"请选择安装时间"),
-        EMAIL_IS_NO(10054,"确认邮箱错误"),
-        PRODUCT_BUSINESSPARTNER_IS_DIF(10055,"设备客户不一致"),
+        SYS_PARAM_VALUE(10048,"Code already exists under this option"),
+        SYS_BEAN_ERROR(10049,"Object mapping exception"),
+        PRODUCT_IS_PARALLEL_IMPORTS(10050,"The equipment is not in the maintenance service area"),
+        IN_DATE_IS_BEFORE(10051,"Installation time cannot be later than creation time"),
+        PRICE_IS_NULL(10052,"No corresponding price for equipment maintenance"),
+        INSTALL_DATE_IS_NOT_NULL(10053,"Please select the installation time"),
+        EMAIL_IS_NO(10054,"Confirm email error"),
+        PRODUCT_BUSINESSPARTNER_IS_DIF(10055,"Equipment customer inconsistency"),
         ID_NON_MODEL(10056,"According to our database, a warranty extension is already purchased for the inverter S/N J1904090450. The current warranty period is 10 years Standard Warranty. Please check!"),
+        EMAIL_IS_NOT_NULL(10057,"Email is not Empty!"),
         ;
 
 

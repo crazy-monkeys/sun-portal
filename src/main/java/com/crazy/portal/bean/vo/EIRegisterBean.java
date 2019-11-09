@@ -1,7 +1,6 @@
 package com.crazy.portal.bean.vo;
 
 import lombok.Data;
-
 import javax.validation.constraints.Email;
 import java.util.List;
 
@@ -33,4 +32,8 @@ public class EIRegisterBean {
     private String installDate;
     private String shippingAddress;
     private String purchaseOrder;
+
+    private Boolean multiple;
+
+    private List<MultipleProduct> multipleProduct;
 }
