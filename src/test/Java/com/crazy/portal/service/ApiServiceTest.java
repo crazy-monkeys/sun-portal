@@ -1,7 +1,10 @@
 package com.crazy.portal.service;
 
+import com.alibaba.fastjson.JSON;
 import com.crazy.portal.bean.api.attachment.AttachmentRequest;
 import com.crazy.portal.bean.api.attachment.AttachmentResponse;
+import com.crazy.portal.bean.api.batch.InventoryBean;
+import com.crazy.portal.bean.api.batch.OwnerBean;
 import com.crazy.portal.bean.api.device.DeviceData;
 import com.crazy.portal.bean.api.device.DeviceEq;
 import com.crazy.portal.bean.api.device.DeviceInfoBean;
@@ -12,7 +15,9 @@ import com.crazy.portal.bean.api.token.TokenBean;
 import com.crazy.portal.bean.api.warehouse.CreateWarehouseRequest;
 import com.crazy.portal.bean.api.warehouse.WarehouseOwnerRequest;
 import com.crazy.portal.bean.api.warehouse.WarehouseResponse;
+import com.crazy.portal.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,9 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Desc:
@@ -122,6 +125,93 @@ public class ApiServiceTest {
         Assert.assertTrue(id.equals("A82DD58BA85C4387BBC42DDFE813F5A8"));
     }
 
+    /**
+     * 更新仓库Owner
+     */
+    @Test
+    public void batchUpdateOwner(){
+        List<OwnerBean> ownerBeans = new ArrayList<>();
+        OwnerBean ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG01");ownerBean.setName("Caitlyn");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG01");ownerBean.setName("George");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("EMEASG01");ownerBean.setName("Jack");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG02");ownerBean.setName("Philip");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG03");ownerBean.setName("Philip");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG04");ownerBean.setName("Peter");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG05");ownerBean.setName("Peter");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSP06");ownerBean.setName("Peter");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSP07");ownerBean.setName("Peter");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG08");ownerBean.setName("Peter");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG08");ownerBean.setName("Philip");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG08");ownerBean.setName("Jack");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG09");ownerBean.setName("Peter");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("AMERSG01");ownerBean.setName("Peter");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSP10");ownerBean.setName("Peter");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("APACSG11");ownerBean.setName("Peter");
+        ownerBeans.add(ownerBean);
+        ownerBean = new OwnerBean();
+        ownerBean.setCode("INDIASG01");ownerBean.setName("Jack");
+        ownerBeans.add(ownerBean);
+
+        Map<String,List<String>> map = new HashMap<>();
+        ownerBeans.forEach(e->{
+            if(null == map.get(e.getCode())){
+                List<String> s = new ArrayList<>();
+                s.add(e.getName());
+                map.put(e.getCode(),s);
+            }else{
+                map.get(e.getCode()).add(e.getName());
+            }
+        });
+
+        map.forEach((k,v)->{
+            System.out.println("开始 Owner 成功！================="+ DateUtil.format(new Date(),DateUtil.NEW_FORMAT));
+            String wareHouseId = apiService.getWarehouseIdByCode(k);
+            List<String> ownerIds = new ArrayList<>();
+            v.forEach(e->{
+                String ownerId = apiService.getOwnerId(e);
+                ownerIds.add(ownerId);
+            });
+
+            WarehouseOwnerRequest warehouseOwnerRequest = new WarehouseOwnerRequest();
+            warehouseOwnerRequest.setReservedMaterialWarehouse(false);
+            warehouseOwnerRequest.setOwners(ownerIds);
+
+            WarehouseResponse warehouseResponse = apiService.updateWarehouseOwner(wareHouseId,warehouseOwnerRequest);
+            System.out.println("更新 Owner 成功！"+ JSON.toJSONString(warehouseResponse));
+            System.out.println("更新 Owner 成功！================="+ DateUtil.format(new Date(),DateUtil.NEW_FORMAT));
+        });
+    }
 
     /**
      * 根据仓库号获取仓库编码
@@ -171,11 +261,45 @@ public class ApiServiceTest {
         Assert.assertTrue(warehouseResponse != null);
     }
 
+
+
     /**
      * 更新库存信息
      */
     @Test
     public void updateInventoryInfo() {
+        List<InventoryBean> beans = new ArrayList<>();
+        InventoryBean bean = new InventoryBean();
+        bean.setItem("FC004148");bean.setWarehouse("APACSG01");bean.setQty("100");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FD001653");bean.setWarehouse("EMEASG01");bean.setQty("101");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FD001654");bean.setWarehouse("INDIASG01");bean.setQty("102");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FD001655");bean.setWarehouse("APACSG02");bean.setQty("103");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FD001652");bean.setWarehouse("APACSG03");bean.setQty("104");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FC004146");bean.setWarehouse("APACSG04");bean.setQty("105");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FC004147");bean.setWarehouse("APACSG05");bean.setQty("106");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FD001656");bean.setWarehouse("APACSP06");bean.setQty("107");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FD001657");bean.setWarehouse("APACSP07");bean.setQty("108");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FD001658");bean.setWarehouse("APACSG08");bean.setQty("109");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("GC000222");bean.setWarehouse("APACSG09");bean.setQty("110");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("FC001291");bean.setWarehouse("AMERSG01");bean.setQty("111");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("VF000083");bean.setWarehouse("APACSP10");bean.setQty("112");beans.add(bean);bean=new InventoryBean();
+        bean.setItem("PI000002");bean.setWarehouse("APACSG11");bean.setQty("113");beans.add(bean);bean=new InventoryBean();
+
+        beans.forEach(e->{
+            System.out.println("========同步开始："+DateUtil.format(new Date(),DateUtil.NEW_FORMAT));
+            String id = apiService.getMaterialIdByCode(e.getItem());
+            String wareHouseId = apiService.getWarehouseIdByCode(e.getWarehouse());
+            InventoryInfoRequest inventoryInfoRequest = new InventoryInfoRequest();
+            inventoryInfoRequest.setWarehouse(wareHouseId);
+            inventoryInfoRequest.setItem(id);
+            inventoryInfoRequest.setInStock(e.getQty());
+            InventoryInfoReponse res = apiService.updateInventoryInfo(inventoryInfoRequest);
+            System.out.println("========同步结束："+DateUtil.format(new Date(),DateUtil.NEW_FORMAT));
+            System.out.println("========同步结果："+JSON.toJSONString(res));
+        });
+
+
+
         InventoryInfoRequest inventoryInfoRequest = new InventoryInfoRequest();
         inventoryInfoRequest.setWarehouse("DB5BE91DC8F24DB7B95D9693F8EBD531");
         inventoryInfoRequest.setItem("A82DD58BA85C4387BBC42DDFE813F5A8");
