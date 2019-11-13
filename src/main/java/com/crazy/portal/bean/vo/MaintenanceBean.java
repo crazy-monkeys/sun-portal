@@ -1,5 +1,6 @@
 package com.crazy.portal.bean.vo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -50,5 +51,6 @@ public class MaintenanceBean {
 
     private ServiceCallBean serviceCall;
 
+    @JSONField(serialize = false)
     private MultipartFile[] files;
 }

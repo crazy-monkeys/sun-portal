@@ -1,5 +1,6 @@
 package com.crazy.portal.bean.vo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,8 @@ public class MTRegistBean {
     private String suggestions;
     private String businessPartner;
 
+    @JSONField(serialize = false)
     private MultipartFile invoiceFile;
+    @JSONField(serialize = false)
     private MultipartFile cecFile;
 }
