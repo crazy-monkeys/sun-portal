@@ -137,9 +137,15 @@ public class BaseService {
             //更新操作日志记录
             if(Objects.nonNull(operationLogDO)){
                 operationLogDO.setThirdpartyURL(buildFinalUrl);
-                operationLogDO.setThirdpartyRequest(body);
-                operationLogDO.setThirdpartyResponse(response);
-                operationLogDO.setErrorMsg(errorMsg);
+                StringBuilder sbReq = new StringBuilder(operationLogDO.getThirdpartyRequest()).append("\n");
+                operationLogDO.setThirdpartyRequest(sbReq.append(body).toString());
+
+                StringBuilder sbRes = new StringBuilder(operationLogDO.getThirdpartyResponse()).append("\n");
+                operationLogDO.setThirdpartyResponse(sbRes.append(response).toString());
+
+                StringBuilder sbErrorMsg = new StringBuilder(operationLogDO.getErrorMsg()).append("\n");
+
+                operationLogDO.setErrorMsg(sbErrorMsg.append(errorMsg).toString());
                 operationLogRepository.save(operationLogDO);
             }
         }
