@@ -1,10 +1,14 @@
 package com.crazy.portal.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.crazy.portal.aop.OperationLog;
 import com.crazy.portal.bean.BaseResponse;
 import com.crazy.portal.bean.price.PriceListVO;
 import com.crazy.portal.entity.PriceList;
+import com.crazy.portal.repository.OperationLogRepository;
 import com.crazy.portal.repository.PriceListRepository;
+import com.crazy.portal.service.ApiService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,20 +24,32 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/price")
+@Slf4j
 public class PriceController extends BaseController{
 
     @Resource
     private PriceListRepository priceListRepository;
 
+    @Resource
+    private ApiService apiService;
 
+    @Resource
+    private OperationLogRepository operationLogRepository;
     /**
      * 获取价格列表
-     * @param priceListVO
      * @return
      */
     @GetMapping("/query")
-    public BaseResponse query(@RequestBody(required = false) PriceListVO priceListVO){
+    @OperationLog
+    public BaseResponse query(){
+        String str = apiService.getDeviceAddressInfo("E79E7FDBE94C4D728C15ADB1E8055609");
+        log.info(str);
         return successResult(priceListRepository.findAll());
+    }
+
+    @GetMapping("/list")
+    public BaseResponse list(){
+        return successResult(operationLogRepository.findAll());
     }
 
     @GetMapping("/init")

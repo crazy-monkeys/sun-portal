@@ -5,19 +5,24 @@ import com.crazy.portal.bean.api.ParamsBean;
 import com.crazy.portal.bean.api.token.TokenBean;
 import com.crazy.portal.bean.common.Constant;
 import com.crazy.portal.config.exception.BusinessException;
-import com.crazy.portal.util.BusinessUtil;
-import com.crazy.portal.util.Enums;
-import com.crazy.portal.util.ErrorCodes;
-import com.crazy.portal.util.HttpClientUtils;
+import com.crazy.portal.entity.OperationLogDO;
+import com.crazy.portal.repository.OperationLogRepository;
+import com.crazy.portal.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.util.Base64Utils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,6 +56,9 @@ public class BaseService {
 
     @Value("${coresuite.mimeType}")
     protected String mimeType;
+
+    @Resource
+    private OperationLogRepository operationLogRepository;
 
     /**
      * 获取token
@@ -96,26 +104,45 @@ public class BaseService {
     }
 
     private String getApiResponse(String url, String body, Enums.API_HEADER_DTOS dtos, Boolean forceUpdate) throws IOException {
-        TokenBean tokenBean = this.getToken();
+        String response = null;
+        String errorMsg = null;
+        String requestUUID;
+        String buildFinalUrl = null;
+        OperationLogDO operationLogDO = null;
+        try {
+            requestUUID = this.getRequestUUID();
+            operationLogDO = operationLogRepository.findByCookie(requestUUID);
+            TokenBean tokenBean = this.getToken();
+            Map<String,String> header = this.buildHeader(tokenBean);
+            String account = tokenBean.getAccount();
+            String company = tokenBean.getCompanies().get(0).getName();
+            String user = tokenBean.getUser();
+            ParamsBean ParamsBean = new ParamsBean(account, company, user, header, dtos.getValue(),forceUpdate);
+            buildFinalUrl = String.format("%s?%s",url,ParamsBean.toString());
+            log.info(">>>>> API url to access:"+buildFinalUrl);
+            log.info(">>>>>API Param :"+body);
 
-        Map<String,String> header = this.buildHeader(tokenBean);
-        String account = tokenBean.getAccount();
-        String company = tokenBean.getCompanies().get(0).getName();
-        String user = tokenBean.getUser();
-        ParamsBean ParamsBean = new ParamsBean(account, company, user, header, dtos.getValue(),forceUpdate);
-        String buildFinalUrl = String.format("%s?%s",url,ParamsBean.toString());
-        log.info(">>>>> API url to access:"+buildFinalUrl);
-        log.info(">>>>>API Param :"+body);
-
-        String response;
-        if(forceUpdate != null){
-            response = HttpClientUtils.patch(buildFinalUrl, body, "application/json", header);
-        }else{
-            response = HttpClientUtils.post(buildFinalUrl, body, "application/json", header);
-        }
-        log.info(">>>>> API return "+response);
-        if(response.isEmpty()){
-            throw new RuntimeException("error invoke");
+            if(forceUpdate != null){
+                response = HttpClientUtils.patch(buildFinalUrl, body, "application/json", header);
+            }else{
+                response = HttpClientUtils.post(buildFinalUrl, body, "application/json", header);
+            }
+            log.info(">>>>> API return "+response);
+            if(response.isEmpty()){
+                throw new RuntimeException("error invoke");
+            }
+        } catch (Exception e) {
+            log.error("",e);
+            errorMsg = ExceptionUtils.getExceptionAllinformation(e);
+        } finally {
+            //更新操作日志记录
+            if(Objects.nonNull(operationLogDO)){
+                operationLogDO.setThirdpartyURL(buildFinalUrl);
+                operationLogDO.setThirdpartyRequest(body);
+                operationLogDO.setThirdpartyResponse(response);
+                operationLogDO.setErrorMsg(errorMsg);
+                operationLogRepository.save(operationLogDO);
+            }
         }
         return response;
     }
@@ -140,5 +167,15 @@ public class BaseService {
         header.put("x-client-version", "1.0");
         header.put("Content-Type", MediaType.APPLICATION_JSON_VALUE);
         return header;
+    }
+
+    private HttpServletRequest getRequest(){
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        Assert.notNull(requestAttributes,"requestAttributes is null");
+        return (HttpServletRequest) requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
+    }
+
+    protected String getRequestUUID(){
+        return this.getRequest().getAttribute("UUID").toString();
     }
 }
