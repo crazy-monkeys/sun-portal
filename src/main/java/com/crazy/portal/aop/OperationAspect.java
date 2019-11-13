@@ -20,10 +20,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -106,7 +106,6 @@ public class OperationAspect extends BaseController {
         Assert.notNull(request,"requestAttributes is null");
         String uuid = UUID.randomUUID().toString();
         request.setAttribute("UUID", uuid);
-        log.info("!!!" + uuid);
         opLog.setCookie(uuid);
         opLog.setUrl(request.getRequestURI());
 
@@ -130,15 +129,16 @@ public class OperationAspect extends BaseController {
      * @return
      */
     private String getParams(Object[] objects) {
-        String params = null;
-        if(Objects.nonNull(objects)){
+        String params = "not have params!";
+        if(Objects.nonNull(objects) && objects.length > 0){
             params = Stream.of(objects).map(x->{
                 Object obj = x;
                 try {
-                    if(x instanceof MultipartFile[]){
-                        return null;
-                    }
-                    if(x instanceof MultipartFile){
+                    if(x instanceof MultipartFile[]
+                            || x instanceof MultipartRequest
+                            || x instanceof MultipartFile){
+
+                        log.info("文件类型不做转换");
                         return null;
                     }
                     return JSON.toJSONString(obj);
@@ -186,7 +186,7 @@ public class OperationAspect extends BaseController {
      */
     private void saveLog(OperationLogDO operationLogDO){
         try {
-            log.info(JSON.toJSONString(operationLogDO));
+            log.debug("operation log -> {}",JSON.toJSONString(operationLogDO));
             operationLogRepository.save(operationLogDO);
         } catch (Exception e) {
             log.error("Failed to save log",e);

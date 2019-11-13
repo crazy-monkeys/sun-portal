@@ -87,7 +87,7 @@ public class BaseService {
      * @return
      * @throws Exception
      */
-    protected String invokeApi(String url, String body, Enums.API_HEADER_DTOS dtos) throws Exception{
+    protected String invokeApi(String url, String body, Enums.API_HEADER_DTOS dtos){
         return this.getApiResponse(url, body, dtos,null);
     }
 
@@ -99,11 +99,11 @@ public class BaseService {
      * @return
      * @throws Exception
      */
-    protected String invokeApi(String url, String body, Enums.API_HEADER_DTOS dtos, Boolean forceUpdate) throws Exception{
+    protected String invokeApi(String url, String body, Enums.API_HEADER_DTOS dtos, Boolean forceUpdate){
         return this.getApiResponse(url, body, dtos,forceUpdate);
     }
 
-    private String getApiResponse(String url, String body, Enums.API_HEADER_DTOS dtos, Boolean forceUpdate) throws IOException {
+    private String getApiResponse(String url, String body, Enums.API_HEADER_DTOS dtos, Boolean forceUpdate){
         String response = null;
         String errorMsg = null;
         String requestUUID;
@@ -111,7 +111,9 @@ public class BaseService {
         OperationLogDO operationLogDO = null;
         try {
             requestUUID = this.getRequestUUID();
-            operationLogDO = operationLogRepository.findByCookie(requestUUID);
+            if(Objects.nonNull(requestUUID)){
+                operationLogDO = operationLogRepository.findByCookie(requestUUID);
+            }
             TokenBean tokenBean = this.getToken();
             Map<String,String> header = this.buildHeader(tokenBean);
             String account = tokenBean.getAccount();
@@ -119,15 +121,12 @@ public class BaseService {
             String user = tokenBean.getUser();
             ParamsBean ParamsBean = new ParamsBean(account, company, user, header, dtos.getValue(),forceUpdate);
             buildFinalUrl = String.format("%s?%s",url,ParamsBean.toString());
-            log.info(">>>>> API url to access:"+buildFinalUrl);
-            log.info(">>>>>API Param :"+body);
 
             if(forceUpdate != null){
                 response = HttpClientUtils.patch(buildFinalUrl, body, "application/json", header);
             }else{
                 response = HttpClientUtils.post(buildFinalUrl, body, "application/json", header);
             }
-            log.info(">>>>> API return "+response);
             if(response.isEmpty()){
                 throw new RuntimeException("error invoke");
             }
@@ -170,12 +169,22 @@ public class BaseService {
     }
 
     private HttpServletRequest getRequest(){
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        Assert.notNull(requestAttributes,"requestAttributes is null");
-        return (HttpServletRequest) requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
+        try {
+            RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+            Assert.notNull(requestAttributes,"requestAttributes is null");
+            return (HttpServletRequest) requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
+        } catch (Exception e) {
+            log.error("",e);
+            return null;
+        }
     }
 
     protected String getRequestUUID(){
-        return this.getRequest().getAttribute("UUID").toString();
+        HttpServletRequest request = this.getRequest();
+        if(request == null){
+            return null;
+        }
+        Object uuid = request.getAttribute("UUID");
+        return uuid == null ? null : uuid.toString();
     }
 }

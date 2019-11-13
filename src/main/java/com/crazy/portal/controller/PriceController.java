@@ -30,6 +30,12 @@ public class PriceController extends BaseController{
     @Resource
     private PriceListRepository priceListRepository;
 
+    @Resource
+    private ApiService apiService;
+
+//    @Resource
+//    private OperationLogRepository operationLogRepository;
+
     /**
      * 获取价格列表
      * @return
@@ -37,8 +43,19 @@ public class PriceController extends BaseController{
     @GetMapping("/query")
     @OperationLog
     public BaseResponse query(){
+        apiService.getDevicePowerInfo("A82DD58BA85C4387BBC42DDFE813F5A8");
         return successResult(priceListRepository.findAll());
     }
+
+//    /**
+//     * 查看日志列表
+//     * 开发时期使用
+//     * @return
+//     */
+//    @GetMapping("/list")
+//    public BaseResponse list(){
+//        return successResult(operationLogRepository.findAll());
+//    }
 
     @GetMapping("/init")
     @OperationLog
