@@ -74,7 +74,13 @@ public class MaintenanceService {
                     bean.getAddress().getStateName());
             apiParamBean.setCustomerAddress(customerAddress);
             apiParamBean.setCustomerContact(bean.getContacts().getContactFirstName()+" "+bean.getContacts().getContactLastName());
-            apiParamBean.setContactEmial(bean.getContacts().getContactEmail());
+            if(StringUtils.isNotEmpty(bean.getContacts().getContactEmail())){
+                String mailRegex = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
+                for(String str : bean.getContacts().getContactEmail().split(",")){
+                    BusinessUtil.assertTrue(str.matches(mailRegex),ErrorCodes.SystemManagerEnum.EMAIL_IS_ERROR);
+                }
+                apiParamBean.setContactEmial(bean.getContacts().getContactEmail());
+            }
             apiParamBean.setContactNumber(bean.getContacts().getContactNumber());
             apiParamBean.setRemark(bean.getSuggestions());
 

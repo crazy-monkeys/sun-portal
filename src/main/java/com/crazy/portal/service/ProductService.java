@@ -50,7 +50,7 @@ public class ProductService {
                 responseBean.setProductModelValue(e.getValue());
             }else if(e.getMeta().equals(Enums.API_PARAMS.Delivery_date.getId())){
                 responseBean.setDeliveryDate(e.getValue());
-            }else if(e.getMeta().equals(Enums.API_PARAMS.Delivery_date.getId())){
+            }else if(e.getMeta().equals(Enums.API_PARAMS.Dispatched_Date.getId())){
                 responseBean.setDispatchedDate(e.getValue());
             }
         });

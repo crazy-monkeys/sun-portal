@@ -84,6 +84,7 @@ public class ErrorCodes {
         EMAIL_IS_NOT_NULL(10057,"Email is not Empty!"),
         deliver_date_is_empty(10058,"Local delivery time is empty!"),
         NUMBER_NOT_DUBLE(10059,"Device number cannot be repeated!"),
+        EMAIL_IS_ERROR(10060,"Mailbox format error!"),
         ;
 
 

@@ -136,21 +136,10 @@ public class OperationAspect extends BaseController {
                 Object obj = x;
                 try {
                     if(x instanceof MultipartFile[]){
-                        MultipartFile[] multipartFiles = (MultipartFile[])x;
-                        obj = Stream.of(multipartFiles).map(file -> {
-                            String str;
-                            try {
-                                str = new String(file.getBytes(), "UTF-8");
-                            } catch (IOException e) {
-                                log.error("",e);
-                                return null;
-                            }
-                            return str;
-                        }).collect(Collectors.toList());
+                        return null;
                     }
                     if(x instanceof MultipartFile){
-                        MultipartFile multipartFile = (MultipartFile)x;
-                        obj = new String(multipartFile.getBytes(),"UTF-8");
+                        return null;
                     }
                     return JSON.toJSONString(obj);
                 } catch (Exception e) {

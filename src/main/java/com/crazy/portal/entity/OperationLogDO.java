@@ -1,5 +1,6 @@
 package com.crazy.portal.entity;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,7 +47,8 @@ public class OperationLogDO {
     /**
      * 异常消息
      */
-    @Column(name = "error_msg")
+    @Lob
+    @Column(name = "error_msg",columnDefinition="TEXT")
     private String errorMsg;
 
     /**
@@ -58,13 +60,15 @@ public class OperationLogDO {
     /**
      * 第三方请求报文
      */
-    @Column(name = "thirdparty_request")
+    @Lob
+    @Column(name = "thirdparty_request",columnDefinition="TEXT")
     private String thirdpartyRequest;
 
     /**
      * 第三方返回报文
      */
-    @Column(name = "thirdparty_response")
+    @Lob
+    @Column(name = "thirdparty_response",columnDefinition="TEXT")
     private String thirdpartyResponse;
 
     /**
