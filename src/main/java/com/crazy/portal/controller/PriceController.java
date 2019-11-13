@@ -30,9 +30,6 @@ public class PriceController extends BaseController{
     @Resource
     private PriceListRepository priceListRepository;
 
-    @Resource
-    private ApiService apiService;
-
 //    @Resource
 //    private OperationLogRepository operationLogRepository;
 
@@ -43,7 +40,6 @@ public class PriceController extends BaseController{
     @GetMapping("/query")
     @OperationLog
     public BaseResponse query(){
-        apiService.getDevicePowerInfo("A82DD58BA85C4387BBC42DDFE813F5A8");
         return successResult(priceListRepository.findAll());
     }
 
