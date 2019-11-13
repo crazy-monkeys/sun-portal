@@ -24,6 +24,8 @@ public class ProductBean {
 
     private String deliveryDate;
 
+    private String dispatchedDate;
+
     private String warrantyType;
 
     private String type;

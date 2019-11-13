@@ -49,12 +49,6 @@ public class ApiParamBean {
     private String batteryModel;
     private String reference;
     private String currency;
-    //GST("0A652A2381B94F5A8BA42C97970201EB",""),
-    //TOTAL_AMOUNT("0CF10A5B6EA94732A8253B0C801E9249",""),
-    //PURCHASE_ORDER("248246FD02874D34B0CA85E8996C0DA4",""),
     private String shippingAddress;
-    //CURRENCY_CODE("4A3E10C5776048BC984D45DA47026A37",""),
-
-    //Product_id("8E6F00CE608B410AADCFBC378B83F4C2",""),
-    //Delivery_date("",""),
+    private String accessory;
 }

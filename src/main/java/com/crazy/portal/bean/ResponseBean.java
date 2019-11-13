@@ -24,6 +24,8 @@ public class ResponseBean {
     //本地发货日期
     private String deliveryDate;
 
+    private String dispatchedDate;
+
     private String devicePower;
 
     private BigDecimal amount;

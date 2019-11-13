@@ -80,8 +80,10 @@ public class ErrorCodes {
         INSTALL_DATE_IS_NOT_NULL(10053,"Please select the installation time"),
         EMAIL_IS_NO(10054,"Confirm email error"),
         PRODUCT_BUSINESSPARTNER_IS_DIF(10055,"Equipment customer inconsistency"),
-        ID_NON_MODEL(10056,"According to our database, a warranty extension is already purchased for the inverter S/N J1904090450. The current warranty period is 10 years Standard Warranty. Please check!"),
+        ID_NON_MODEL(10056,"Please check the model for the current Serial number [%s] in the price list, you can not purchase warranty extension for the current model, please go to warranty  registration to register for it."),
         EMAIL_IS_NOT_NULL(10057,"Email is not Empty!"),
+        deliver_date_is_empty(10058,"Local delivery time is empty!"),
+        NUMBER_NOT_DUBLE(10059,"Device number cannot be repeated!"),
         ;
 
 

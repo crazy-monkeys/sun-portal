@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crazy.portal.dao.price.PriceListMapper">
-  <resultMap id="BaseResultMap" type="com.crazy.portal.entity.price.PriceList">
+  <resultMap id="BaseResultMap" type="com.crazy.portal.entity.PriceList">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="model" jdbcType="VARCHAR" property="model" />
     <result column="part_early_bird_discount" jdbcType="DECIMAL" property="partEarlyBirdDiscount" />
@@ -30,7 +30,7 @@
     where active = 1
   </select>
 
-  <insert id="insertSelective" parameterType="com.crazy.portal.entity.price.PriceList">
+  <insert id="insertSelective" parameterType="com.crazy.portal.entity.PriceList">
     insert into t_price_list
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -91,7 +91,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.crazy.portal.entity.price.PriceList">
+  <update id="updateByPrimaryKeySelective" parameterType="com.crazy.portal.entity.PriceList">
     update t_price_list
     <set>
       <if test="model != null">
