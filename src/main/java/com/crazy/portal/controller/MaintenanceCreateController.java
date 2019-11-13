@@ -1,5 +1,6 @@
 package com.crazy.portal.controller;
 
+import com.crazy.portal.aop.OperationLog;
 import com.crazy.portal.bean.BaseResponse;
 import com.crazy.portal.bean.vo.EIRegisterBean;
 import com.crazy.portal.bean.vo.MTRegistBean;
@@ -23,16 +24,19 @@ public class MaintenanceCreateController extends BaseController{
     private MaintenanceService maintenanceCreateService;
 
     @PostMapping("/mt/regist")
+    @OperationLog
     public BaseResponse maintenanceCreate(@Valid MTRegistBean bean){
         return successResult(maintenanceCreateService.mtRegister(bean));
     }
 
     @PostMapping("/service/call")
+    @OperationLog
     public BaseResponse serviceCall(@Valid MaintenanceBean bean){
         return successResult(maintenanceCreateService.serviceCall(bean));
     }
 
     @PostMapping("/ei/register")
+    @OperationLog
     public BaseResponse EIRegist(@Valid EIRegisterBean bean){
         return successResult(maintenanceCreateService.eiRegister(bean));
     }
