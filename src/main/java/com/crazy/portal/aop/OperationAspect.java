@@ -129,7 +129,7 @@ public class OperationAspect extends BaseController {
      * @return
      */
     private String getParams(Object[] objects) {
-        String params = "not have params!";
+        String params = null;
         if(Objects.nonNull(objects) && objects.length > 0){
             params = Stream.of(objects).map(x->{
                 Object obj = x;
