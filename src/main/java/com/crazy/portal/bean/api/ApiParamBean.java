@@ -51,4 +51,5 @@ public class ApiParamBean {
     private String currency;
     private String shippingAddress;
     private String accessory;
+    private String ccEmail;
 }

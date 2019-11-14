@@ -55,7 +55,7 @@ public class MaintenanceService {
             String country = bean.getCountry();
             this.checkProduct(bean.getProducts(),country);
 
-            ApiParamBean apiParamBean = mappingApiParamBean(bean.getType(), null, null);
+            ApiParamBean apiParamBean = mappingApiParamBean(bean.getType(), bean.getInstallDate(), bean.getProducts().get(0).getDispatchedDate());
             apiParamBean.setContryCode(country);
             this.checkFile(bean, apiParamBean);
 
@@ -76,11 +76,12 @@ public class MaintenanceService {
             apiParamBean.setCustomerContact(bean.getContacts().getContactFirstName()+" "+bean.getContacts().getContactLastName());
             if(StringUtils.isNotEmpty(bean.getContacts().getContactEmail())){
                 String mailRegex = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
-                for(String str : bean.getContacts().getContactEmail().split(",")){
+                for(String str : bean.getContacts().getContactEmail().split(";")){
                     BusinessUtil.assertTrue(str.matches(mailRegex),ErrorCodes.SystemManagerEnum.EMAIL_IS_ERROR);
                 }
                 apiParamBean.setContactEmial(bean.getContacts().getContactEmail());
             }
+            apiParamBean.setCcEmail(Enums.COUNTRY_MAIL.getKey(country));
             apiParamBean.setContactNumber(bean.getContacts().getContactNumber());
             apiParamBean.setRemark(bean.getSuggestions());
 
@@ -120,6 +121,14 @@ public class MaintenanceService {
             if(null != bean.getContact().getAddress()){
                 apiParamBean.setAccessory(bean.getAccessory());
                 apiParamBean.setContactEmial(bean.getContact().getContactEmail());
+                if(StringUtils.isNotEmpty(bean.getContact().getContactEmail())){
+                    String mailRegex = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
+                    for(String str : bean.getContact().getContactEmail().split(";")){
+                        BusinessUtil.assertTrue(str.matches(mailRegex),ErrorCodes.SystemManagerEnum.EMAIL_IS_ERROR);
+                    }
+                    apiParamBean.setContactEmial(bean.getContact().getContactEmail());
+                }
+                apiParamBean.setCcEmail(Enums.COUNTRY_MAIL.getKey(country));
                 apiParamBean.setAbn(bean.getContact().getAbn());
                 apiParamBean.setCustomerContact(bean.getContact().getPerson());
                 apiParamBean.setContactNumber(bean.getContact().getContactNumber());
@@ -241,6 +250,7 @@ public class MaintenanceService {
             apiParamBean.setShippingAddress(bean.getShippingAddress());
 
             apiParamBean.setCustomerContact(bean.getFirstName()+" "+bean.getLastName());
+            apiParamBean.setCcEmail(Enums.COUNTRY_MAIL.getKey(country));
             apiParamBean.setContactEmial(bean.getEmail());
             apiParamBean.setContactNumber(bean.getContactNumber());
             apiParamBean.setPurchaseOrder(bean.getPurchaseOrder());
@@ -438,13 +448,6 @@ public class MaintenanceService {
         String subject = "";
 
         if(type.equals("1")){
-            statusCode = "-3";
-            statusName = "9-Technically Complete";
-            typeCode = "0003";
-            typeName = "Warranty Registration";
-            String seq = String.format("%0" + 3 + "d", this.getSeq(Enums.Sys_Seq.maintenance.toString()));
-            subject = String.format("%s%s%s","Warranty Registration_", DateUtil.format(new Date(),DateUtil.SHORT_FORMAT),seq);
-        }else if(type.equals("2")){
             try{
                 Date i = DateUtil.parseDate(installDate,DateUtil.WEB_FORMAT);
                 Date hq = DateUtil.parseDate(hqDate,DateUtil.WEB_FORMAT);
@@ -457,13 +460,20 @@ public class MaintenanceService {
                     statusCode = "-3";
                     statusName = "9-Technically Complete";
                 }
-                typeCode = "0002";
-                typeName = "Warranty Claim";
-                String seq = String.format("%0" + 3 + "d", this.getSeq(Enums.Sys_Seq.servicecall.toString()));
-                subject = String.format("%s%s%s","Warranty Claim_", DateUtil.format(new Date(),DateUtil.SHORT_FORMAT), seq);
             }catch (Exception e){
                 log.error("初始话请求参数异常",e);
             }
+            typeCode = "0003";
+            typeName = "Warranty Registration";
+            String seq = String.format("%0" + 3 + "d", this.getSeq(Enums.Sys_Seq.maintenance.toString()));
+            subject = String.format("%s%s%s","Warranty Registration_", DateUtil.format(new Date(),DateUtil.SHORT_FORMAT),seq);
+        }else if(type.equals("2")){
+            statusCode = "-5";
+            statusName = "1-Submitted";
+            typeCode = "0002";
+            typeName = "Warranty Claim";
+            String seq = String.format("%0" + 3 + "d", this.getSeq(Enums.Sys_Seq.servicecall.toString()));
+            subject = String.format("%s%s%s","Warranty Claim_", DateUtil.format(new Date(),DateUtil.SHORT_FORMAT), seq);
         }else if(type.equals("3")){
             statusCode = "-5";
             statusName = "1-Submitted";

@@ -76,6 +76,57 @@ public class Enums {
         }
     }
 
+    public enum COUNTRY_MAIL{
+        AU("AU","service@sungrowpower.com.au"),
+        CL("CL","latam.service@sa.sungrowpower.com"),
+        DE("DE","service.germany@sungrow-emea.com"),
+        FR("FR","service.france@sungrow.co"),
+        GR("GR ","service.greece@sungrow.co"),
+        ES("ES","service.spain@sungrow-emea.com"),
+        IN("IN","service@in.sungrowpower.com"),
+        IT("IT","service.italy@sungrow-emea.com"),
+        JP("JP","service@jp.sungrowpower.com"),
+        MX("MX","techsupport@sungrow-na.com"),
+        AE("AE","info@sungrow.cn"),
+        TH("TH","service@th.sungrowpower.com"),
+        BR("BR","latam.service@sa.sungrowpower.com"),
+        KR("Korea","service@kr.sungrowpower.com"),
+        PH("PH","service@ph.sungrowpower.com"),
+        CN("CN","info@sungrow.cn"),
+        GB("GB","service.uk@sungrow-emea.com"),
+        RO("RO","service.romania@sungrow.co"),
+        MY("MY","service@my.sungrowpower.com"),
+        ZA("ZA","info@sungrow.cn"),
+        TR("TR","service.turkey@sungrow.co"),
+        AC("America","techsupport@sungrow-na.com"),
+        VN("VN","service@vn.sungrowpower.com");
+
+        private String id;
+        private String key;
+
+        public static String getKey(String id){
+            for(API_PARAMS e : API_PARAMS.values()){
+                if(id.equals(e.getId())){
+                    return e.getKey();
+                }
+            }
+            return null;
+        }
+
+        COUNTRY_MAIL(String id, String key){
+            this.id = id;
+            this.key = key;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getKey() {
+            return key;
+        }
+    }
+
     public enum API_PARAMS{
         Installer("DC79C374404640FC80DCAC220F4B0015","installInstaller"), //安装人
         Installation_Date("E63BC043F4E9493B8FC8FE4421D7D292","installDate"),  //安装时间
@@ -83,6 +134,7 @@ public class Enums {
         ABN("5268B5F3CF964C7EA9AEC91E869A89E4","abn"),   //abn
         Customer_Contact("27D073A5FCFA4F6398D74B230595B078","customerContact"),  //维保公司名
         Contact_Email("4AFC9CD0CD8C4AA7B9921B6EC4645B95","contactEmial"),   //邮件
+        CC_Email("2AEAA42EFDC34CC18C2E8BA2EC498550","ccEmail"),   //邮件
         Contact_Number("EB7AF9DC6E8D49FC98DC67ACE96BFFB6","contactNumber"), //number
         Customer_Address("9AD25F4EAEE54EAC86D6D7DD2E2FDA2E","customerAddress"), //安装地址
         Business_Name("A20288A9EAD24CC28564B4EEA7B7968F","businessName"), //终端客户
@@ -117,7 +169,7 @@ public class Enums {
         private String id;
         private String key;
 
-        public String getId(String key){
+        public static String getId(String key){
             for(API_PARAMS e : API_PARAMS.values()){
                 if(key.equals(e.getKey())){
                     return e.getId();

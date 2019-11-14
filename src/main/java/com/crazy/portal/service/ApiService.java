@@ -328,7 +328,7 @@ public class ApiService extends BaseService{
         Map<String, String> mapStr = BeanUtils.transBeanMapStr(bean);
         for(Map.Entry<String, String> entry : mapStr.entrySet()){
             UdfValuesBean param = new UdfValuesBean();
-            String paramId = Enums.API_PARAMS.Customer_Contact.getId(entry.getKey());
+            String paramId = Enums.API_PARAMS.getId(entry.getKey());
             if(StringUtils.isNotEmpty(entry.getValue())&&StringUtils.isNotEmpty(paramId)){
                 param.setMeta(paramId);
                 param.setValue(entry.getValue());

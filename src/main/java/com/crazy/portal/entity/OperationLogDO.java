@@ -38,6 +38,8 @@ public class OperationLogDO {
     /**
      * 调用参数
      */
+    @Lob
+    @Column(name = "invoke",columnDefinition="TEXT")
     private String invoke;
     /**
      * 业务查询key
@@ -54,7 +56,8 @@ public class OperationLogDO {
     /**
      * 第三方请求url
      */
-    @Column(name = "thirdparty_url")
+    @Lob
+    @Column(name = "thirdparty_url",columnDefinition="TEXT")
     private String thirdpartyURL;
 
     /**
