@@ -157,10 +157,6 @@ public class BaseService {
         return response;
     }
 
-    public static void main(String[] args) {
-        System.out.println("1" + "\r\n" + "2");
-    }
-
     /**
      * 构建接口调用头信息
      * @param tokenBean
