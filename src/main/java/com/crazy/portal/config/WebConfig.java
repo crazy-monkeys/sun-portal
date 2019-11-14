@@ -64,14 +64,15 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/static/**","/sunportal/**")
+                .addResourceLocations("classpath:/static/","classpath:/sunportal/");
     }
 
     private CorsConfiguration buildConfig() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedHeader("*");
-         corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedMethod("*");
         return corsConfiguration;
     }
 
