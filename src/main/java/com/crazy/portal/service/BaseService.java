@@ -135,16 +135,16 @@ public class BaseService {
         } finally {
             //更新操作日志记录
             if(Objects.nonNull(operationLogDO)){
-                String thirdpartyURL = operationLogDO.getThirdpartyURL();
-                StringBuilder sbRrl = new StringBuilder(thirdpartyURL == null ? "" : thirdpartyURL);
+                String dbUrl = operationLogDO.getThirdpartyURL();
+                StringBuilder sbRrl = new StringBuilder(dbUrl == null ? "" : dbUrl);
                 operationLogDO.setThirdpartyURL(sbRrl.toString() + "\r\n" + buildFinalUrl);
 
-                String thirdpartyRequest = operationLogDO.getThirdpartyRequest();
-                StringBuilder sbReq = new StringBuilder(thirdpartyRequest == null ? "" : thirdpartyRequest);
+                String dbRequest = operationLogDO.getThirdpartyRequest();
+                StringBuilder sbReq = new StringBuilder(dbRequest == null ? "" : dbRequest);
                 operationLogDO.setThirdpartyRequest(sbReq.toString()+"\r\n" + body);
 
-                String thirdpartyResponse = operationLogDO.getThirdpartyResponse();
-                StringBuilder sbRes = new StringBuilder(thirdpartyResponse == null ? "" : thirdpartyResponse);
+                String dbResponse = operationLogDO.getThirdpartyResponse();
+                StringBuilder sbRes = new StringBuilder(dbResponse == null ? "" : dbResponse);
                 operationLogDO.setThirdpartyResponse(sbRes.toString() + "\r\n" + response);
 
                 String dbErrorMsg = operationLogDO.getErrorMsg();
