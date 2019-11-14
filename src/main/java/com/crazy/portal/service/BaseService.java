@@ -19,7 +19,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -136,20 +135,30 @@ public class BaseService {
         } finally {
             //更新操作日志记录
             if(Objects.nonNull(operationLogDO)){
-                operationLogDO.setThirdpartyURL(buildFinalUrl);
-                StringBuilder sbReq = new StringBuilder(operationLogDO.getThirdpartyRequest()).append("\n");
-                operationLogDO.setThirdpartyRequest(sbReq.append(body).toString());
+                String thirdpartyURL = operationLogDO.getThirdpartyURL();
+                StringBuilder sbRrl = new StringBuilder(thirdpartyURL == null ? "" : thirdpartyURL);
+                operationLogDO.setThirdpartyURL(sbRrl.toString() + "\r\n" + buildFinalUrl);
 
-                StringBuilder sbRes = new StringBuilder(operationLogDO.getThirdpartyResponse()).append("\n");
-                operationLogDO.setThirdpartyResponse(sbRes.append(response).toString());
+                String thirdpartyRequest = operationLogDO.getThirdpartyRequest();
+                StringBuilder sbReq = new StringBuilder(thirdpartyRequest == null ? "" : thirdpartyRequest);
+                operationLogDO.setThirdpartyRequest(sbReq.toString()+"\r\n" + body);
 
-                StringBuilder sbErrorMsg = new StringBuilder(operationLogDO.getErrorMsg()).append("\n");
+                String thirdpartyResponse = operationLogDO.getThirdpartyResponse();
+                StringBuilder sbRes = new StringBuilder(thirdpartyResponse == null ? "" : thirdpartyResponse);
+                operationLogDO.setThirdpartyResponse(sbRes.toString() + "\r\n" + response);
 
-                operationLogDO.setErrorMsg(sbErrorMsg.append(errorMsg).toString());
+                String dbErrorMsg = operationLogDO.getErrorMsg();
+                StringBuilder sbErrorMsg = new StringBuilder(dbErrorMsg == null ? "" : dbErrorMsg);
+                operationLogDO.setErrorMsg(sbErrorMsg.toString() + "\r\n" + errorMsg);
+
                 operationLogRepository.save(operationLogDO);
             }
         }
         return response;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("1" + "\r\n" + "2");
     }
 
     /**
