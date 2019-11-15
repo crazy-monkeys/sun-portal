@@ -60,8 +60,6 @@ public class OperationAspect extends BaseController {
             //前置增强结束,继续执行原有方法
             proceed = point.proceed();
         } catch (Throwable throwable) {
-            //后置增强，保存日志
-            this.saveLog(opLog);
             //设置错误信息并且抛出相应异常
             this.setErrorMsgAndThrowException(throwable,opLog);
         }
@@ -77,6 +75,8 @@ public class OperationAspect extends BaseController {
         if(throwable instanceof BusinessException){
             BusinessException ex = (BusinessException)throwable;
             opLog.setErrorMsg(ex.getMessage());
+            //后置增强，保存日志
+            this.saveLog(opLog);
             throw ex;
         }
         if(throwable instanceof MethodArgumentNotValidException){
@@ -84,14 +84,20 @@ public class OperationAspect extends BaseController {
             List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
             String msg = super.getValidExceptionMsg(allErrors);
             opLog.setErrorMsg(msg);
+            //后置增强，保存日志
+            this.saveLog(opLog);
             throw new BusinessException(CommonEnum.REQ_PARAM_FORMAT_ERROR.getCode(),msg);
         }
         if(throwable instanceof BindException){
             String msg = super.getValidExceptionMsg(((BindException) throwable).getAllErrors());
             opLog.setErrorMsg(msg);
+            //后置增强，保存日志
+            this.saveLog(opLog);
             throw new BusinessException(CommonEnum.REQ_PARAM_FORMAT_ERROR.getCode(),msg);
         }
         opLog.setErrorMsg(ExceptionUtils.getExceptionAllinformation(throwable));
+        //后置增强，保存日志
+        this.saveLog(opLog);
         throw new RuntimeException("Unknown Exception",throwable);
     }
 
