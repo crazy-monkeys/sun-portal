@@ -17,6 +17,7 @@ import com.crazy.portal.bean.api.warehouse.WarehouseResponse;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.util.BeanUtils;
 import com.crazy.portal.util.Enums;
+import com.crazy.portal.util.ErrorCodes;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class ApiService extends BaseService{
 
             return JSONObject.parseObject(response, DeviceInfoBean.class);
         }catch (Exception e){
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -82,7 +83,7 @@ public class ApiService extends BaseService{
             return country == null ? null : String.valueOf(country);
         } catch (Exception e) {
             log.error("",e);
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -115,7 +116,7 @@ public class ApiService extends BaseService{
             return JSON.parseObject(JSON.toJSONString(devicePowerObj),UdfValuesBean.class);
         } catch (Exception e) {
             log.error("",e);
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -137,7 +138,7 @@ public class ApiService extends BaseService{
             return JSON.parseObject(JSON.toJSONString(attachment),AttachmentResponse.class);
         } catch (Exception e) {
             log.error("",e);
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -166,7 +167,7 @@ public class ApiService extends BaseService{
             return materialObj != null ? (String)materialObj.get("id") : null;
         } catch (Exception e) {
             log.error("",e);
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -196,7 +197,7 @@ public class ApiService extends BaseService{
             return materialObj != null ? (String)materialObj.get("id") : null;
         } catch (Exception e) {
             log.error("",e);
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -211,7 +212,7 @@ public class ApiService extends BaseService{
             return this.getWarehouseResponse(response);
         } catch (Exception e) {
             log.error("",e);
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -230,7 +231,7 @@ public class ApiService extends BaseService{
             return this.getWarehouseResponse(response);
         } catch (Exception e) {
             log.error("",e);
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -260,7 +261,7 @@ public class ApiService extends BaseService{
             return (String) pr.get("id");
         } catch (Exception e) {
             log.error("",e);
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -283,7 +284,7 @@ public class ApiService extends BaseService{
             return JSON.parseObject(JSON.toJSONString(itemWarehouseLevel),InventoryInfoReponse.class);
         } catch (Exception e) {
             log.error("",e);
-            throw new BusinessException("",e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
         }
     }
 
