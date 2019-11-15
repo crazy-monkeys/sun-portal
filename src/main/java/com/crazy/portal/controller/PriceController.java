@@ -27,11 +27,9 @@ public class PriceController extends BaseController{
     @Resource
     private PriceListRepository priceListRepository;
 
-    @Resource
-    private OperationLogRepository operationLogRepository;
-//
 //    @Resource
-//    private ApiService apiService;
+//    private OperationLogRepository operationLogRepository;
+
     /**
      * 获取价格列表
      * @return

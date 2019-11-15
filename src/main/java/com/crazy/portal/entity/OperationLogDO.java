@@ -38,7 +38,6 @@ public class OperationLogDO {
     /**
      * 调用参数
      */
-    @Lob
     @Column(name = "invoke",columnDefinition="TEXT")
     private String invoke;
     /**
@@ -49,28 +48,24 @@ public class OperationLogDO {
     /**
      * 异常消息
      */
-    @Lob
     @Column(name = "error_msg",columnDefinition="TEXT")
     private String errorMsg;
 
     /**
      * 第三方请求url
      */
-    @Lob
     @Column(name = "thirdparty_url",columnDefinition="TEXT")
     private String thirdpartyURL;
 
     /**
      * 第三方请求报文
      */
-    @Lob
     @Column(name = "thirdparty_request",columnDefinition="TEXT")
     private String thirdpartyRequest;
 
     /**
      * 第三方返回报文
      */
-    @Lob
     @Column(name = "thirdparty_response",columnDefinition="TEXT")
     private String thirdpartyResponse;
 
