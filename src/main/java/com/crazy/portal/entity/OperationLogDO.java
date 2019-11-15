@@ -1,11 +1,10 @@
 package com.crazy.portal.entity;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,6 +17,7 @@ import java.util.Date;
  */
 @Data
 @Entity
+@ToString
 public class OperationLogDO {
 
     @Id

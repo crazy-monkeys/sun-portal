@@ -1,6 +1,5 @@
 package com.crazy.portal.bean;
 
-import com.crazy.portal.util.ErrorCodes;
 import com.crazy.portal.util.MessageUtils;
 
 public class BaseResponse {

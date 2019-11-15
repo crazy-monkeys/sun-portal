@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.crazy.portal.aop.OperationLog;
 import com.crazy.portal.bean.BaseResponse;
 import com.crazy.portal.entity.PriceList;
+import com.crazy.portal.repository.OperationLogRepository;
 import com.crazy.portal.repository.PriceListRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +27,11 @@ public class PriceController extends BaseController{
     @Resource
     private PriceListRepository priceListRepository;
 
+    @Resource
+    private OperationLogRepository operationLogRepository;
+//
 //    @Resource
-//    private OperationLogRepository operationLogRepository;
-
+//    private ApiService apiService;
     /**
      * 获取价格列表
      * @return
