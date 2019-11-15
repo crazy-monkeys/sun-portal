@@ -6,6 +6,7 @@ import com.crazy.portal.bean.BaseResponse;
 import com.crazy.portal.entity.PriceList;
 import com.crazy.portal.repository.OperationLogRepository;
 import com.crazy.portal.repository.PriceListRepository;
+import com.crazy.portal.service.ApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +28,11 @@ public class PriceController extends BaseController{
     @Resource
     private PriceListRepository priceListRepository;
 
-//    @Resource
-//    private OperationLogRepository operationLogRepository;
+    @Resource
+    private OperationLogRepository operationLogRepository;
 
+    @Resource
+    private ApiService apiService;
     /**
      * 获取价格列表
      * @return
@@ -40,15 +43,15 @@ public class PriceController extends BaseController{
         return successResult(priceListRepository.findAll());
     }
 
-//    /**
-//     * 查看日志列表
-//     * 开发时期使用
-//     * @return
-//     */
-//    @GetMapping("/list")
-//    public BaseResponse list(){
-//        return successResult(operationLogRepository.findAll());
-//    }
+    /**
+     * 查看日志列表
+     * 开发时期使用
+     * @return
+     */
+    @GetMapping("/list")
+    public BaseResponse list(){
+        return successResult(operationLogRepository.findAll());
+    }
 
     @GetMapping("/init")
     @OperationLog
