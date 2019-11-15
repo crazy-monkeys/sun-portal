@@ -202,9 +202,11 @@ public class MaintenanceService {
             if(StringUtils.isNotEmpty(code)){
                 //activityCreate(apiParamBean,objectId);
                 try{
-                    for(MultipartFile file : bean.getFiles()){
-                        uploadFile(file,"Warranty Claim",objectId);
-                    }
+                   if(null != bean.getFiles()){
+                       for(MultipartFile file : bean.getFiles()){
+                           uploadFile(file,"Warranty Claim",objectId);
+                       }
+                   }
                 }catch (Exception e){
                     log.error("附件上传失败",e);
                 }
@@ -505,5 +507,4 @@ public class MaintenanceService {
         sysSeqRepository.save(seq);
         return seq.getSeqValue();
     }
-
 }

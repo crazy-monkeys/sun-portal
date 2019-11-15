@@ -98,14 +98,14 @@ public class Enums {
         MY("MY","service@my.sungrowpower.com"),
         ZA("ZA","info@sungrow.cn"),
         TR("TR","service.turkey@sungrow.co"),
-        AC("America","techsupport@sungrow-na.com"),
+        AC("US","biao.chenit@qq.com"),//techsupport@sungrow-na.com
         VN("VN","service@vn.sungrowpower.com");
 
         private String id;
         private String key;
 
         public static String getKey(String id){
-            for(API_PARAMS e : API_PARAMS.values()){
+            for(COUNTRY_MAIL e : COUNTRY_MAIL.values()){
                 if(id.equals(e.getId())){
                     return e.getKey();
                 }

@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -51,7 +52,21 @@ public class ProductService {
             }else if(e.getMeta().equals(Enums.API_PARAMS.Delivery_date.getId())){
                 responseBean.setDeliveryDate(e.getValue());
             }else if(e.getMeta().equals(Enums.API_PARAMS.Dispatched_Date.getId())){
-                responseBean.setDispatchedDate(e.getValue());
+                if(null == e.getValue()){
+                    responseBean.setDispatchedDate("1970-01-01");
+                }else if(e.getValue().length()==8){
+                    try{
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+                        formatter.setLenient(false);
+                        Date newDate= formatter.parse(e.getValue());
+                        formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        responseBean.setDispatchedDate(formatter.format(newDate));
+                    }catch (Exception ex){
+                        log.info("时间转换失败！",ex);
+                    }
+                }else{
+                    responseBean.setDispatchedDate(e.getValue());
+                }
             }
         });
 
