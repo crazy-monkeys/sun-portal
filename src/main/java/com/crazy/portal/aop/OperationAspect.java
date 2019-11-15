@@ -60,10 +60,10 @@ public class OperationAspect extends BaseController {
             //前置增强结束,继续执行原有方法
             proceed = point.proceed();
         } catch (Throwable throwable) {
-            //设置错误信息并且抛出相应异常
-            this.setErrorMsgAndThrowException(throwable,opLog);
             //后置增强，保存日志
             this.saveLog(opLog);
+            //设置错误信息并且抛出相应异常
+            this.setErrorMsgAndThrowException(throwable,opLog);
         }
         return proceed;
     }
