@@ -52,7 +52,7 @@ public class OperationAspect extends BaseController {
             this.buildOperationLog(point,opLog);
             //前置增强，保存日志
             this.saveLog(opLog);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             //构建操作日志对象出现异常不影响Controller继续执行
             log.error("Aop intercepts log exceptions.",e);
         }
