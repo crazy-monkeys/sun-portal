@@ -17,7 +17,7 @@ import javax.sql.DataSource;
  * @Modified by:
  */
 @Configuration
-@Profile("sit")
+@Profile({"sit","prod"})
 @Slf4j
 public class CloudDatabaseConfig {
 
