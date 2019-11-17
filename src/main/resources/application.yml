@@ -2,19 +2,12 @@
 server:
   port: 1024
   servlet:
-    context-path: /sun-portal-api
+    context-path: /sun-portal
 spring:
   profiles:
     active: @activatedProperties@
   messages:
     basename: static/i18n/messages
-  ##thymelef配置
-  thymeleaf:
-    cache: false
-    prefix: classpath:/templates/
-    suffix: .html
-    encoding: UTF-8
-    mode: HTML5
   ##文件上传配置
   servlet:
     multipart:

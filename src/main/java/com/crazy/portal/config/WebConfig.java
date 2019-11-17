@@ -49,8 +49,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**","/sunportal/**")
-                .addResourceLocations("classpath:/static/","classpath:/sunportal/");
+        registry.addResourceHandler("/static/**","/v/**")
+                .addResourceLocations("classpath:/static/","classpath:/v/");
     }
 
     private CorsConfiguration buildConfig() {
