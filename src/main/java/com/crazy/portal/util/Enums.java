@@ -77,32 +77,33 @@ public class Enums {
     }
 
     public enum COUNTRY_MAIL{
-        AU("AU","service@sungrowpower.com.au"),
-        CL("CL","latam.service@sa.sungrowpower.com"),
-        DE("DE","service.germany@sungrow-emea.com"),
-        FR("FR","service.france@sungrow.co"),
-        GR("GR ","service.greece@sungrow.co"),
-        ES("ES","service.spain@sungrow-emea.com"),
-        IN("IN","service@in.sungrowpower.com"),
-        IT("IT","service.italy@sungrow-emea.com"),
-        JP("JP","service@jp.sungrowpower.com"),
-        MX("MX","techsupport@sungrow-na.com"),
-        AE("AE","info@sungrow.cn"),
-        TH("TH","service@th.sungrowpower.com"),
-        BR("BR","latam.service@sa.sungrowpower.com"),
-        KR("Korea","service@kr.sungrowpower.com"),
-        PH("PH","service@ph.sungrowpower.com"),
-        CN("CN","info@sungrow.cn"),
-        GB("GB","service.uk@sungrow-emea.com"),
-        RO("RO","service.romania@sungrow.co"),
-        MY("MY","service@my.sungrowpower.com"),
-        ZA("ZA","info@sungrow.cn"),
-        TR("TR","service.turkey@sungrow.co"),
-        AC("US","biao.chenit@qq.com"),//techsupport@sungrow-na.com
-        VN("VN","service@vn.sungrowpower.com");
+        AU("AU","service@sungrowpower.com.au","AUD"),
+        CL("CL","latam.service@sa.sungrowpower.com",""),
+        DE("DE","service.germany@sungrow-emea.com",""),
+        FR("FR","service.france@sungrow.co",""),
+        GR("GR ","service.greece@sungrow.co",""),
+        ES("ES","service.spain@sungrow-emea.com",""),
+        IN("IN","service@in.sungrowpower.com",""),
+        IT("IT","service.italy@sungrow-emea.com",""),
+        JP("JP","service@jp.sungrowpower.com",""),
+        MX("MX","techsupport@sungrow-na.com",""),
+        AE("AE","info@sungrow.cn",""),
+        TH("TH","service@th.sungrowpower.com",""),
+        BR("BR","latam.service@sa.sungrowpower.com",""),
+        KR("Korea","service@kr.sungrowpower.com",""),
+        PH("PH","service@ph.sungrowpower.com",""),
+        CN("CN","info@sungrow.cn",""),
+        GB("GB","service.uk@sungrow-emea.com",""),
+        RO("RO","service.romania@sungrow.co",""),
+        MY("MY","service@my.sungrowpower.com",""),
+        ZA("ZA","info@sungrow.cn",""),
+        TR("TR","service.turkey@sungrow.co",""),
+        AC("US","biao.chenit@qq.com","USD"),//techsupport@sungrow-na.com
+        VN("VN","service@vn.sungrowpower.com","");
 
         private String id;
         private String key;
+        private String currency;
 
         public static String getKey(String id){
             for(COUNTRY_MAIL e : COUNTRY_MAIL.values()){
@@ -113,9 +114,19 @@ public class Enums {
             return null;
         }
 
-        COUNTRY_MAIL(String id, String key){
+        public static String getCurrency(String id){
+            for(COUNTRY_MAIL e : COUNTRY_MAIL.values()){
+                if(id.equals(e.getId())){
+                    return e.getCurrency();
+                }
+            }
+            return null;
+        }
+
+        COUNTRY_MAIL(String id, String key, String currency){
             this.id = id;
             this.key = key;
+            this.currency = currency;
         }
 
         public String getId() {
@@ -124,6 +135,10 @@ public class Enums {
 
         public String getKey() {
             return key;
+        }
+
+        public String getCurrency() {
+            return currency;
         }
     }
 

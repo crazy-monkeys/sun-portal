@@ -65,7 +65,7 @@ public class MaintenanceService {
             apiParamBean.setInstallDate(bean.getInstallDate());
             apiParamBean.setInstallCec(bean.getInstallCec());
 
-            apiParamBean.setCurrency("AUD");
+            apiParamBean.setCurrency(Enums.COUNTRY_MAIL.getCurrency(country));
             apiParamBean.setPostCode(bean.getAddress().getPostCode());
             String customerAddress = String.format("%s,%s,%s,%s",
                     bean.getAddress().getAddressLine1(),
@@ -85,7 +85,6 @@ public class MaintenanceService {
             apiParamBean.setContactNumber(bean.getContacts().getContactNumber());
             apiParamBean.setRemark(bean.getSuggestions());
 
-            //TODO save response
             JSONObject serviceCall = JSONObject.parseObject(serviceCall(apiParamBean)).getJSONArray(DATA).getJSONObject(0).getJSONObject(SERVICE);
             String code = serviceCall.getString(CODE);
             String objectId = serviceCall.getString(OBJECTID);
@@ -117,9 +116,10 @@ public class MaintenanceService {
             apiParamBean.setContryCode(country);
             apiParamBean.setEquipments(new String[]{bean.getProducts().get(0).getProductId()});
             apiParamBean.setBusinessPartner(bean.getBusinessPartner());
+            apiParamBean.setCcEmail(Enums.COUNTRY_MAIL.getKey(country));
+            apiParamBean.setAccessory(bean.getAccessory());
 
             if(null != bean.getContact().getAddress()){
-                apiParamBean.setAccessory(bean.getAccessory());
                 apiParamBean.setContactEmial(bean.getContact().getContactEmail());
                 if(StringUtils.isNotEmpty(bean.getContact().getContactEmail())){
                     String mailRegex = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
@@ -128,7 +128,6 @@ public class MaintenanceService {
                     }
                     apiParamBean.setContactEmial(bean.getContact().getContactEmail());
                 }
-                apiParamBean.setCcEmail(Enums.COUNTRY_MAIL.getKey(country));
                 apiParamBean.setAbn(bean.getContact().getAbn());
                 apiParamBean.setCustomerContact(bean.getContact().getPerson());
                 apiParamBean.setContactNumber(bean.getContact().getContactNumber());
@@ -141,7 +140,13 @@ public class MaintenanceService {
                 apiParamBean.setBusinessName(bean.getContact().getBusinessName());
                 apiParamBean.setPostCode(bean.getContact().getAddress().getPostCode());
             }else{
-                apiParamBean.setContactEmial(bean.getEndUser().getContactEmail());
+                if(StringUtils.isNotEmpty(bean.getEndUser().getContactEmail())){
+                    String mailRegex = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
+                    for(String str : bean.getEndUser().getContactEmail().split(";")){
+                        BusinessUtil.assertTrue(str.matches(mailRegex),ErrorCodes.SystemManagerEnum.EMAIL_IS_ERROR);
+                    }
+                    apiParamBean.setContactEmial(bean.getEndUser().getContactEmail());
+                }
                 apiParamBean.setCustomerContact(bean.getEndUser().getPerson());
                 apiParamBean.setContactNumber(bean.getEndUser().getContactNumber());
                 String customerAddress = String.format("%s,%s,%s,%s",
@@ -319,7 +324,7 @@ public class MaintenanceService {
 
                 UnitPriceBean unitPriceBean = new UnitPriceBean();
                 unitPriceBean.setAmount(e.getAmount());
-                unitPriceBean.setCurrency("AUD");
+                unitPriceBean.setCurrency(Enums.COUNTRY_MAIL.getCurrency(bean.getCountry()));
                 materialRequestBodyBean.setUnitPrice(unitPriceBean);
 
                 apiService.materialCall(JSON.toJSONString(materialRequestBodyBean),"/data/v4/Material", Enums.API_HEADER_DTOS.MATERIAL);
