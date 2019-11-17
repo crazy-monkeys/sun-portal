@@ -5,7 +5,7 @@ server:
     context-path: /sun-portal-api
 spring:
   profiles:
-    active: dev
+    active: @activatedProperties@
   messages:
     basename: static/i18n/messages
   ##thymelef配置
