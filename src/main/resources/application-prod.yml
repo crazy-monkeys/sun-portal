@@ -1,14 +1,23 @@
-logging:
-  config: classpath:logback-dev.xml
+#logging:
+#  config: classpath:logback-sit.xml
 
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       naming_strategy: org.hibernate.cfg.EJB3NamingStrategy
-  h2:
-    console:
-      enabled: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.HANAColumnStoreDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+hana:
+  url: jdbc:sap://hana-a64-factorycn1-k3nopk14.sha3.od.sap.biz:30015/
+  user: S0017474203
+  password: Portal-prod2019
+
 coresuite:
   api:
     token-root-url: https://auth.coresuite.com/api
