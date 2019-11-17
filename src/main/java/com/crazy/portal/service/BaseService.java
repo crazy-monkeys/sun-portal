@@ -132,6 +132,7 @@ public class BaseService {
         } catch (Exception e) {
             log.error("",e);
             errorMsg = ExceptionUtils.getExceptionAllinformation(e);
+            throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
         } finally {
             //更新操作日志记录
             if(Objects.nonNull(operationLogDO)){

@@ -12,7 +12,6 @@ import javax.validation.constraints.Email;
 @Data
 public class EndUserBean {
     //联系人邮箱
-    @Email(message="邮箱格式错误")
     private String contactEmail;
     //number
     private String contactNumber;

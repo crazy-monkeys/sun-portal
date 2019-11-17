@@ -20,7 +20,6 @@ public class ContactBean {
     //联系人邮箱
     private String contactEmail;
     //收件邮箱
-    @Email(message="邮箱格式错误")
     private String sendEmail;
     //number
     private String contactNumber;
