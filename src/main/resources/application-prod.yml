@@ -25,7 +25,7 @@ coresuite:
     root-local: ${coresuite.api.root-url}/oauth2/v1/token
   authorization: Basic MTIzZDAxZWQtZTExNy00YWRlLWFmYzQtN2U2OTdhYTQ1OTRmOjZjZmZmZGM1LTdlMjktNGM4YS1iNTRkLTEyZjgyMzI5ZTdmNg==
   grant_type: password
-  username: sungrowpower
+  username: sungrowpower-p1/sungrow
   password: Welcome2020
   mimeType: application/x-www-form-urlencoded
   auth:
