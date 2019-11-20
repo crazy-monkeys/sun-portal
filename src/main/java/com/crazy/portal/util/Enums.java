@@ -76,6 +76,7 @@ public class Enums {
         }
     }
 
+    //prod
     public enum COUNTRY_MAIL{
         AU("AU","service@sungrowpower.com.au","AUD"),
         CL("CL","latam.service@sa.sungrowpower.com",""),
@@ -98,7 +99,7 @@ public class Enums {
         MY("MY","service@my.sungrowpower.com",""),
         ZA("ZA","info@sungrow.cn",""),
         TR("TR","service.turkey@sungrow.co",""),
-        AC("US","biao.chenit@qq.com","USD"),//techsupport@sungrow-na.com
+        AC("US","techsupport@sungrow-na.com","USD"),
         VN("VN","service@vn.sungrowpower.com","");
 
         private String id;
@@ -141,6 +142,73 @@ public class Enums {
             return currency;
         }
     }
+
+    //Test
+   /* public enum COUNTRY_MAIL{
+        AU("AU","ranson.xie@acloudear.com","AUD"),
+        CL("CL","ranson.xie@acloudear.com",""),
+        DE("DE","ranson.xie@acloudear.com",""),
+        FR("FR","ranson.xie@acloudear.com",""),
+        GR("GR ","ranson.xie@acloudear.com",""),
+        ES("ES","ranson.xie@acloudear.com",""),
+        IN("IN","ranson.xie@acloudear.com",""),
+        IT("IT","ranson.xie@acloudear.com",""),
+        JP("JP","ranson.xie@acloudear.com",""),
+        MX("MX","ranson.xie@acloudear.com",""),
+        AE("AE","ranson.xie@acloudear.com",""),
+        TH("TH","ranson.xie@acloudear.com",""),
+        BR("BR","ranson.xie@acloudear.com",""),
+        KR("Korea","ranson.xie@acloudear.com",""),
+        PH("PH","ranson.xie@acloudear.com",""),
+        CN("CN","ranson.xie@acloudear.com",""),
+        GB("GB","ranson.xie@acloudear.com",""),
+        RO("RO","ranson.xie@acloudear.com",""),
+        MY("MY","ranson.xie@acloudear.com",""),
+        ZA("ZA","ranson.xie@acloudear.com",""),
+        TR("TR","ranson.xie@acloudear.com",""),
+        AC("US","ranson.xie@acloudear.com","USD"),
+        VN("VN","ranson.xie@acloudear.com","");
+
+        private String id;
+        private String key;
+        private String currency;
+
+        public static String getKey(String id){
+            for(COUNTRY_MAIL e : COUNTRY_MAIL.values()){
+                if(id.equals(e.getId())){
+                    return e.getKey();
+                }
+            }
+            return null;
+        }
+
+        public static String getCurrency(String id){
+            for(COUNTRY_MAIL e : COUNTRY_MAIL.values()){
+                if(id.equals(e.getId())){
+                    return e.getCurrency();
+                }
+            }
+            return null;
+        }
+
+        COUNTRY_MAIL(String id, String key, String currency){
+            this.id = id;
+            this.key = key;
+            this.currency = currency;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public String getCurrency() {
+            return currency;
+        }
+    }*/
 
     //Prod
     public enum API_PARAMS{
