@@ -143,73 +143,73 @@ public class Enums {
     }
 
     //Prod
-    public enum API_PARAMS{
-        Installer("C80E939416524035B7BCABB3EBAE2832","installInstaller"), //安装人
-        Installation_Date("6B79D51956514828891DA1C2FDCD6348","installDate"),  //安装时间
-        CEC("9CC1B99FB8254E59BD5D6E3E979BB4AE","installCec"),  //cec
-        ABN("6C903F8B8E784E8BB98CE745DAB0DEB2","abn"),   //abn
-        Customer_Contact("9DF905DBA4544DFD9E49F1062C5590A2","customerContact"),  //维保公司名
-        Contact_Email("A3051A8D1D914138A15CF5952A9D7C92","contactEmial"),   //邮件
-        CC_Email("5BED898C95B24588B85AA64E701D4EA9","ccEmail"),   //邮件
-        Contact_Number("4F081F58794A4A4299BF1B262D309B9F","contactNumber"), //number
-        Customer_Address("BE5D7BBF824042129F5A1BF1C0DAB9F8","customerAddress"), //安装地址
-        Business_Name("C1ED3124BC124EA89AA8C97E7867C49A","businessName"), //终端客户
-        Reference("7554E75294FB4570AE94E20C5FD925C6","reference"),
-        Electrical_Compliance_Certifica("06A122AAE3F6480FA3F35E45A8678ED5","electricalComplianceCertificate"),
-        Invoice_Uploaded("DBEE85132F8D4ACBB44675D0F489548A","invliceUpload"),
-        Fault_Type("706989EB09F74DD4B03C217A91F51A6F","faultType"),
-        Fault_Description("9C8C8D03EA9C410DA133963B4A98CB7A","faultDescription"),
-        Status_Message_LCD("945536B8653040FCA4AE6FD5FBFF8D86","lcdMessage"),
-        Inverter_Exposed_Weather("6F3FE3BE645242EFA7C384DA15447F6B","isWeather"),
-        Intervter_Connect_Battery("86ABBEA3C7FB4D1580503221EC34C8AA","battery"),
-        Post_Code("23FD267E60094ED6A489DA5563E37054","postCode"),
-        Country("4CE734A500224941A1AED3B0A1CA0C27","contryCode"),
-        AMOUNT_EXCL_GST("C89114C2727440CB8712B0322E170FFE","amountGST"),
-        GST("B05DB6A2147240708D7C294187F1C568","gst"),
-        TOTAL_AMOUNT("B4C9C2D8AFB243D5B75EB5E769354A5A","totalAmount"),
-        PURCHASE_ORDER("5B0AAF5D8AA44F4E96B7A2BF1C070EED","purchaseOrder"),
-        SHIPPING_ADDRESS("A9A11FAAA7CF4791AB36F2FDEB39B89C","shippingAddress"),
-        CURRENCY_CODE("FF58863588184D3597B14696FEB31381","currency"),
-        INVERTER_INSTALLATION_LOCATION("6A0140DFE3C14AFD980A70F97C0E2EE2","location"),
-        BATTERY_MODEL("EC377263EF144E2281ECBBC449DE598F","batteryModel"),
-
-        Product_id("BE37C905B99A43CDA69DA687DDDAB061",""),
-        Delivery_date("E23F3144040A4B689EEE76F53BA50F1E",""),
-        Dispatched_Date("2E0CC222FA634535BB95FFFDBFD15C4F",""),
-        accessory("6E2BFA66D0EF4BEEADCFDFE09CE53DEE","accessory"),
-
-        Parts_Warranty_W5YP("E700C0A19A5C447FA749B788FB64B9A1","W5YP"),
-        Parts_Warranty_W5YS("5C35915C193747DB91A87CE73C468586","W5YS"),
-        ;
-
-        private String id;
-        private String key;
-
-        public static String getId(String key){
-            for(API_PARAMS e : API_PARAMS.values()){
-                if(key.equals(e.getKey())){
-                    return e.getId();
-                }
-            }
-            return null;
-        }
-
-        API_PARAMS(String id, String key){
-            this.id = id;
-            this.key = key;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getKey() {
-            return key;
-        }
-    }
+//    public enum API_PARAMS{
+//        Installer("C80E939416524035B7BCABB3EBAE2832","installInstaller"), //安装人
+//        Installation_Date("6B79D51956514828891DA1C2FDCD6348","installDate"),  //安装时间
+//        CEC("9CC1B99FB8254E59BD5D6E3E979BB4AE","installCec"),  //cec
+//        ABN("6C903F8B8E784E8BB98CE745DAB0DEB2","abn"),   //abn
+//        Customer_Contact("9DF905DBA4544DFD9E49F1062C5590A2","customerContact"),  //维保公司名
+//        Contact_Email("A3051A8D1D914138A15CF5952A9D7C92","contactEmial"),   //邮件
+//        CC_Email("5BED898C95B24588B85AA64E701D4EA9","ccEmail"),   //邮件
+//        Contact_Number("4F081F58794A4A4299BF1B262D309B9F","contactNumber"), //number
+//        Customer_Address("BE5D7BBF824042129F5A1BF1C0DAB9F8","customerAddress"), //安装地址
+//        Business_Name("C1ED3124BC124EA89AA8C97E7867C49A","businessName"), //终端客户
+//        Reference("7554E75294FB4570AE94E20C5FD925C6","reference"),
+//        Electrical_Compliance_Certifica("06A122AAE3F6480FA3F35E45A8678ED5","electricalComplianceCertificate"),
+//        Invoice_Uploaded("DBEE85132F8D4ACBB44675D0F489548A","invliceUpload"),
+//        Fault_Type("706989EB09F74DD4B03C217A91F51A6F","faultType"),
+//        Fault_Description("9C8C8D03EA9C410DA133963B4A98CB7A","faultDescription"),
+//        Status_Message_LCD("945536B8653040FCA4AE6FD5FBFF8D86","lcdMessage"),
+//        Inverter_Exposed_Weather("6F3FE3BE645242EFA7C384DA15447F6B","isWeather"),
+//        Intervter_Connect_Battery("86ABBEA3C7FB4D1580503221EC34C8AA","battery"),
+//        Post_Code("23FD267E60094ED6A489DA5563E37054","postCode"),
+//        Country("4CE734A500224941A1AED3B0A1CA0C27","contryCode"),
+//        AMOUNT_EXCL_GST("C89114C2727440CB8712B0322E170FFE","amountGST"),
+//        GST("B05DB6A2147240708D7C294187F1C568","gst"),
+//        TOTAL_AMOUNT("B4C9C2D8AFB243D5B75EB5E769354A5A","totalAmount"),
+//        PURCHASE_ORDER("5B0AAF5D8AA44F4E96B7A2BF1C070EED","purchaseOrder"),
+//        SHIPPING_ADDRESS("A9A11FAAA7CF4791AB36F2FDEB39B89C","shippingAddress"),
+//        CURRENCY_CODE("FF58863588184D3597B14696FEB31381","currency"),
+//        INVERTER_INSTALLATION_LOCATION("6A0140DFE3C14AFD980A70F97C0E2EE2","location"),
+//        BATTERY_MODEL("EC377263EF144E2281ECBBC449DE598F","batteryModel"),
+//
+//        Product_id("BE37C905B99A43CDA69DA687DDDAB061",""),
+//        Delivery_date("E23F3144040A4B689EEE76F53BA50F1E",""),
+//        Dispatched_Date("2E0CC222FA634535BB95FFFDBFD15C4F",""),
+//        accessory("6E2BFA66D0EF4BEEADCFDFE09CE53DEE","accessory"),
+//
+//        Parts_Warranty_W5YP("E700C0A19A5C447FA749B788FB64B9A1","W5YP"),
+//        Parts_Warranty_W5YS("5C35915C193747DB91A87CE73C468586","W5YS"),
+//        ;
+//
+//        private String id;
+//        private String key;
+//
+//        public static String getId(String key){
+//            for(API_PARAMS e : API_PARAMS.values()){
+//                if(key.equals(e.getKey())){
+//                    return e.getId();
+//                }
+//            }
+//            return null;
+//        }
+//
+//        API_PARAMS(String id, String key){
+//            this.id = id;
+//            this.key = key;
+//        }
+//
+//        public String getId() {
+//            return id;
+//        }
+//
+//        public String getKey() {
+//            return key;
+//        }
+//    }
 
     //Test
-    /*public enum API_PARAMS{
+    public enum API_PARAMS{
         Installer("DC79C374404640FC80DCAC220F4B0015","installInstaller"), //安装人
         Installation_Date("E63BC043F4E9493B8FC8FE4421D7D292","installDate"),  //安装时间
         CEC("F92DF7E17DE246BE8EDF9DA23856E8C9","installCec"),  //cec
@@ -272,7 +272,7 @@ public class Enums {
         public String getKey() {
             return key;
         }
-    }*/
+    }
 
     public enum API_HEADER_DTOS {
         EQUIPMENT20("Equipment.20"),
