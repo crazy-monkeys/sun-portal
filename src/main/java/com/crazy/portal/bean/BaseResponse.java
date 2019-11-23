@@ -1,6 +1,6 @@
 package com.crazy.portal.bean;
 
-import com.crazy.portal.util.MessageUtils;
+import com.crazy.portal.util.I18NUtils;
 
 public class BaseResponse {
 	private int code;
@@ -47,7 +47,7 @@ public class BaseResponse {
 
 	public void success(){
 		this.code = 1;
-		this.msg = MessageUtils.get("system.success");
+		this.msg = I18NUtils.getMsg("system.success");
 	}
 
 	public void success(Object data) {
