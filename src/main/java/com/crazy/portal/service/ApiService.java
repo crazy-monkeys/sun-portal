@@ -53,7 +53,8 @@ public class ApiService extends BaseService{
 
             return JSONObject.parseObject(response, DeviceInfoBean.class);
         }catch (Exception e){
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("getDeviceInfo:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -82,8 +83,8 @@ public class ApiService extends BaseService{
             Object country = adrs.get("country");
             return country == null ? null : String.valueOf(country);
         } catch (Exception e) {
-            log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("getDeviceAddressInfo:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -115,8 +116,8 @@ public class ApiService extends BaseService{
 
             return JSON.parseObject(JSON.toJSONString(devicePowerObj),UdfValuesBean.class);
         } catch (Exception e) {
-            log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("getDevicePowerInfo:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -137,8 +138,8 @@ public class ApiService extends BaseService{
 
             return JSON.parseObject(JSON.toJSONString(attachment),AttachmentResponse.class);
         } catch (Exception e) {
-            log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("attachmentUpload:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -166,8 +167,8 @@ public class ApiService extends BaseService{
 
             return materialObj != null ? (String)materialObj.get("id") : null;
         } catch (Exception e) {
-            log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("getMaterialIdByCode:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -196,8 +197,8 @@ public class ApiService extends BaseService{
 
             return materialObj != null ? (String)materialObj.get("id") : null;
         } catch (Exception e) {
-            log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("getWarehouseIdByCode:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -211,8 +212,8 @@ public class ApiService extends BaseService{
 
             return this.getWarehouseResponse(response);
         } catch (Exception e) {
-            log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("createWarehouse:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -230,8 +231,8 @@ public class ApiService extends BaseService{
 
             return this.getWarehouseResponse(response);
         } catch (Exception e) {
-            log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("updateWarehouseOwner:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -260,8 +261,8 @@ public class ApiService extends BaseService{
 
             return (String) pr.get("id");
         } catch (Exception e) {
-            log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("getOwnerId:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -283,8 +284,8 @@ public class ApiService extends BaseService{
 
             return JSON.parseObject(JSON.toJSONString(itemWarehouseLevel),InventoryInfoReponse.class);
         } catch (Exception e) {
-            log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SYSTEM_EXCEPTION.getCode(),e.getMessage());
+            log.error("updateInventoryInfo:",e);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION.getCode(),e.getMessage());
         }
     }
 
@@ -311,15 +312,14 @@ public class ApiService extends BaseService{
      *service call
      * @param bean
      */
-    public String serviceCall(ApiParamBean bean)throws Exception{
+    public String serviceCall(ApiParamBean bean) {
         String url = String.format("%s%s", callRootUrl,"/data/v4/ServiceCall");
         return super.invokeApi(url, JSON.toJSONString(getParam(bean)), Enums.API_HEADER_DTOS.SERVICECALL25);
     }
 
-    public void materialCall(String param,String function,  Enums.API_HEADER_DTOS dtos)throws Exception{
+    public void materialCall(String param,String function,  Enums.API_HEADER_DTOS dtos) {
         String url = String.format("%s%s", callRootUrl,function);
-        String response = super.invokeApi(url, param, dtos);
-        System.out.println(response);
+        super.invokeApi(url, param, dtos);
     }
 
     private RequestBodyBean getParam(ApiParamBean bean){

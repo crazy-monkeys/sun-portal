@@ -10,19 +10,15 @@ import com.crazy.portal.config.exception.ErrorInfo;
  */
 public class ErrorCodes {
 
-    public enum CommonEnum implements ErrorInfo {
-        SUCCESS(1,"system.success"),
-        SYSTEM_EXCEPTION(-1,"System exception"),
-        SYSTEM_TIMEOUT(0,"System timeout"),
-        REQ_PARAM_FORMAT_ERROR(-2, "Request parameter format exception"),
-        SERVER_MEETING(-4,"The server had a meeting"),
-        REQ_ILLEGAL(-3, "Illegal request");
-
+    public enum SystemEnum implements ErrorInfo {
+        EXCEPTION(-1,"system.exception"),
+        REQ_PARAM_FORMAT_ERROR(-2, "system.request.params.error"),
+        SUCCESS(1,"system.success");
 
         private final int code;
         private final String key;
 
-        CommonEnum(int code, String key) {
+        SystemEnum(int code, String key) {
             this.code = code;
             this.key = key;
         }
@@ -39,22 +35,22 @@ public class ErrorCodes {
     /**
      * 系统管理状态码
      */
-    public enum SystemManagerEnum implements ErrorInfo {
-        TOKEN_IS_NULL(10048,"Token 获取失败"),
-        PRODUCT_IS_EMPTY(10049,"Device information does not exist"),
-        SYS_PARAM_VALUE(10048,"Code already exists under this option"),
-        SYS_BEAN_ERROR(10049,"Object mapping exception"),
-        PRODUCT_IS_PARALLEL_IMPORTS(10050,"The equipment is not in the maintenance service area"),
-        IN_DATE_IS_BEFORE(10051,"Installation time cannot be later than creation time"),
-        PRICE_IS_NULL(10052,"No corresponding price for equipment maintenance"),
-        INSTALL_DATE_IS_NOT_NULL(10053,"Please select the installation time"),
-        EMAIL_IS_NO(10054,"Confirm email error"),
-        PRODUCT_BUSINESSPARTNER_IS_DIF(10055,"Equipment customer inconsistency"),
-        ID_NON_MODEL(10056,"Please check the model for the current Serial number [%s] in the price list, you can not purchase warranty extension for the current model, please go to warranty  registration to register for it."),
-        EMAIL_IS_NOT_NULL(10057,"Email is not Empty!"),
-        deliver_date_is_empty(10058,"Local delivery time is empty!"),
-        NUMBER_NOT_DUBLE(10059,"Device number cannot be repeated!"),
-        EMAIL_IS_ERROR(10060,"Mailbox format error!")
+    public enum BusinessEnum implements ErrorInfo {
+        TOKEN_IS_NULL(1001,"business.token.null"),
+        PRODUCT_IS_EMPTY(1002,"business.product.empty"),
+        SYS_PARAM_VALUE(1003,"business.param.value"),
+        SYS_BEAN_ERROR(1004,"Object mapping exception"),
+        PRODUCT_IS_PARALLEL_IMPORTS(1005,"business.product.parallel.imports"),
+        IN_DATE_IS_BEFORE(1006,"business.in.date.is.before"),
+        PRICE_IS_NULL(1007,"business.price.is.null"),
+        INSTALL_DATE_IS_NOT_NULL(1008,"business.install.date.required"),
+        EMAIL_IS_NO(1009,"business.email.error"),
+        PRODUCT_BUSINESSPARTNER_IS_DIF(1010,"business.product.partner.diff"),
+        ID_NON_MODEL(1011,"business.id.non.model"),
+        EMAIL_IS_REQUIRED(1012,"business.email.required"),
+        DELIVER_DATE_IS_REQUIRED(1013,"business.deliver.date.required"),
+        NUMBER_NOT_DUBLE(1014,"business.number_not_duble"),
+        EMAIL_IS_ERROR(1015,"business.email.format.error")
         ;
 
 
@@ -62,7 +58,7 @@ public class ErrorCodes {
         private final int code;
         private final String msg;
 
-        SystemManagerEnum(int code, String msg) {
+        BusinessEnum(int code, String msg) {
             this.code = code;
             this.msg = msg;
         }

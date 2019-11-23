@@ -9,10 +9,7 @@ import com.crazy.portal.bean.vo.ProductBean;
 import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.entity.PriceList;
 import com.crazy.portal.repository.PriceListRepository;
-import com.crazy.portal.util.BusinessUtil;
-import com.crazy.portal.util.DateUtil;
-import com.crazy.portal.util.Enums;
-import com.crazy.portal.util.ErrorCodes;
+import com.crazy.portal.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -41,7 +38,7 @@ public class ProductService {
      */
     public ResponseBean getProduct(String serialNumber, Integer type){
         DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);
-        BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.SystemManagerEnum.PRODUCT_IS_EMPTY);
+        BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.BusinessEnum.PRODUCT_IS_EMPTY);
         ResponseBean responseBean = new ResponseBean();
         responseBean.setId(deviceInfoBean.getData().get(0).getEq().getId());
         responseBean.setBusinessPartner(deviceInfoBean.getData().get(0).getEq().getBusinessPartner());
@@ -199,7 +196,7 @@ public class ProductService {
     private void checkProduct(Map<String,String> checkMap,String productId){
         boolean flg = checkMap.containsKey(productId);
         if(flg){
-            throw new BusinessException(ErrorCodes.SystemManagerEnum.NUMBER_NOT_DUBLE);
+            throw new BusinessException(ErrorCodes.BusinessEnum.NUMBER_NOT_DUBLE);
         }
         checkMap.put(productId,productId);
     }
@@ -223,7 +220,7 @@ public class ProductService {
 
         checkModel(bean.getProductModel(), bean.getSerialNumber());
         PriceList priceList = priceListRepository.findByModel(bean.getProductModel());
-        BusinessUtil.assertFlase(null == priceList,ErrorCodes.SystemManagerEnum.PRICE_IS_NULL);
+        BusinessUtil.assertFlase(null == priceList, ErrorCodes.BusinessEnum.PRICE_IS_NULL);
 
         if(new Date().before(endDate)){
             if (bean.getWarrantyType().equals("W5YS")){
@@ -251,8 +248,7 @@ public class ProductService {
         /*校验产品是否是不可延保*/
         PriceList checkPrice = priceListRepository.findByModel(checkModel);
         if(null != checkPrice){
-            String hint = String.format(ErrorCodes.SystemManagerEnum.ID_NON_MODEL.getKey(),serialNumber);
-            throw new BusinessException(ErrorCodes.SystemManagerEnum.ID_NON_MODEL.getCode(),hint);
+            throw new BusinessException(ErrorCodes.BusinessEnum.ID_NON_MODEL.getCode(), I18nUtils.getMsg(ErrorCodes.BusinessEnum.ID_NON_MODEL.getKey(),serialNumber));
         }
     }
 

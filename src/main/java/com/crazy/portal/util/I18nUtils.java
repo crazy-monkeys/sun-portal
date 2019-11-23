@@ -9,9 +9,9 @@ import org.springframework.context.i18n.LocaleContextHolder;
  * @Date: created in 00:35 2019-10-12
  * @Modified by:
  */
-public class I18NUtils {
+public class I18nUtils {
 
-    private I18NUtils(){}
+    private I18nUtils(){}
 
     public static MessageSource messageSource;
 
@@ -24,9 +24,9 @@ public class I18NUtils {
         }
     }
 
-    public static String getMsg(String key, Object[] args) {
+    public static String getMsg(String key, Object... arg) {
         try {
-            return messageSource.getMessage(key, args, LocaleContextHolder.getLocale());
+            return messageSource.getMessage(key, arg, LocaleContextHolder.getLocale());
         } catch (Exception e) {
             return key;
         }

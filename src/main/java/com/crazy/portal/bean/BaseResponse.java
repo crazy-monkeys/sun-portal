@@ -1,7 +1,7 @@
 package com.crazy.portal.bean;
 
 import com.crazy.portal.util.ErrorCodes;
-import com.crazy.portal.util.I18NUtils;
+import com.crazy.portal.util.I18nUtils;
 
 public class BaseResponse {
 	private int code;
@@ -47,8 +47,8 @@ public class BaseResponse {
 	}
 
 	public void success(){
-		this.code = ErrorCodes.CommonEnum.SUCCESS.getCode();
-		this.msg = I18NUtils.getMsg(ErrorCodes.CommonEnum.SUCCESS.getKey());
+		this.code = ErrorCodes.SystemEnum.SUCCESS.getCode();
+		this.msg = I18nUtils.getMsg(ErrorCodes.SystemEnum.SUCCESS.getKey());
 	}
 
 	public void success(Object data) {

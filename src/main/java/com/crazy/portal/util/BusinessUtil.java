@@ -13,43 +13,43 @@ public class BusinessUtil {
 
     public static void assertTrue(boolean bool, ErrorInfo errorInfo) {
         if(!bool){
-            throw new BusinessException(errorInfo);
+            throw new BusinessException(I18nUtils.getMsg(errorInfo.getKey()));
         }
     }
 
     public static void assertFlase(boolean bool, ErrorInfo errorInfo) {
         if(bool){
-            throw new BusinessException(errorInfo);
+            throw new BusinessException(I18nUtils.getMsg(errorInfo.getKey()));
         }
     }
 
     public static void assertNotEmpty(String value, ErrorInfo errorInfo) {
         if(StringUtils.isNotEmpty(value)){
-            throw new BusinessException(errorInfo);
+            throw new BusinessException(I18nUtils.getMsg(errorInfo.getKey()));
         }
     }
 
     public static void assertEmpty(String value, ErrorInfo errorInfo) {
         if(StringUtils.isEmpty(value) || value.equals("null")){
-            throw new BusinessException(errorInfo);
+            throw new BusinessException(I18nUtils.getMsg(errorInfo.getKey()));
         }
     }
 
     public static void notNull(Object obj, ErrorInfo errorInfo) {
         if(obj == null){
-            throw new BusinessException(errorInfo);
+            throw new BusinessException(I18nUtils.getMsg(errorInfo.getKey()));
         }
     }
 
     public static void isNull(Object obj, ErrorInfo errorInfo) {
         if(obj != null){
-            throw new BusinessException(errorInfo);
+            throw new BusinessException(I18nUtils.getMsg(errorInfo.getKey()));
         }
     }
 
     public static void isEmptyList(List list, ErrorInfo errorInfo) {
         if(list != null && !list.isEmpty()){
-            throw new BusinessException(errorInfo);
+            throw new BusinessException(I18nUtils.getMsg(errorInfo.getKey()));
         }
     }
 

@@ -1,5 +1,7 @@
 package com.crazy.portal.config.exception;
 
+import com.crazy.portal.util.I18nUtils;
+
 /**
  * @Desc:
  * @Author: bill
@@ -34,7 +36,7 @@ public class BusinessException extends RuntimeException {
 
     public BusinessException(ErrorInfo errorInfo) {
         this.errorCode = errorInfo.getCode();
-        this.message = errorInfo.getKey();
+        this.message = I18nUtils.getMsg(errorInfo.getKey());
     }
 
     public BusinessException(int errorCode, String message) {

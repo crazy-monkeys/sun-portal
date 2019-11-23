@@ -70,7 +70,7 @@ public class BaseService {
             Map<String, String> header = new HashMap<>();
             header.put(Constant.Authorization, authorization);
             String response = HttpClientUtils.post(url, params, mimeType, header);
-            BusinessUtil.notNull(response, ErrorCodes.SystemManagerEnum.TOKEN_IS_NULL);
+            BusinessUtil.notNull(response, ErrorCodes.BusinessEnum.TOKEN_IS_NULL);
             return JSONObject.parseObject(response, TokenBean.class);
         }catch (Exception e){
             log.error("接口异常:"+e);
@@ -132,7 +132,7 @@ public class BaseService {
         } catch (Exception e) {
             log.error("",e);
             errorMsg = ExceptionUtils.getExceptionAllinformation(e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION);
         } finally {
             //更新操作日志记录
             if(Objects.nonNull(operationLogDO)){

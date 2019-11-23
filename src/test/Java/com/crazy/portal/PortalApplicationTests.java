@@ -57,7 +57,7 @@ public class PortalApplicationTests {
 
         String serialNumber = "J1904090450";
         DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);
-        BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.SystemManagerEnum.PRODUCT_IS_EMPTY);
+        BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.BusinessEnum.PRODUCT_IS_EMPTY);
 
         List<ProductBean> products = new ArrayList<>();
         ProductBean product = new ProductBean();
@@ -91,7 +91,7 @@ public class PortalApplicationTests {
 
         String serialNumber = "J1904090450";
         DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);
-        BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.SystemManagerEnum.PRODUCT_IS_EMPTY);
+        BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.BusinessEnum.PRODUCT_IS_EMPTY);
 
         bean.setBusinessPartner(deviceInfoBean.getData().get(0).getEq().getBusinessPartner());
 
@@ -182,7 +182,7 @@ public class PortalApplicationTests {
 
         String serialNumber = "J1904090450";
         DeviceInfoBean deviceInfoBean = apiService.getDeviceInfo(serialNumber);
-        BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.SystemManagerEnum.PRODUCT_IS_EMPTY);
+        BusinessUtil.assertFlase(deviceInfoBean.getData().isEmpty() || null == deviceInfoBean.getData().get(0).getEq(), ErrorCodes.BusinessEnum.PRODUCT_IS_EMPTY);
 
         List<ProductBean> products = new ArrayList<>();
         ProductBean product = new ProductBean();

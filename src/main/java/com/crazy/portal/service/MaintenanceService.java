@@ -77,7 +77,7 @@ public class MaintenanceService {
             if(StringUtils.isNotEmpty(bean.getContacts().getContactEmail())){
                 String mailRegex = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
                 for(String str : bean.getContacts().getContactEmail().split(";")){
-                    BusinessUtil.assertTrue(str.matches(mailRegex),ErrorCodes.SystemManagerEnum.EMAIL_IS_ERROR);
+                    BusinessUtil.assertTrue(str.matches(mailRegex), ErrorCodes.BusinessEnum.EMAIL_IS_ERROR);
                 }
                 apiParamBean.setContactEmial(bean.getContacts().getContactEmail());
             }
@@ -97,12 +97,12 @@ public class MaintenanceService {
                 }
                 return code;
             }
-            throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION);
         }catch (BusinessException be){
             throw be;
         }catch (Exception e){
             log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION);
         }
     }
 
@@ -124,7 +124,7 @@ public class MaintenanceService {
                 if(StringUtils.isNotEmpty(bean.getContact().getContactEmail())){
                     String mailRegex = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
                     for(String str : bean.getContact().getContactEmail().split(";")){
-                        BusinessUtil.assertTrue(str.matches(mailRegex),ErrorCodes.SystemManagerEnum.EMAIL_IS_ERROR);
+                        BusinessUtil.assertTrue(str.matches(mailRegex), ErrorCodes.BusinessEnum.EMAIL_IS_ERROR);
                     }
                     apiParamBean.setContactEmial(bean.getContact().getContactEmail());
                 }
@@ -143,7 +143,7 @@ public class MaintenanceService {
                 if(StringUtils.isNotEmpty(bean.getEndUser().getContactEmail())){
                     String mailRegex = "^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$";
                     for(String str : bean.getEndUser().getContactEmail().split(";")){
-                        BusinessUtil.assertTrue(str.matches(mailRegex),ErrorCodes.SystemManagerEnum.EMAIL_IS_ERROR);
+                        BusinessUtil.assertTrue(str.matches(mailRegex), ErrorCodes.BusinessEnum.EMAIL_IS_ERROR);
                     }
                     apiParamBean.setContactEmial(bean.getEndUser().getContactEmail());
                 }
@@ -217,13 +217,13 @@ public class MaintenanceService {
                 }
                 return code;
             }
-            throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION);
         }catch (BusinessException be){
             log.error("",be);
             throw be;
         }catch (Exception e){
             log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION);
         }
     }
 
@@ -236,8 +236,8 @@ public class MaintenanceService {
 
             String country = bean.getCountry();
             this.checkProduct(bean.getProducts(),country);
-            BusinessUtil.assertFlase(StringUtils.isEmpty(bean.getEmail())||StringUtils.isEmpty(bean.getSendEmail()),ErrorCodes.SystemManagerEnum.EMAIL_IS_NO);
-            BusinessUtil.assertTrue(bean.getEmail().equals(bean.getSendEmail()),ErrorCodes.SystemManagerEnum.EMAIL_IS_NO);
+            BusinessUtil.assertFlase(StringUtils.isEmpty(bean.getEmail())||StringUtils.isEmpty(bean.getSendEmail()), ErrorCodes.BusinessEnum.EMAIL_IS_NO);
+            BusinessUtil.assertTrue(bean.getEmail().equals(bean.getSendEmail()), ErrorCodes.BusinessEnum.EMAIL_IS_NO);
 
             ApiParamBean apiParamBean = mappingApiParamBean(bean.getType(), null, null);
             this.getTotalAmount(bean.getProducts(),apiParamBean, bean);
@@ -270,12 +270,12 @@ public class MaintenanceService {
                 materialCreate(bean, objectId);
                 return code;
             }
-            throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION);
         }catch (BusinessException be){
             throw be;
         }catch (Exception e){
             log.error("",e);
-            throw new BusinessException(ErrorCodes.CommonEnum.SERVER_MEETING);
+            throw new BusinessException(ErrorCodes.SystemEnum.EXCEPTION);
         }
     }
 
@@ -345,9 +345,9 @@ public class MaintenanceService {
      * @throws Exception
      */
     private void checkDate(String installDate)throws Exception{
-        BusinessUtil.assertFlase(null==installDate,ErrorCodes.SystemManagerEnum.INSTALL_DATE_IS_NOT_NULL);
+        BusinessUtil.assertFlase(null==installDate, ErrorCodes.BusinessEnum.INSTALL_DATE_IS_NOT_NULL);
         Date inDate = DateUtil.parseDate(installDate,DateUtil.WEB_FORMAT);
-        BusinessUtil.assertFlase(new Date().before(inDate),ErrorCodes.SystemManagerEnum.IN_DATE_IS_BEFORE);
+        BusinessUtil.assertFlase(new Date().before(inDate), ErrorCodes.BusinessEnum.IN_DATE_IS_BEFORE);
     }
 
     /**
@@ -357,7 +357,7 @@ public class MaintenanceService {
      */
     private void checkProduct(List<ProductBean> products, String country){
         Boolean check = productService.checkProduct(products, country);
-        BusinessUtil.assertFlase(check, ErrorCodes.SystemManagerEnum.PRODUCT_IS_PARALLEL_IMPORTS);
+        BusinessUtil.assertFlase(check, ErrorCodes.BusinessEnum.PRODUCT_IS_PARALLEL_IMPORTS);
     }
 
     /**
@@ -389,7 +389,7 @@ public class MaintenanceService {
                     businessPartner = e.getBusinessPartner();
                 }else{
                     if(!businessPartner.equals(e.getBusinessPartner())){
-                        throw new BusinessException(ErrorCodes.SystemManagerEnum.PRODUCT_BUSINESSPARTNER_IS_DIF);
+                        throw new BusinessException(ErrorCodes.BusinessEnum.PRODUCT_BUSINESSPARTNER_IS_DIF);
                     }
                 }
                 amount = amount.add(e.getAmount());

@@ -5,7 +5,7 @@ import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.controller.BaseController;
 import com.crazy.portal.entity.OperationLogDO;
 import com.crazy.portal.repository.OperationLogRepository;
-import com.crazy.portal.util.ErrorCodes.CommonEnum;
+import com.crazy.portal.util.ErrorCodes.SystemEnum;
 import com.crazy.portal.util.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -86,14 +86,14 @@ public class OperationAspect extends BaseController {
             opLog.setErrorMsg(msg);
             //后置增强，保存日志
             this.saveLog(opLog);
-            throw new BusinessException(CommonEnum.REQ_PARAM_FORMAT_ERROR.getCode(),msg);
+            throw new BusinessException(SystemEnum.REQ_PARAM_FORMAT_ERROR.getCode(),msg);
         }
         if(throwable instanceof BindException){
             String msg = super.getValidExceptionMsg(((BindException) throwable).getAllErrors());
             opLog.setErrorMsg(msg);
             //后置增强，保存日志
             this.saveLog(opLog);
-            throw new BusinessException(CommonEnum.REQ_PARAM_FORMAT_ERROR.getCode(),msg);
+            throw new BusinessException(SystemEnum.REQ_PARAM_FORMAT_ERROR.getCode(),msg);
         }
         opLog.setErrorMsg(ExceptionUtils.getExceptionAllinformation(throwable));
         //后置增强，保存日志
