@@ -11,9 +11,9 @@ import com.crazy.portal.config.exception.ErrorInfo;
 public class ErrorCodes {
 
     public enum CommonEnum implements ErrorInfo {
+        SUCCESS(1,"system.success"),
         SYSTEM_EXCEPTION(-1,"System exception"),
         SYSTEM_TIMEOUT(0,"System timeout"),
-        SUCCESS(1,"system.success"),
         REQ_PARAM_FORMAT_ERROR(-2, "Request parameter format exception"),
         SERVER_MEETING(-4,"The server had a meeting"),
         REQ_ILLEGAL(-3, "Illegal request");
