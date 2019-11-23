@@ -7,6 +7,6 @@ public interface ErrorInfo {
 
     int getCode();
 
-    String getMsg();
+    String getKey();
 
 }

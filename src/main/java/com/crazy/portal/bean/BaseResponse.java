@@ -1,5 +1,6 @@
 package com.crazy.portal.bean;
 
+import com.crazy.portal.util.ErrorCodes;
 import com.crazy.portal.util.I18NUtils;
 
 public class BaseResponse {
@@ -46,8 +47,8 @@ public class BaseResponse {
 	}
 
 	public void success(){
-		this.code = 1;
-		this.msg = I18NUtils.getMsg("system.success");
+		this.code = ErrorCodes.CommonEnum.SUCCESS.getCode();
+		this.msg = I18NUtils.getMsg(ErrorCodes.CommonEnum.SUCCESS.getKey());
 	}
 
 	public void success(Object data) {

@@ -251,7 +251,7 @@ public class ProductService {
         /*校验产品是否是不可延保*/
         PriceList checkPrice = priceListRepository.findByModel(checkModel);
         if(null != checkPrice){
-            String hint = String.format(ErrorCodes.SystemManagerEnum.ID_NON_MODEL.getMsg(),serialNumber);
+            String hint = String.format(ErrorCodes.SystemManagerEnum.ID_NON_MODEL.getKey(),serialNumber);
             throw new BusinessException(ErrorCodes.SystemManagerEnum.ID_NON_MODEL.getCode(),hint);
         }
     }

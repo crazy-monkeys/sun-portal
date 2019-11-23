@@ -50,7 +50,7 @@ public class GlobalExceptionHandler extends BaseController {
             return new BaseResponse(ex.getErrorCode(),ex.getMessage());
         }
         log.error("", exception);
-        return new BaseResponse(CommonEnum.SYSTEM_EXCEPTION.getCode(),CommonEnum.SYSTEM_EXCEPTION.getMsg());
+        return new BaseResponse(CommonEnum.SYSTEM_EXCEPTION.getCode(),CommonEnum.SYSTEM_EXCEPTION.getKey());
     }
 
     public BaseResponse getMessageNotReadableErrorMessage(Exception exception){
