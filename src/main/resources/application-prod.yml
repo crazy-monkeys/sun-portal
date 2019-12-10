@@ -12,22 +12,3 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-
-hana:
-  url: jdbc:sap://hana-a64-factorycn1-k3nopk14.sha3.od.sap.biz:30015/
-  user: S0017474203
-  password: Portal-prod2019
-
-coresuite:
-  api:
-    token-root-url: https://auth.coresuite.com/api
-    call-root-url: https://cn.coresuite.cn/api
-    root-local: ${coresuite.api.root-url}/oauth2/v1/token
-  authorization: Basic MTIzZDAxZWQtZTExNy00YWRlLWFmYzQtN2U2OTdhYTQ1OTRmOjZjZmZmZGM1LTdlMjktNGM4YS1iNTRkLTEyZjgyMzI5ZTdmNg==
-  grant_type: password
-  username: sungrowpower-p1/sungrow
-  password: Welcome2020
-  mimeType: application/x-www-form-urlencoded
-  auth:
-    username: S0020469033
-    password: CRM@Unisoc
