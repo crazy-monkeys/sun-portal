@@ -10,7 +10,6 @@ import com.crazy.portal.config.exception.BusinessException;
 import com.crazy.portal.entity.PriceList;
 import com.crazy.portal.repository.PriceListRepository;
 import com.crazy.portal.util.*;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -23,7 +22,6 @@ import java.util.*;
  * @Author: God Man Qiu~
  * @Date: 2019/10/21 19:55
  */
-@Slf4j
 @Service
 public class ProductService {
     @Resource
@@ -59,7 +57,6 @@ public class ProductService {
                         formatter = new SimpleDateFormat("yyyy-MM-dd");
                         responseBean.setDispatchedDate(formatter.format(newDate));
                     }catch (Exception ex){
-                        log.info("时间转换失败！",ex);
                     }
                 }else{
                     responseBean.setDispatchedDate(e.getValue());
@@ -215,7 +212,7 @@ public class ProductService {
 
             endDate = DateUtil.addDays(deliveryDate,365);
         }catch (Exception e){
-            log.error("DELIVERYDATE IS ERROR",e);
+            //log.error("DELIVERYDATE IS ERROR",e);
         }
 
         checkModel(bean.getProductModel(), bean.getSerialNumber());
@@ -256,8 +253,13 @@ public class ProductService {
      * 检查水货  选择国家和物料国家不同为水货
      * @param country
      * @return  水货 true
+     * 2020-03-03 修改 巴西 墨西哥 智利 3个国家不做水货检查
      */
     public Boolean checkProduct(List<ProductBean> products, String country){
+        List<String> cs = Arrays.asList("CL","BR","MX","AR");
+        if(cs.contains(country)){
+            return false;
+        }
         for(ProductBean product : products){
             String deviceCounty=apiService.getDeviceAddressInfo(product.getProductId());
             if(!deviceCounty.equals(country)){
