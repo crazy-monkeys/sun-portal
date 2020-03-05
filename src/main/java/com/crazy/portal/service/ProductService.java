@@ -254,10 +254,10 @@ public class ProductService {
      * @param country
      * @return  水货 true
      * 2020-03-03 修改 巴西 墨西哥 智利 3个国家不做水货检查
+     * 2020-03-05 修改水货校验只有澳洲  au
      */
     public Boolean checkProduct(List<ProductBean> products, String country){
-        List<String> cs = Arrays.asList("CL","BR","MX","AR");
-        if(cs.contains(country)){
+        if(!country.equals("AU")){
             return false;
         }
         for(ProductBean product : products){
